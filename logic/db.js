@@ -650,7 +650,6 @@ if (existingEntry.length > 0) {
     }
   });
 
- 
 app.get('/puntosextra/:proyectoId', async (req, res) => {
   const proyectoId = req.params.proyectoId;
 
