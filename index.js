@@ -14,6 +14,9 @@ import { S3Client } from '@aws-sdk/client-s3';
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, './src/routers/routes.jsx')));
 
 const s3 = new S3Client({
   region: 'us-east-2',
