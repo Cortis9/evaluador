@@ -1,0 +1,10 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "logic/db.js",
+        "use": "@now/node"
+      }
+    ]
+  }
+  
