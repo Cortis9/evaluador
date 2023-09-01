@@ -1,12 +1,16 @@
-
-    {
-  "version": 2,
-  "builds": [
-    {
-      "src": "logic/db.js",
-      "use": "@now/node"
-    }
-  ]
-}
-
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "logic",       
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/logic/(.*)",  
+        "dest": "/logic"       
+      }
+    ]
+  }
   
