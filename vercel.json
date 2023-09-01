@@ -2,14 +2,14 @@
     "version": 2,
     "builds": [
       {
-        "src": "/logic/db.js", 
+        "src": "./index.js", 
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "/logic/db.js" 
+        "dest": "/" 
       }
     ]
   }
