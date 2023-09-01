@@ -8,25 +8,28 @@ import fs from 'fs';
 import nodemailer from 'nodemailer';
 import mysql2 from 'mysql2/promise';
 import mysql from 'mysql';
-import aws from 'aws-sdk';
+import { S3Client } from '@aws-sdk/client-s3'; 
+
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-aws.config.update({
-  accessKeyId: 'AKIAU5W6SFMUCVAAGBRX',
-  secretAccessKey: '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',
-  region: 'us-east-2' 
+const s3 = new S3Client({
+  region: 'us-east-2',
+  credentials: {
+    accessKeyId: 'AKIAU5W6SFMUCVAAGBRX',
+    secretAccessKey: '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'
+  }
 });
 
 
-const s3 = new aws.S3();
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: 'bucketevaluadorp', 
-    acl: 'public-read', 
+    bucket: 'bucketevaluadorp',
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE, 
     metadata: (req, file, cb) => {
       cb(null, { fieldName: file.fieldname });
     },
