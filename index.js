@@ -116,7 +116,9 @@ connection.query(`
   )
 `);
 
-
+app.get("/", (req, res) => {
+  res.send("Express on Vercel");
+});
 
 app.post('/upload-csv', upload.single('file'), async (req, res) => {
   const file = req.file;
