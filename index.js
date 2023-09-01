@@ -15,7 +15,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use(express.static('public')); 
+module.exports = app;
+const api = require("./index.js");
+app.use(api);
 
 
 const s3 = new S3Client({
