@@ -1,0 +1,87 @@
+
+#img2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+  
+  #img img {
+    max-width: 80%;
+    height: 80%;
+    margin-left: 55px;
+  }
+  #imgboton{
+    margin-left: 180px;
+    margin-bottom: 50px;
+    background-color: black;
+    color: #fff;
+  }
+  
+  #casos {
+    color: #ff5900;
+    margin-top: 50px;
+    list-style-type: none;
+    margin: 20px 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    margin-left: 90px;
+    
+  }
+
+  
+  #casos li {
+    margin-bottom: 10px;
+  }
+  
+  #casos ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    
+  }
+  
+  #casos label {
+    display: flex;
+    
+  }
+  
+  #casos input[type="checkbox"] {
+    margin-right: 5px;
+    width: 14px;
+    height: 14px;
+  }
+  
+
+#divpunto{
+    margin-top:20px;
+    margin-bottom: 50px;
+}
+
+#todo{
+    margin-top: 100px;
+    border-radius: 20px;
+    background-color: #fff;
+    width: auto;
+    height: auto;
+}
+
+#total{
+  color: black;
+  margin-bottom: 20px;
+  margin-left: 285px;
+}
+
+#titulo{
+
+  color: black;
+  align-items: center;
+}
+
+#envio{
+  margin-left: 270px;
+  margin-bottom: 60px;
+  background-color: black;
+  color: #fff;
+}
