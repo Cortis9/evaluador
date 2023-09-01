@@ -37,10 +37,6 @@ const upload = multer({
 });
 
 
-app.post('/subir-archivo', upload.single('archivo'), (req, res) => {
-
-  res.send('Archivo subido correctamente.');
-});
 
 const connection = mysql.createConnection({
   host: 'registro-db.cg5whpiiq7xs.us-east-2.rds.amazonaws.com',
@@ -117,9 +113,9 @@ connection.query(`
   )
 `);
 
-const upload2 = multer({ dest: 'uploads/' });
 
-app.post('/upload-csv', upload2.single('file'), async (req, res) => {
+
+app.post('/upload-csv', upload.single('file'), async (req, res) => {
   const file = req.file;
 
   if (!file) {
@@ -175,7 +171,7 @@ app.post('/upload-csv', upload2.single('file'), async (req, res) => {
   }
   });
 
-  app.post('/send-email', upload2.single('archivoAdjunto'), async (req, res) => {
+  app.post('/send-email', upload.single('archivoAdjunto'), async (req, res) => {
     try {
       const { to, subject, text, resultados } = req.body;
       const archivoAdjunto = req.file;
