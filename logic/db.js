@@ -2,16 +2,45 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import multer from 'multer';
+import multerS3 from 'multer-s3';
 import csv from 'csv-parser';
 import fs from 'fs';
 import nodemailer from 'nodemailer';
 import mysql2 from 'mysql2/promise';
 import mysql from 'mysql';
+import aws from 'aws-sdk';
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+aws.config.update({
+  accessKeyId: 'AKIAU5W6SFMUCVAAGBRX',
+  secretAccessKey: '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',
+  region: 'us-east-2' 
+});
+
+
+const s3 = new aws.S3();
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'bucketevaluadorp', 
+    acl: 'public-read', 
+    metadata: (req, file, cb) => {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: (req, file, cb) => {
+      cb(null, Date.now().toString() + '-' + file.originalname);
+    }
+  })
+});
+
+
+app.post('/subir-archivo', upload.single('archivo'), (req, res) => {
+
+  res.send('Archivo subido correctamente.');
+});
 
 const connection = mysql.createConnection({
   host: 'registro-db.cg5whpiiq7xs.us-east-2.rds.amazonaws.com',
@@ -88,9 +117,9 @@ connection.query(`
   )
 `);
 
-const upload = multer({ dest: 'uploads/' });
+const upload2 = multer({ dest: 'uploads/' });
 
-app.post('/upload-csv', upload.single('file'), async (req, res) => {
+app.post('/upload-csv', upload2.single('file'), async (req, res) => {
   const file = req.file;
 
   if (!file) {
@@ -146,7 +175,7 @@ app.post('/upload-csv', upload.single('file'), async (req, res) => {
   }
   });
 
-  app.post('/send-email', upload.single('archivoAdjunto'), async (req, res) => {
+  app.post('/send-email', upload2.single('archivoAdjunto'), async (req, res) => {
     try {
       const { to, subject, text, resultados } = req.body;
       const archivoAdjunto = req.file;
@@ -1272,6 +1301,7 @@ app.delete('/resultados/:proyectoId', (req, res) => {
     return res.status(201).json({ message: 'Títulos agregados con éxito.' });
   });
   
-app.listen(3002, () => {
+const port = process.env.PORT || 3002;
+app.listen(port, () => {
   console.log('Servidor API iniciado en el puerto 3002');
 });
