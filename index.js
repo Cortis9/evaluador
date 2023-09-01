@@ -9,9 +9,10 @@ import nodemailer from 'nodemailer';
 import mysql2 from 'mysql2/promise';
 import mysql from 'mysql';
 import { S3Client } from '@aws-sdk/client-s3'; 
-
+import {useNavigate} from "react-router-dom";
 
 const app = express();
+const navigate = useNavigate();
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -117,7 +118,7 @@ connection.query(`
 `);
 
 app.get("/", (req, res) => {
-  res.send("Express on Vercel");
+  res.send(navigate("/"));
 });
 
 app.post('/upload-csv', upload.single('file'), async (req, res) => {
