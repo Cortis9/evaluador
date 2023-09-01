@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "./src/routers/index.js",
+      "src": "/src/routers/index.js",
       "use": "@vercel/node"
     }
   ],
