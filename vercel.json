@@ -8,7 +8,7 @@
     ],
     "routes": [
       {
-        "src": "/(.*)",
+        "src": "/logic/db.js(.*)",
         "dest": "/logic/db.js" 
       }
     ]
