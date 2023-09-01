@@ -7,10 +7,10 @@
       }
     ],
     "routes": [
-      {
-        "src": "./src/routers/(.*)", 
-      "dest": "./src/routers/routes.jsx" 
-    }
+        {
+          "src": "/src/routers/routes.jsx",
+          "dest": "/src/routers/routes.jsx"
+        }
       
     ]
   }
