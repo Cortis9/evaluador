@@ -44,7 +44,7 @@ export const EvaluacionProyecto = () => {
 
   const fetchRubricaData = async () => {
     try {
-      const response = await fetch(`http://localhost:3002/rubricas/${rubricaId}`);
+      const response = await fetch(`https://evaluadoruam.netlify.app/rubricas/${rubricaId}`);
       const data = await response.json();
       setRubricaData(data);
       setNombreRubrica(data.rubrica.nombre);
@@ -64,7 +64,7 @@ export const EvaluacionProyecto = () => {
 
   const enviarCalificacionFinal = async (calificacion) => {
     try {
-      const response = await fetch("http://localhost:3002/calificacion", {
+      const response = await fetch("https://evaluadoruam.netlify.app/calificacion", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,61 +85,119 @@ export const EvaluacionProyecto = () => {
 
   const enviarResultados = async () => {
     try {
-      const puntosSeleccionadosIds = puntosSeleccionados.map(punto => punto.id);
+      for (const casoPunto of casosPuntosRelacionados) {
+        const { casoId, casoNombre, casoDetalle } = casoPunto;
+        const puntosSeleccionadosCaso = puntosSeleccionados.filter(
+          (punto) => punto.casoId === casoId 
+        );
+  
+        const resultados = {
+          proyectoId,
+          casosPuntosRelacionados: [
+            {
+              casoId,
+              casoNombre,
+              casoDetalle,
+              puntos: puntosSeleccionadosCaso,
+            },
+          ],
+        };
 
-      const resultados = {
-        proyectoId,
-        casosPuntosRelacionados: casosPuntosRelacionados.map(casoPunto => ({
-          casoId: casoPunto.casoId,
-          casoNombre: casoPunto.casoNombre,
-          casoDetalle: casoPunto.casoDetalle, 
-          puntos: casoPunto.puntos.filter(punto => puntosSeleccionadosIds.includes(punto.id))
-        }))
-      };
-
-      const response = await fetch("http://localhost:3002/resultados", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(resultados),
-      });
-
-      if (response.ok) {
-        console.log("Resultados enviados correctamente");
-
-        await fetch(`http://localhost:3002/proyectos/${proyectoId}/estado`, {
-          method: "PUT",
+        const response = await fetch("https://evaluadoruam.netlify.app/resultados", {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ estado: "evaluado" }),
+          body: JSON.stringify(resultados),
         });
 
-        console.log("Estado del proyecto actualizado correctamente");
-
-        enviarCalificacionFinal(sumaValores);
-      } else {
-        console.error("Error al enviar los resultados");
+        if (response.ok) {
+          console.log("Resultados enviados correctamente");
+  
+          await fetch(`https://evaluadoruam.netlify.app/proyectos/${proyectoId}/estado`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ estado: "evaluado" }),
+          });
+  
+          console.log("Estado del proyecto actualizado correctamente");
+  
+          enviarCalificacionFinal(parseInt(sumaValores)) ;
+          console.log(parseInt(sumaValores))
+          navigate('/Enviado');
+        } else {
+          console.error("Error al enviar los resultados");
+        }
+ 
       }
+  
+      
     } catch (error) {
       console.error("Error al enviar los resultados: ", error);
     }
+    
   };
+  
 
-  const handlePuntoSeleccionado = (puntoId, isChecked) => {
-    setPuntosSeleccionados(prevState => {
-      if (isChecked) {
-        const punto = rubricaData.puntos.find(punto => punto.id === puntoId);
-        if (punto) {
-          return [...prevState, punto];
+  const handlePuntoSeleccionado = (casoId, puntoId, isChecked) => {
+    setCasosPuntosRelacionados((prevState) => {
+      return prevState.map((caso) => {
+        if (caso.casoId === casoId) {
+          const updatedPuntos = caso.puntos.map((punto) => {
+            return {
+              ...punto,
+              seleccionado: punto.id === puntoId,
+            };
+          });
+          return {
+            ...caso,
+            puntos: updatedPuntos,
+          };
         }
-      } else {
-        return prevState.filter(punto => punto.id !== puntoId);
+        return caso;
+      });
+    });
+  
+    setPuntosSeleccionados((prevSelected) => {
+     
+      const filteredSelected = prevSelected.filter((punto) => punto.casoId !== casoId);
+  
+    
+      if (isChecked) {
+        const puntoSeleccionado = casosPuntosRelacionados
+          .find((caso) => caso.casoId === casoId)
+          .puntos.find((punto) => punto.id === puntoId);
+  
+        if (puntoSeleccionado) {
+          filteredSelected.push(puntoSeleccionado);
+        }
       }
-      return prevState;
+  
+      return filteredSelected;
     });
   };
+  
+
+  const calcularSumaValores = () => {
+    let suma = 0;
+    casosPuntosRelacionados.forEach((caso) => {
+      caso.puntos.forEach((punto) => {
+        if (punto.seleccionado) {
+          suma += punto.valor;
+        }
+      });
+    });
+    return suma;
+  };
+
+
+  useEffect(() => {
+    const suma = calcularSumaValores();
+    setSumaValores(suma);
+  }, [casosPuntosRelacionados]);
+
 
   useEffect(() => {
     const casosPuntos = rubricaData.casos.map(caso => {
@@ -154,15 +212,11 @@ export const EvaluacionProyecto = () => {
         puntos: puntosRelacionados,
       };
     });
+    
 
     setCasosPuntosRelacionados(casosPuntos);
 
-    const suma = puntosSeleccionados.reduce(
-      (accumulator, punto) => accumulator + punto.valor,
-      0
-    );
-    setSumaValores(suma);
-  }, [rubricaData, puntosSeleccionados]);
+  }, [rubricaData]);
 
   return (
     <>
@@ -190,18 +244,22 @@ export const EvaluacionProyecto = () => {
                         <h3>{caso.casoNombre}</h3>
                         <div>{caso.casoDetalle}</div>
                         <ul id="puntos">
-                          {caso.puntos.map((punto, puntoId) => (
-                            <li key={puntoId}>
-                              <label id="labelp">
-                                <input
-                                  type="checkbox"
-                                  checked={puntosSeleccionados.some(p => p.id === punto.id)}
-                                  onChange={e => handlePuntoSeleccionado(punto.id, e.target.checked)}
-                                />
-                                {punto.nombre} - Valor: {punto.valor}
-                              </label>
-                            </li>
-                          ))}
+                        {caso.puntos.map((punto, puntoId) => (
+                          <li key={puntoId}>
+     <label id="labelp">
+    <input
+      type="checkbox"
+      name={`punto-${caso.id}`}
+      checked={punto.seleccionado}
+      onChange={(e) =>
+        handlePuntoSeleccionado(caso.casoId, punto.id, e.target.checked)
+      }
+    />
+    {punto.nombre} - Valor: {punto.valor}
+  </label>
+</li>
+
+))}
                         </ul>
                       </li>
                     ))}

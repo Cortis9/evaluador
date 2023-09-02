@@ -16,8 +16,8 @@ export function Base() {
   return (
 
  <header>
-  <a href="/home">
- <img src="/src/assets/icono.png" height={50} width={50} id="logo"/>
+  <a href="/Home">
+ <img src="./src/assets/icono.png" height={50} width={50} id="logo"/>
  </a>
  <ul>
  <li><a href="/Home">Home</a></li> 

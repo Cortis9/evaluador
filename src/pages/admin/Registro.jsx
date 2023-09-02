@@ -49,7 +49,7 @@ export function Registro() {
     };
 
     try {
-      const response = await fetch('http://localhost:3002/proyectos', {
+      const response = await fetch('https://evaluadoruam.netlify.app/proyectos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -60,6 +60,14 @@ export function Registro() {
       if (response.ok) {
         const data = await response.json();
         console.log(data.message);
+        window.alert('Datos enviados con éxito');
+        setTitulo('');
+        setCategoria('');
+        setRubrica('');
+        setFile(null);
+        setLink('');
+        setNombre('');
+        setCorreo('');
       } else {
         console.error('Error al registrar el proyecto');
       }
@@ -77,7 +85,7 @@ export function Registro() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('http://localhost:3002/upload-csv', {
+      const response = await fetch('https://evaluadoruam.netlify.app/upload-csv', {
         method: 'POST',
         body: formData,
       });
@@ -86,6 +94,7 @@ export function Registro() {
         const data = await response.json();
         setUploadStatus('Carga exitosa');
         console.log(data.message);
+        
       } else {
         setUploadStatus('Error al cargar el archivo CSV');
         console.error('Error al cargar el archivo CSV');
@@ -101,7 +110,7 @@ export function Registro() {
   useEffect(() => {
     const fetchRubricOptions = async () => {
       try {
-        const response = await fetch('http://localhost:3002/rubricas');
+        const response = await fetch('https://evaluadoruam.netlify.app/rubricas');
         if (response.ok) {
           const data = await response.json();
           setRubricOptions(data);
@@ -125,14 +134,17 @@ export function Registro() {
           <div id="archivo">
             <input id="inputarchivo" type="file" name="file" accept=".csv" onChange={handleFileChange} />
             {file && !link && <span id="nombrearchivo">{file.name}</span>}
-            <button onClick={handleCSVUpload} id="botonarchivo">Subir archivo CSV</button>
+            <button  onClick={handleCSVUpload} id="botonarchivo">Subir archivo CSV</button>
             {uploadStatus && <div>{uploadStatus}</div>}
           </div>
 
+          
+
           <form onSubmit={handleSubmit} id='form'>
-            <div id='titulo'>
+            <div id='participantes'>
               <label htmlFor="title">Título:</label>
-              <input type="text" id="title" name="title" onChange={handleTitleChange} value={titulo} />
+              <input type="text" id="title" name="title" 
+              placeholder="Titulo" onChange={handleTitleChange} value={titulo} />
             </div>
 
             <div id='participantes'>

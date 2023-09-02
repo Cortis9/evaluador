@@ -75,7 +75,7 @@ export const Rubricas = () => {
 
   const verificarExistenciaRubrica = async (nombreRubrica) => {
     try {
-      const response = await fetch(`http://localhost:3002/rubricas`);
+      const response = await fetch(`https://evaluadoruam.netlify.app/rubricas`);
       if (response.ok) {
         const data = await response.json();
         const existeRubrica = data.some((rubrica) => rubrica.nombre === nombreRubrica);
@@ -107,7 +107,7 @@ export const Rubricas = () => {
         })),
       };    
   
-      const response = await fetch('http://localhost:3002/rubricas', {
+      const response = await fetch('https://evaluadoruam.netlify.app/rubricas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -135,6 +135,7 @@ export const Rubricas = () => {
         <label>Nombre de la Rubrica:</label>
         <input
           type="text"
+          id='input'
           value={nombre}
           onChange={(e) => setRubricaNombre(e.target.value)}
           onBlur={() => verificarExistenciaRubrica(nombre)}
@@ -150,6 +151,7 @@ export const Rubricas = () => {
                   <label>Caso:</label>
                   <input
                     type="text"
+                    id='input'
                     placeholder="Nombre del caso"
                     value={caso.nombre}
                     onChange={(e) =>
@@ -160,6 +162,7 @@ export const Rubricas = () => {
                 <div>
                   <input
                     type="text"
+                    id='input'
                     placeholder="Detalle del caso"
                     value={caso.detalle}
                     onChange={(e) =>
@@ -200,7 +203,7 @@ export const Rubricas = () => {
                         )
                       }
                     />
-                    <button onClick={() => eliminarPunto(tituloIndex, casoIndex, puntoIndex)}>
+                    <button id='button' onClick={() => eliminarPunto(tituloIndex, casoIndex, puntoIndex)}>
                       Eliminar Punto
                     </button>
                   </div>
@@ -224,12 +227,13 @@ export const Rubricas = () => {
           <input
             type="text"
             value={titulo}
+            id='input'
             onChange={(e) => setTitulo(e.target.value)}
           />
         </div>
         <button onClick={agregarTitulo} id='button'>Guardar Título</button>
       </div>
-      <button onClick={enviarDatos} id='button'>Crear Rubrica</button>
+      <button onClick={enviarDatos} id='guardar'>Crear Rubrica</button>
     </div>
   );
 };

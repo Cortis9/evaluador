@@ -1,15 +1,6 @@
 import React from "react";
 import {Base} from '../admin/BaseAdmin'
 
-function PieDePagina() {
-  const anioActual = new Date().getFullYear();
-
-  return (
-    <footer id="pie">
-      <p>© Evaluador - {anioActual}</p>
-    </footer>
-  );
-}
 
 export function HomeAdmin() {
 
@@ -20,8 +11,6 @@ export function HomeAdmin() {
 <div>
 
  <Base />
-
-<PieDePagina />
 
 </div>
 </html>

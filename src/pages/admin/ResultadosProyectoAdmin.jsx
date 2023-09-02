@@ -9,13 +9,15 @@ import jsonimg from '../../assets/json.png';
 import excelimg from '../../assets/excel.png';
 import * as XLSX from 'xlsx';
 
-
 export function ResultadosProyectoAdmin() {
   const [resultados, setResultados] = useState([]);
   const [calificacionFinal, setCalificacionFinal] = useState(0);
   const [correoDestino, setCorreoDestino] = useState('');
   const [asunto, setAsunto] = useState('');
   const [contenidoCorreo, setContenidoCorreo] = useState('');
+  const [puntosextra, setPuntosextra] = useState('');
+  const [correopuntosextra, setCorreopuntosextra] = useState('');
+  const [detallepuntosextra, setDetallepuntosextra] = useState('');
   const chartRef = useRef(null);
   const chartInstanceRef = useRef(null);
   const [archivoAdjunto, setArchivoAdjunto] = useState(null);
@@ -27,11 +29,10 @@ export function ResultadosProyectoAdmin() {
 
     const obtenerResultados = async () => {
       try {
-        const response = await fetch(`http://localhost:3002/resultados/${proyectoId}`);
+        const response = await fetch(`https://evaluadoruam.netlify.app/resultados/${proyectoId}`);
         if (response.ok) {
           const data = await response.json();
           setResultados(data);
-          console.log(resultados)
         } else {
           console.error('Error al obtener los resultados');
         }
@@ -44,7 +45,7 @@ export function ResultadosProyectoAdmin() {
 
     const obtenerCalificacionFinal = async () => {
       try {
-        const response = await fetch(`http://localhost:3002/calificacion/${proyectoId}`);
+        const response = await fetch(`https://evaluadoruam.netlify.app/calificacion/${proyectoId}`);
         if (response.ok) {
           const data = await response.json();
           setCalificacionFinal(data.calificacionFinal);
@@ -58,6 +59,24 @@ export function ResultadosProyectoAdmin() {
     };
 
     obtenerCalificacionFinal();
+
+    const obtenerDatosAdicionales = async () => {
+      try {
+        const response = await fetch(`https://evaluadoruam.netlify.app/puntosextra/${proyectoId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setPuntosextra(data.puntosextra);
+          setCorreopuntosextra(data.correopuntosextra);
+          setDetallepuntosextra(data.detallepuntosextra);
+        } else {
+          console.error('Error al obtener los datos adicionales');
+        }
+      } catch (error) {
+        console.error('Error al realizar la solicitud:', error);
+      }
+    };
+
+    obtenerDatosAdicionales();
   }, []);
 
   useEffect(() => {
@@ -128,7 +147,6 @@ export function ResultadosProyectoAdmin() {
     }
   }, [resultados, calificacionFinal]);
 
-
   const exportarImagen = () => {
     html2canvas(chartRef.current).then(canvas => {
       const imgData = canvas.toDataURL('image/png');
@@ -153,7 +171,7 @@ export function ResultadosProyectoAdmin() {
     const proyectoId = searchParams.get('proyectoId');
 
     try {
-      const response = await fetch(`http://localhost:3002/calificacion/${proyectoId}`, {
+      const response = await fetch(`https://evaluadoruam.netlify.app/calificacion/${proyectoId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -183,10 +201,14 @@ export function ResultadosProyectoAdmin() {
     formData.append("text", contenidoCorreo);
     formData.append("to", correoDestino);
     formData.append("subject", asunto);
-    formData.append("archivoAdjunto", archivoAdjunto);
+  
+
+    if (archivoAdjunto) {
+      formData.append("archivoAdjunto", archivoAdjunto);
+    }
   
     try {
-      const response = await fetch("http://localhost:3002/send-email", {
+      const response = await fetch("https://evaluadoruam.netlify.app/send-email", {
         method: "POST",
         body: formData,
       });
@@ -248,8 +270,6 @@ export function ResultadosProyectoAdmin() {
     return XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
   };
   
-  
-
   const toggleExportOptions = () => {
     setExportOptionsVisible((prevState) => !prevState);
   };
@@ -269,43 +289,99 @@ export function ResultadosProyectoAdmin() {
     document.body.removeChild(a);
   };
 
+  const eliminarResultados = async () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const proyectoId = searchParams.get('proyectoId');
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar estos resultados?');
+
+    if (!confirmDelete) {
+    
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://evaluadoruam.netlify.app/resultados/${proyectoId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        console.log('Resultados eliminados con éxito');
+       
+      } else {
+        console.error('Error al eliminar resultados');
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+    }
+  };
+  
   return (
     <div>
       <Base />
 
-   
       <div id="contenedor">
-      <div className="export__file2">
-                <label
-                  htmlFor="export-file2"
-                  className="export__file-btn2"
-                  title="Export File"
-                  onClick={toggleExportOptions}
-                ></label>
-                <input type="checkbox" id="export-file2" />
-                {exportOptionsVisible && (
-                  <div className="export__file-options2">
-                    <label htmlFor="toJSON-resultados" onClick={() => handleExportProyecto('toJSON')}>
-                      JSON <img src={jsonimg} alt="" />
-                    </label>
-                    <label htmlFor="toCSV-resultados" onClick={() => handleExportProyecto('toCSV')}>
-                      CSV <img src={csvimg} alt="" />
-                    </label>
-                    <label htmlFor="toEXCEL-resultados" onClick={() => handleExportProyecto('toEXCEL')}>
-                      EXCEL <img src={excelimg} alt="" />
-                    </label>
-                  </div>
-                )}
-              </div>
+
+       
+      <button id='deleteButton' onClick={eliminarResultados}>🗑️</button>
+        <div className="export__file2">
+          <label
+            htmlFor="export-file2"
+            className="export__file-btn2"
+            title="Export File"
+            onClick={toggleExportOptions}
+          ></label>
+          <input type="checkbox" id="export-file2" />
+          {exportOptionsVisible && (
+            <div className="export__file-options2">
+              <label htmlFor="toJSON-resultados" onClick={() => handleExportProyecto('toJSON')}>
+                JSON <img src={jsonimg} alt="" />
+              </label>
+              <label htmlFor="toCSV-resultados" onClick={() => handleExportProyecto('toCSV')}>
+                CSV <img src={csvimg} alt="" />
+              </label>
+              <label htmlFor="toEXCEL-resultados" onClick={() => handleExportProyecto('toEXCEL')}>
+                EXCEL <img src={excelimg} alt="" />
+              </label>
+            </div>
+          )}
+        </div>
         <h2 id="titulo">Resultados</h2>
         <div className="chart-container">
           <canvas ref={chartRef} id="grafica"></canvas>
           <div className="export-buttons">
-            <button onClick={exportarImagen}>Exportar como imagen</button>
-            <button onClick={exportarPDF}>Exportar como PDF</button>
+            <button id='exportbt' onClick={exportarImagen}>Exportar como imagen</button>
+            <button id='exportbt' onClick={exportarPDF}>Exportar como PDF</button>
           </div>
         </div>
+        <label htmlFor="input-puntosextra">Puntos Extra:</label>
+      <input
+        id="input-puntosextra"
+        type="number"
+        name="puntosextra"
+        value={puntosextra}
+        onChange={(e) => setPuntosextra(e.target.value)}
+        disabled
+      />
 
+      <label htmlFor="input-correo-puntosextra">Correo de Puntos Extra:</label>
+      <input
+        id="input-correo-puntosextra"
+        type="text"
+        name="correopuntosextra"
+        value={correopuntosextra}
+        onChange={(e) => setCorreopuntosextra(e.target.value)}
+        disabled
+      />
+
+      <label htmlFor="input-detalle-puntosextra">Detalle de Puntos Extra:</label>
+      <textarea
+        id="detalles"
+        type="text"
+        name="detallepuntosextra"
+        value={detallepuntosextra}
+        onChange={(e) => setDetallepuntosextra(e.target.value)}
+        disabled
+      />
         <label htmlFor="input-calificacion-final">Calificación Final:</label>
         <input
           id="input-calificacion-final"
@@ -314,7 +390,7 @@ export function ResultadosProyectoAdmin() {
           value={calificacionFinal}
           onChange={(e) => setCalificacionFinal(e.target.value)}
         />
-
+       <button  id='export1' onClick={actualizarCalificacionFinal}>Guardar Cambios</button>
         <div>
           <label htmlFor="input-correo-destino">Correo de destino:</label>
           <input
@@ -333,29 +409,33 @@ export function ResultadosProyectoAdmin() {
             value={asunto}
             onChange={(e) => setAsunto(e.target.value)}
           />
-        <div>
-        <input
-        type="file"
-        id="input-adjuntar-archivo"
-         onChange={(e) => handleFileUpload(e.target.files)}
-        />
-        <span style={{ color: 'black' }}>
-        {archivoAdjunto ? `${archivoAdjunto.name}` : 'Ningún archivo seleccionado'}
-      </span>
-        </div>
-          <label htmlFor="input-correo">Contenido del correo:</label>
-          <textarea
-            id="input-correo"
-            name="contenidoCorreo"
-            value={contenidoCorreo}
-            onChange={(e) => setContenidoCorreo(e.target.value)}
-          ></textarea>
         </div>
 
+        {archivoAdjunto === null ? (
+          <div>
+            <input
+              type="file"
+              id="input-adjuntar-archivo"
+              onChange={(e) => handleFileUpload(e.target.files)}
+            />
+            <span style={{ color: 'black' }}>
+              {archivoAdjunto ? `${archivoAdjunto.name}` : 'Ningún archivo seleccionado'}
+            </span>
+          </div>
+        ) : null}
 
-        <button onClick={enviarCorreo}>Enviar Correo</button>
+        <label htmlFor="input-correo">Contenido del correo:</label>
+        <textarea
+          id="detalles"
+          name="contenidoCorreo"
+          value={contenidoCorreo}
+          onChange={(e) => setContenidoCorreo(e.target.value)}
+        ></textarea>
+       
+       <div><button id='export1' onClick={enviarCorreo}>Enviar Correo</button></div>
+        
 
-        <button onClick={actualizarCalificacionFinal}>Guardar Cambios</button>
+        
       </div>
     </div>
   );

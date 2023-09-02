@@ -17,10 +17,10 @@ export function Base() {
   return (
 
 
-
+<div>
  <header>
  <a href="/HomeAdmin">
-  <img src="/src/assets/icono.png" height={50} width={50} id="logo" />
+  <img src="./src/assets/icono.png" height={50} width={50} id="logo" />
 </a>
 
  <ul>
@@ -33,7 +33,7 @@ export function Base() {
  
  <button onClick={()=> HandleLogout()} className="button" id="botonL">Logout</button>
  </header>
-
+ </div>
 
   );
 

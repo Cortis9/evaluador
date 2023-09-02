@@ -6,8 +6,12 @@ import '../../styles/ResultadosProyecto.css';
 export function ResultadosProyecto() {
   const [resultados, setResultados] = useState([]);
   const [calificacionFinal, setCalificacionFinal] = useState(0);
+  const [puntosExtras, setPuntosExtras] = useState(0);
+  const [correo, setCorreo] = useState("");
+  const [detalles, setDetalles] = useState("");
   const chartRef = useRef(null);
   const chartInstanceRef = useRef(null);
+
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -15,7 +19,7 @@ export function ResultadosProyecto() {
 
     const obtenerResultados = async () => {
       try {
-        const response = await fetch(`http://localhost:3002/resultados/${proyectoId}`);
+        const response = await fetch(`https://evaluadoruam.netlify.app/resultados/${proyectoId}`);
         if (response.ok) {
           const data = await response.json();
           setResultados(data);
@@ -31,7 +35,7 @@ export function ResultadosProyecto() {
 
     const obtenerCalificacionFinal = async () => {
       try {
-        const response = await fetch(`http://localhost:3002/calificacion/${proyectoId}`);
+        const response = await fetch(`https://evaluadoruam.netlify.app/calificacion/${proyectoId}`);
         if (response.ok) {
           const data = await response.json();
           setCalificacionFinal(data.calificacionFinal);
@@ -114,17 +118,80 @@ export function ResultadosProyecto() {
     }
   }, [resultados, calificacionFinal]);
 
-
+  const enviarCambios = async () => {
+  
+    const camposLlenos = puntosExtras !== 0 && correo !== "" && detalles !== "";
+  
+    if (camposLlenos) {
+      try {
+        const data = {
+          puntosextra: puntosExtras,
+          correopuntosextra: correo,
+          detallepuntosextra: detalles,
+        };
+  
+        const searchParams = new URLSearchParams(window.location.search);
+        const proyectoId = searchParams.get('proyectoId');
+        
+        const response = await fetch(`https://evaluadoruam.netlify.app/puntosextra/${proyectoId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+  
+        if (response.ok) {
+          console.log("Cambios enviados con éxito");
+        } else {
+          console.error("Error al enviar cambios");
+        }
+      } catch (error) {
+        console.error("Error al enviar cambios:", error);
+      }
+    } else {
+      alert("Por favor, rellena todos los campos y asegúrate de que los puntos extras sean diferentes de 0.");
+    }
+  };
+  
+  
+  
   return (
     <div>
       <Base />
-
+  
       <div id="contenedor">
         <h2 id="titulo">Resultados</h2>
         <div className="chart-container">
           <canvas ref={chartRef} id="grafica"></canvas>
         </div>
+        <div id="inputs">
+          <label htmlFor="puntosExtras">Puntos Extras:</label>
+          <input
+            type="number"
+            id="puntosExtras"
+            value={puntosExtras}
+            onChange={(e) => setPuntosExtras(Number(e.target.value))}
+          />
+          <label htmlFor="correo">Correo:</label>
+          <input
+            type="email"
+            id="correo"
+            value={correo}
+            onChange={(e) => setCorreo(e.target.value)}
+          />
+          <label htmlFor="detalles">Detalles:</label>
+          <textarea
+            id="detalles"
+            value={detalles}
+            onChange={(e) => setDetalles(e.target.value)}
+          ></textarea>
+
+          <div><button id='btenviar' onClick={enviarCambios}>Enviar Cambios</button></div>
+          
+
         </div>
+      </div>
     </div>
   );
 }

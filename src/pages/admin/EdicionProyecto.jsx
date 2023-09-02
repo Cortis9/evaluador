@@ -23,7 +23,7 @@ export const EdicionProyecto = () => {
 
   const fetchProyecto = async () => {
     try {
-      const response = await fetch(`http://localhost:3002/proyectos/${proyectoId}`);
+      const response = await fetch(`https://evaluadoruam.netlify.app/proyectos/${proyectoId}`);
       const data = await response.json();
       setEditedData(data);
     } catch (error) {
@@ -41,7 +41,7 @@ export const EdicionProyecto = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3002/proyectos/${proyectoId}`, {
+      const response = await fetch(`https://evaluadoruam.netlify.app/proyectos/${proyectoId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -50,8 +50,7 @@ export const EdicionProyecto = () => {
       });
 
       if (response.ok) {
-        console.log('Proyecto actualizado con éxito');
-      
+        window.alert('Proyecto actualizado con éxito');
       } else {
         console.error('Error al guardar los cambios');
       }
@@ -71,17 +70,17 @@ export const EdicionProyecto = () => {
  
         <form onSubmit={handleSubmit} id='form3'>
         <button onClick={handleGoBack} id='bregresa'>
-          <FontAwesomeIcon icon={faArrowLeft} />
+          <FontAwesomeIcon icon={faArrowleft} />
         </button>
 
           <div>
             <label htmlFor='titulo'>Título:</label>
-            <input type='text' id='titulo' name='titulo' value={editedData.titulo} onChange={handleInputChange} />
+            <input type='text' id='tituloedicion' name='titulo' value={editedData.titulo} onChange={handleInputChange} />
           </div>
 
           <div>
             <label htmlFor='nombre'>Nombre:</label>
-            <input type='text' id='nombre' name='nombre' value={editedData.nombre} onChange={handleInputChange} />
+            <input type='text' id='nombreedicion' name='nombre' value={editedData.nombre} onChange={handleInputChange} />
           </div>
 
           <div>
@@ -91,20 +90,20 @@ export const EdicionProyecto = () => {
 
           <div>
             <label htmlFor='categoria'>Categoría:</label>
-            <input type='text' id='categoria' name='categoria' value={editedData.categoria} onChange={handleInputChange} />
+            <input type='text' id='categoriaedicion' name='categoria' value={editedData.categoria} onChange={handleInputChange} />
           </div>
 
           <div>
             <label htmlFor='rubrica'>Rúbrica:</label>
-            <input type='text' id='rubrica' name='rubrica' value={editedData.rubrica} onChange={handleInputChange} />
+            <input type='text' id='rubricaeidicon' name='rubrica' value={editedData.rubrica} onChange={handleInputChange} />
           </div>
 
           <div>
             <label htmlFor='link'>Enlace del archivo:</label>
-            <input type='text' id='link' name='link' value={editedData.link} onChange={handleInputChange} />
+            <input type='text' id='linkedicion' name='link' value={editedData.link} onChange={handleInputChange} />
           </div>
 
-          <div><button type='submit'>Guardar cambios</button></div>
+          <div><button id='botonguardar' type='submit'>Guardar cambios</button></div>
 
         </form>
       </div>

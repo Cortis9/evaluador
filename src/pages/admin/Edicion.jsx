@@ -29,18 +29,6 @@ export const Edicion = () => {
     }
   };
 
-  const handleEliminarProyecto = async (proyectoId) => {
-    try {
-      await fetch(`http://localhost:3002/proyectos/${proyectoId}`, {
-        method: 'DELETE',
-      });
-      const updatedProyectos = proyectos.filter((proyecto) => proyecto.id !== proyectoId);
-      setProyectos(updatedProyectos);
-      console.log('Proyecto eliminado con éxito');
-    } catch (error) {
-      console.error('Error al eliminar el proyecto: ', error);
-    }
-  };
 
   const handleEditarRubrica = (rubricaId) => {
     const rubrica = rubricas.find((rubrica) => rubrica.id === rubricaId);
@@ -50,16 +38,39 @@ export const Edicion = () => {
     }
   };
 
+  const handleEliminarProyecto = async (proyectoId) => {
+    
+    const confirmacion = window.confirm('¿Estás seguro de que deseas eliminar este proyecto?');
+  
+    if (confirmacion) {
+      try {
+        await fetch(`https://evaluadoruam.netlify.app/proyectos/${proyectoId}`, {
+          method: 'DELETE',
+        });
+        const updatedProyectos = proyectos.filter((proyecto) => proyecto.id !== proyectoId);
+        setProyectos(updatedProyectos);
+        console.log('Proyecto eliminado con éxito');
+      } catch (error) {
+        console.error('Error al eliminar el proyecto: ', error);
+      }
+    }
+  };
+  
   const handleEliminarRubrica = async (rubricaId) => {
-    try {
-      await fetch(`http://localhost:3002/rubricas/${rubricaId}`, {
-        method: 'DELETE',
-      });
-      const updatedRubricas = rubricas.filter((rubrica) => rubrica.id !== rubricaId);
-      setRubricas(updatedRubricas);
-      console.log('Rubrica eliminada con éxito');
-    } catch (error) {
-      console.error('Error al eliminar la rubrica: ', error);
+
+    const confirmacion = window.confirm('¿Estás seguro de que deseas eliminar esta rúbrica?');
+  
+    if (confirmacion) {
+      try {
+        await fetch(`https://evaluadoruam.netlify.app/rubricas/${rubricaId}`, {
+          method: 'DELETE',
+        });
+        const updatedRubricas = rubricas.filter((rubrica) => rubrica.id !== rubricaId);
+        setRubricas(updatedRubricas);
+        console.log('Rúbrica eliminada con éxito');
+      } catch (error) {
+        console.error('Error al eliminar la rúbrica: ', error);
+      }
     }
   };
 
@@ -71,7 +82,7 @@ export const Edicion = () => {
 
   const fetchProyectos = async () => {
     try {
-      const response = await fetch('http://localhost:3002/proyectos');
+      const response = await fetch('https://evaluadoruam.netlify.app/proyectos');
       const data = await response.json();
       setProyectos(data);
       const proyectosIds = data.map((proyecto) => proyecto.id);
@@ -83,12 +94,12 @@ export const Edicion = () => {
 
   const fetchRubricas = async () => {
     try {
-      const response = await fetch('http://localhost:3002/rubricas');
+      const response = await fetch('https://evaluadoruam.netlify.app/rubricas');
       const rubricasData = await response.json();
 
       const rubricasWithCasos = await Promise.all(
         rubricasData.map(async (rubrica) => {
-          const casosResponse = await fetch(`http://localhost:3002/casos?rubricaId=${rubrica.id}`);
+          const casosResponse = await fetch(`https://evaluadoruam.netlify.app/casos?rubricaId=${rubrica.id}`);
           const casosData = await casosResponse.json();
           return { ...rubrica, casos: casosData };
         })
@@ -98,7 +109,7 @@ export const Edicion = () => {
         rubricasWithCasos.map(async (rubrica) => {
           const casosWithPuntos = await Promise.all(
             rubrica.casos.map(async (caso) => {
-              const puntosResponse = await fetch(`http://localhost:3002/puntos?casoId=${caso.id}`);
+              const puntosResponse = await fetch(`https://evaluadoruam.netlify.app/puntos?casoId=${caso.id}`);
               const puntosData = await puntosResponse.json();
               return { ...caso, puntos: puntosData };
             })
@@ -115,7 +126,7 @@ export const Edicion = () => {
 
   const fetchCategorias = async () => {
     try {
-      const response = await fetch('http://localhost:3002/categorias');
+      const response = await fetch('https://evaluadoruam.netlify.app/categorias');
       const data = await response.json();
       setCategorias(data);
     } catch (error) {
@@ -125,7 +136,7 @@ export const Edicion = () => {
 
   const fetchCalificacion = async (proyectoId) => {
     try {
-      const response = await fetch(`http://localhost:3002/calificacion/${proyectoId}`);
+      const response = await fetch(`https://evaluadoruam.netlify.app/calificacion/${proyectoId}`);
       const data = await response.json();
 
       if (response.ok) {
@@ -252,6 +263,57 @@ export const Edicion = () => {
     setExportOptionsVisible2((prevState) => !prevState);
   };
 
+  const eliminarProyectos = async () => {
+  const confirmacion = window.confirm('¿Estás seguro de que deseas eliminar los datos de proyectos? Esta acción no se puede deshacer.');
+
+  if (confirmacion) {
+    try {
+      const response = await fetch('https://evaluadoruam.netlify.app/proyectos', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+      });
+  
+      if (response.ok) {
+        window.alert('Los datos se han eliminado exitosamente.');
+      } else if (response.status === 404) {
+        console.log('No se encontraron proyectos para eliminar');
+      } else {
+        console.error('Error al eliminar proyectos');
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+    }
+  } 
+  }
+
+  const eliminarRubricas = async () => {
+    const confirmacion = window.confirm('¿Estás seguro de que deseas eliminar los datos de rubricas? Esta acción no se puede deshacer.');
+  
+    if (confirmacion) {
+      try {
+        const response = await fetch('https://evaluadoruam.netlify.app/rubricas', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json', 
+          },
+        });
+    
+        if (response.ok) {
+          window.alert('Los datos se han eliminado exitosamente.');
+        } else if (response.status === 404) {
+          console.log('No se encontraron rubricas para eliminar');
+        } else {
+          console.error('Error al eliminar rubricas');
+        }
+      } catch (error) {
+        console.error('Error al realizar la solicitud:', error);
+      }
+    } 
+    }
+  
+
   return (
     <>
       <Base />
@@ -259,26 +321,27 @@ export const Edicion = () => {
         {proyectos && rubricas && categorias && (
           <>
             <section className="table__header">
-              <div className="input-group">
-                <input
-                  type="search"
-                  placeholder="Search Data..."
-                  value={searchQueryProyectos}
-                  onChange={(e) => setSearchQueryProyectos(e.target.value)}
-                />
+            <div className="input-group">
+            <input
+            id='search'
+        type="search"
+        placeholder="Buscar rúbricas..."
+        value={searchQueryRubricas}
+        onChange={(e) => setSearchQueryRubricas(e.target.value)}
+      />
                 <img src={searchimg} alt="" />
               </div>
-              <h2 id='titulotablap'>Proyectos</h2>
-              <div className="export__file2">
+              <div id='titulotablap'> <h2 >Proyectos</h2></div>
+              <div className="export__file">
                 <label
                   htmlFor="export-file2"
-                  className="export__file-btn2"
+                  className="export__file-btn"
                   title="Export File"
                   onClick={toggleExportOptions}
                 ></label>
-                <input type="checkbox" id="export-file2" />
+                <input type="checkbox" id="export-file" />
                 {exportOptionsVisible && (
-                  <div className="export__file-options2">
+                  <div className="export__file-options">
                     <label htmlFor="toJSON-resultados" onClick={() => handleExportProyectos('toJSON')}>
                       JSON <img src={jsonimg} alt="" />
                     </label>
@@ -288,8 +351,12 @@ export const Edicion = () => {
                     <label htmlFor="toEXCEL-resultados" onClick={() => handleExportProyectos('toEXCEL')}>
                       EXCEL <img src={excelimg} alt="" />
                     </label>
+                    <label  onClick={() => eliminarProyectos()}>
+                       <span  className="icono-papelera">🗑️</span>
+                    </label>
                   </div>
                 )}
+                
               </div>
             </section>
             <div id="proyectosTable">
@@ -316,11 +383,11 @@ export const Edicion = () => {
                             <td>{proyecto.estado}</td>
                             <td>{typeof correoJuez === 'string' ? correoJuez : ''}</td>
                             <td>
-                              <button onClick={() => handleEditarProyecto(proyecto.id)}>
+                              <button id='boton' onClick={() => handleEditarProyecto(proyecto.id)}>
                                 <span className="icono-lapiz">✏️</span>
                               </button>
-                              <button onClick={() => handleEliminarProyecto(proyecto.id)}>
-                                <span className="icono-papelera">🗑️</span>
+                              <button id='boton' onClick={() => handleEliminarProyecto(proyecto.id)}>
+                              <span  className="icono-papelera">🗑️</span>
                               </button>
                             </td>
                           </tr>
@@ -333,15 +400,17 @@ export const Edicion = () => {
 
             <section className="table__header">
             <div className="input-group">
-                <input
-                  type="search"
-                  placeholder="Search Data..."
-                  value={searchQueryProyectos}
-                  onChange={(e) => setSearchQueryProyectos(e.target.value)}
-                />
+            <input
+             id='search2'
+        type="search"
+        placeholder="Buscar proyectos..."
+        value={searchQueryProyectos}
+        onChange={(e) => setSearchQueryProyectos(e.target.value)}
+      />
                 <img src={searchimg} alt="" />
               </div>
-  <h2 id='titulotablar'>Rúbricas</h2>
+              <div id='titulotablar'><h2 >Rúbricas</h2></div>
+  
   <div className="export__file">
     <label
       htmlFor="export-file-rubricas"
@@ -370,6 +439,12 @@ export const Edicion = () => {
         >
           EXCEL <img src={excelimg} alt="" />
         </label>
+        <label
+          
+          onClick={() => eliminarRubricas()}
+        >
+           <span  className="icono-papelera">🗑️</span>
+        </label>
       </div>
     )}
   </div>
@@ -392,11 +467,11 @@ export const Edicion = () => {
                         <td>{rubrica.id}</td>
                         <td>{rubrica.nombre}</td>
                         <td>
-                          <button onClick={() => handleEditarRubrica(rubrica.id)}>
+                          <button id='boton' onClick={() => handleEditarRubrica(rubrica.id)}>
                             <span className="icono-lapiz">✏️</span>
                           </button>
-                          <button onClick={() => handleEliminarRubrica(rubrica.id)}>
-                            <span className="icono-papelera">🗑️</span>
+                          <button id='boton' onClick={() => handleEliminarRubrica(rubrica.id)}>
+                            <span  className="icono-papelera">🗑️</span>
                           </button>
                         </td>
                       </tr>

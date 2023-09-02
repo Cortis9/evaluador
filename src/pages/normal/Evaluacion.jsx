@@ -11,7 +11,7 @@ export const Evaluacion = () => {
   const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3002/proyectos")
+    fetch("https://evaluadoruam.netlify.app/proyectos")
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
@@ -32,7 +32,7 @@ export const Evaluacion = () => {
           .replace("/view?usp=sharing", "");
         setEnlaceSeleccionado(modifiedLink);
 
-        fetch(`http://localhost:3002/proyectos/${proyectoEncontrado.id}`)
+        fetch(`https://evaluadoruam.netlify.app/proyectos/${proyectoEncontrado.id}`)
           .then((response) => response.json())
           .then((data) => {
             if (data && data.rubrica) {

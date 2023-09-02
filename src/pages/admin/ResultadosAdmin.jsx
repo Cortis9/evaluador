@@ -18,7 +18,7 @@ export const ResultadosAdmin = () => {
   const [exportOptionsVisible, setExportOptionsVisible] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3002/proyectos")
+    fetch("https://evaluadoruam.netlify.app/proyectos")
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
@@ -39,7 +39,7 @@ export const ResultadosAdmin = () => {
           .replace("/view?usp=sharing", "");
         setEnlaceSeleccionado(modifiedLink);
 
-        fetch(`http://localhost:3002/proyectos/${proyectoEncontrado.id}`)
+        fetch(`https://evaluadoruam.netlify.app/proyectos/${proyectoEncontrado.id}`)
           .then((response) => response.json())
           .then((data) => {
             if (data && data.rubrica) {
@@ -79,7 +79,7 @@ export const ResultadosAdmin = () => {
 
   const obtenerResultados = async () => {
     try {
-      const response = await fetch(`http://localhost:3002/calificacion`);
+      const response = await fetch(`https://evaluadoruam.netlify.app/calificacion`);
       if (response.ok) {
         const data = await response.json();
         setCalificacionFinal(data);
@@ -147,7 +147,40 @@ export const ResultadosAdmin = () => {
   const toggleExportOptions = () => {
     setExportOptionsVisible(!exportOptionsVisible);
   };
+  const eliminarInformacion = () => {
+  
+    const confirmarEliminacion = window.confirm("¿Estás seguro de que deseas eliminar la información de todas las tablas de resultados?");
+  
+    if (confirmarEliminacion) {
+     
+      eliminarInformacionDeTablas();
+    }
+  };
 
+  const eliminarInformacionDeTablas = async () => {
+    try {
+     
+      const response = await fetch('https://evaluadoruam.netlify.app/resultados', {
+        method: 'DELETE',
+        
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        console.log('Información de las tablas eliminada con éxito');
+        
+      } else {
+        console.error('Error al eliminar información de las tablas');
+        
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      
+    }
+  };
+  
   return (
     <>
       <Base />
@@ -185,6 +218,9 @@ export const ResultadosAdmin = () => {
               </div>
             )}
           </div>
+          <button id='botoneliminar' onClick={eliminarInformacion}>
+                            <span className="icono-papelera">🗑️</span>
+                          </button>
         </section>
         <h2 id="h2">Resultados</h2>
         <select
