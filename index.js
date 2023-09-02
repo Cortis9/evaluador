@@ -1,10 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './src/App';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const express = require("express");
+
+
+const app = express();
+
+
+app.get("/", (req, res) => {
+  res.send("Express on Vercel");
+});
+
+
+app.listen(5000, () => {
+  console.log("Running on port 5000.");
+});
