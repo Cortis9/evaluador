@@ -1,12 +1,12 @@
 import React from 'react';
+import ReactDOM from 'react-dom/client';
 import App from './src/App';
 import express from 'express';
-
 const app = express();
 
 
 app.get("/", (req, res) => {
-  res.render(
+  ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
