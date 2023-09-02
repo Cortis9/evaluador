@@ -1,11 +1,17 @@
-
+import React from 'react';
+import App from './src/App';
 import express from 'express';
 
 const app = express();
 
 
 app.get("/", (req, res) => {
-  res.send("Express on Vercel");
+  res.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 });
 
 
