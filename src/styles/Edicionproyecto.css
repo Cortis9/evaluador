@@ -1,0 +1,87 @@
+#bregresa{
+
+    margin-right: 300px;
+    margin-top: 20px;
+    background-color: #000000;
+
+}
+
+#tituloedicion{
+
+    height: 50px;
+    width: 350px;
+    margin-bottom: 10px;
+}
+
+#nombreedicion{
+
+    height: 50px;
+    width: 350px;
+    margin-bottom: 10px;
+
+}
+
+#correo{
+
+    height: 50px;
+    width: 350px;
+    margin-bottom: 10px;
+    margin-left: 50px;
+
+}
+
+#categoriaedicion{
+
+    height: 50px;
+    width: 350px;
+    margin-bottom: 10px;
+}
+
+#rubricaeidicon{
+
+    height: 50px;
+    width: 350px;
+    margin-bottom: 10px;
+
+}
+
+#linkedicion{
+
+    height: 50px;
+    width: 350px;
+    margin-bottom: 10px;
+}
+
+
+#form3 {
+    margin-top: 50px;
+    border-radius: 20px;
+    background-color: #fff;
+    flex-direction: column;
+    align-items: center;
+    height: 800px;
+    color: #000000;
+    padding: 30px;
+
+}
+
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #000000;
+    overflow-x:hidden;
+    overflow:auto;
+}
+
+
+#botonguardar{
+
+    background-color: #28a745;
+    margin-left: 80px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+
+}

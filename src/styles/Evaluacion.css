@@ -1,0 +1,46 @@
+#form2{
+margin-top: 80px;
+width: 400px;
+overflow:hidden;
+background-color: #ffffff;
+border-radius: 20px;
+
+}
+
+#h2{
+  margin-top: 50px;
+  margin-bottom: 30px;
+  color: #ff5900;
+  text-align-last: center;
+}
+
+#buttonsiguiente{
+
+  margin-left: 140px;
+  margin-bottom: 50px;
+  background-color: #000;
+  color: #ffffff;
+  margin-top: 20px;
+}
+
+
+#img{
+margin-top: 30px;
+margin-left: 50px;
+height: 400px;
+width: 600px;
+margin-bottom: 0;
+}
+
+#proyecto{
+  width: 350px;
+  margin-left: 30px;
+  margin-top: 20px;
+}
+
+#botoneli{
+
+  margin-left: 300px;
+  background-color: #000;
+  
+}
