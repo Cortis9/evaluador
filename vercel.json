@@ -1,6 +1,13 @@
 {
   "version": 2,
   "builds": [
+     {
+      "src": "index.js",  // Ruta al archivo de inicio de tu servidor Node.js
+      "use": "@vercel/node",
+      "config": {
+        "maxLambdaSize": "50mb"  // Puedes ajustar esto según tus necesidades
+      }
+    },
    {
       "src": "./package.json",  
       "use": "@vercel/static-build"
