@@ -20,7 +20,7 @@ export function Base() {
 <div>
  <header>
  <a href="/HomeAdmin">
-  <img src="/src/assets/icono.png" height={50} width={50} id="logo" />
+  <img src="./src/assets/icono.png" height={50} width={50} id="logo" />
 </a>
 
  <ul>
