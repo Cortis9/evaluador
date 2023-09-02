@@ -9,13 +9,21 @@ import nodemailer from 'nodemailer';
 import mysql2 from 'mysql2/promise';
 import mysql from 'mysql';
 import { S3Client } from '@aws-sdk/client-s3'; 
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './src/routers/routes.jsx';
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
 
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
 const s3 = new S3Client({
   region: 'us-east-2',
