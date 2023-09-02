@@ -44,7 +44,7 @@ export const EvaluacionProyecto = () => {
 
   const fetchRubricaData = async () => {
     try {
-      const response = await fetch(`http://localhost:3002/rubricas/${rubricaId}`);
+      const response = await fetch(`evaluador.vercel.app/rubricas/${rubricaId}`);
       const data = await response.json();
       setRubricaData(data);
       setNombreRubrica(data.rubrica.nombre);
@@ -64,7 +64,7 @@ export const EvaluacionProyecto = () => {
 
   const enviarCalificacionFinal = async (calificacion) => {
     try {
-      const response = await fetch("http://localhost:3002/calificacion", {
+      const response = await fetch("evaluador.vercel.app/calificacion", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export const EvaluacionProyecto = () => {
           ],
         };
 
-        const response = await fetch("http://localhost:3002/resultados", {
+        const response = await fetch("evaluador.vercel.app/resultados", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export const EvaluacionProyecto = () => {
         if (response.ok) {
           console.log("Resultados enviados correctamente");
   
-          await fetch(`http://localhost:3002/proyectos/${proyectoId}/estado`, {
+          await fetch(`evaluador.vercel.app/proyectos/${proyectoId}/estado`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",

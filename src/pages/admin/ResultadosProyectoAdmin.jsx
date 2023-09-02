@@ -29,7 +29,7 @@ export function ResultadosProyectoAdmin() {
 
     const obtenerResultados = async () => {
       try {
-        const response = await fetch(`http://localhost:3002/resultados/${proyectoId}`);
+        const response = await fetch(`evaluador.vercel.app/resultados/${proyectoId}`);
         if (response.ok) {
           const data = await response.json();
           setResultados(data);
@@ -45,7 +45,7 @@ export function ResultadosProyectoAdmin() {
 
     const obtenerCalificacionFinal = async () => {
       try {
-        const response = await fetch(`http://localhost:3002/calificacion/${proyectoId}`);
+        const response = await fetch(`evaluador.vercel.app/calificacion/${proyectoId}`);
         if (response.ok) {
           const data = await response.json();
           setCalificacionFinal(data.calificacionFinal);
@@ -62,7 +62,7 @@ export function ResultadosProyectoAdmin() {
 
     const obtenerDatosAdicionales = async () => {
       try {
-        const response = await fetch(`http://localhost:3002/puntosextra/${proyectoId}`);
+        const response = await fetch(`evaluador.vercel.app/puntosextra/${proyectoId}`);
         if (response.ok) {
           const data = await response.json();
           setPuntosextra(data.puntosextra);
@@ -171,7 +171,7 @@ export function ResultadosProyectoAdmin() {
     const proyectoId = searchParams.get('proyectoId');
 
     try {
-      const response = await fetch(`http://localhost:3002/calificacion/${proyectoId}`, {
+      const response = await fetch(`evaluador.vercel.app/calificacion/${proyectoId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -208,7 +208,7 @@ export function ResultadosProyectoAdmin() {
     }
   
     try {
-      const response = await fetch("http://localhost:3002/send-email", {
+      const response = await fetch("evaluador.vercel.app/send-email", {
         method: "POST",
         body: formData,
       });
@@ -300,7 +300,7 @@ export function ResultadosProyectoAdmin() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3002/resultados/${proyectoId}`, {
+      const response = await fetch(`evaluador.vercel.app/resultados/${proyectoId}`, {
         method: 'DELETE',
       });
 

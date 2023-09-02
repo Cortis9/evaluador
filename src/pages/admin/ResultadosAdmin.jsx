@@ -18,7 +18,7 @@ export const ResultadosAdmin = () => {
   const [exportOptionsVisible, setExportOptionsVisible] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3002/proyectos")
+    fetch("evaluador.vercel.app/proyectos")
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
@@ -39,7 +39,7 @@ export const ResultadosAdmin = () => {
           .replace("/view?usp=sharing", "");
         setEnlaceSeleccionado(modifiedLink);
 
-        fetch(`http://localhost:3002/proyectos/${proyectoEncontrado.id}`)
+        fetch(`evaluador.vercel.app/proyectos/${proyectoEncontrado.id}`)
           .then((response) => response.json())
           .then((data) => {
             if (data && data.rubrica) {
@@ -79,7 +79,7 @@ export const ResultadosAdmin = () => {
 
   const obtenerResultados = async () => {
     try {
-      const response = await fetch(`http://localhost:3002/calificacion`);
+      const response = await fetch(`evaluador.vercel.app/calificacion`);
       if (response.ok) {
         const data = await response.json();
         setCalificacionFinal(data);
@@ -160,7 +160,7 @@ export const ResultadosAdmin = () => {
   const eliminarInformacionDeTablas = async () => {
     try {
      
-      const response = await fetch('http://localhost:3002/resultados', {
+      const response = await fetch('evaluador.vercel.app/resultados', {
         method: 'DELETE',
         
         headers: {

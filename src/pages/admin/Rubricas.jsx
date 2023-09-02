@@ -75,7 +75,7 @@ export const Rubricas = () => {
 
   const verificarExistenciaRubrica = async (nombreRubrica) => {
     try {
-      const response = await fetch(`http://localhost:3002/rubricas`);
+      const response = await fetch(`evaluador.vercel.app/rubricas`);
       if (response.ok) {
         const data = await response.json();
         const existeRubrica = data.some((rubrica) => rubrica.nombre === nombreRubrica);
@@ -107,7 +107,7 @@ export const Rubricas = () => {
         })),
       };    
   
-      const response = await fetch('http://localhost:3002/rubricas', {
+      const response = await fetch('evaluador.vercel.app/rubricas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

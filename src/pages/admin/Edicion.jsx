@@ -44,7 +44,7 @@ export const Edicion = () => {
   
     if (confirmacion) {
       try {
-        await fetch(`http://localhost:3002/proyectos/${proyectoId}`, {
+        await fetch(`evaluador.vercel.app/proyectos/${proyectoId}`, {
           method: 'DELETE',
         });
         const updatedProyectos = proyectos.filter((proyecto) => proyecto.id !== proyectoId);
@@ -62,7 +62,7 @@ export const Edicion = () => {
   
     if (confirmacion) {
       try {
-        await fetch(`http://localhost:3002/rubricas/${rubricaId}`, {
+        await fetch(`evaluador.vercel.app/rubricas/${rubricaId}`, {
           method: 'DELETE',
         });
         const updatedRubricas = rubricas.filter((rubrica) => rubrica.id !== rubricaId);
@@ -82,7 +82,7 @@ export const Edicion = () => {
 
   const fetchProyectos = async () => {
     try {
-      const response = await fetch('http://localhost:3002/proyectos');
+      const response = await fetch('evaluador.vercel.app/proyectos');
       const data = await response.json();
       setProyectos(data);
       const proyectosIds = data.map((proyecto) => proyecto.id);
@@ -94,12 +94,12 @@ export const Edicion = () => {
 
   const fetchRubricas = async () => {
     try {
-      const response = await fetch('http://localhost:3002/rubricas');
+      const response = await fetch('evaluador.vercel.app/rubricas');
       const rubricasData = await response.json();
 
       const rubricasWithCasos = await Promise.all(
         rubricasData.map(async (rubrica) => {
-          const casosResponse = await fetch(`http://localhost:3002/casos?rubricaId=${rubrica.id}`);
+          const casosResponse = await fetch(`evaluador.vercel.app/casos?rubricaId=${rubrica.id}`);
           const casosData = await casosResponse.json();
           return { ...rubrica, casos: casosData };
         })
@@ -109,7 +109,7 @@ export const Edicion = () => {
         rubricasWithCasos.map(async (rubrica) => {
           const casosWithPuntos = await Promise.all(
             rubrica.casos.map(async (caso) => {
-              const puntosResponse = await fetch(`http://localhost:3002/puntos?casoId=${caso.id}`);
+              const puntosResponse = await fetch(`evaluador.vercel.app/puntos?casoId=${caso.id}`);
               const puntosData = await puntosResponse.json();
               return { ...caso, puntos: puntosData };
             })
@@ -126,7 +126,7 @@ export const Edicion = () => {
 
   const fetchCategorias = async () => {
     try {
-      const response = await fetch('http://localhost:3002/categorias');
+      const response = await fetch('evaluador.vercel.app/categorias');
       const data = await response.json();
       setCategorias(data);
     } catch (error) {
@@ -136,7 +136,7 @@ export const Edicion = () => {
 
   const fetchCalificacion = async (proyectoId) => {
     try {
-      const response = await fetch(`http://localhost:3002/calificacion/${proyectoId}`);
+      const response = await fetch(`evaluador.vercel.app/calificacion/${proyectoId}`);
       const data = await response.json();
 
       if (response.ok) {
@@ -268,7 +268,7 @@ export const Edicion = () => {
 
   if (confirmacion) {
     try {
-      const response = await fetch('http://localhost:3002/proyectos', {
+      const response = await fetch('evaluador.vercel.app/proyectos', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json', 
@@ -293,7 +293,7 @@ export const Edicion = () => {
   
     if (confirmacion) {
       try {
-        const response = await fetch('http://localhost:3002/rubricas', {
+        const response = await fetch('evaluador.vercel.app/rubricas', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json', 
