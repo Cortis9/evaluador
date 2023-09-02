@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "node db.js"
+     "start": "node api/server.js"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
