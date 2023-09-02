@@ -18,12 +18,6 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
 
 const s3 = new S3Client({
   region: 'us-east-2',
