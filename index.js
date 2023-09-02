@@ -11,6 +11,16 @@ import mysql from 'mysql';
 import { S3Client } from '@aws-sdk/client-s3'; 
 
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './src/routers/routes';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
 const app = express();
 app.use(bodyParser.json());
