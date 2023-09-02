@@ -23,7 +23,7 @@ export const EdicionProyecto = () => {
 
   const fetchProyecto = async () => {
     try {
-      const response = await fetch(`evaluador.vercel.app/proyectos/${proyectoId}`);
+      const response = await fetch(`https://evaluadoruam.netlify.app/proyectos/${proyectoId}`);
       const data = await response.json();
       setEditedData(data);
     } catch (error) {
@@ -41,7 +41,7 @@ export const EdicionProyecto = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`evaluador.vercel.app/proyectos/${proyectoId}`, {
+      const response = await fetch(`https://evaluadoruam.netlify.app/proyectos/${proyectoId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

@@ -19,7 +19,7 @@ export function ResultadosProyecto() {
 
     const obtenerResultados = async () => {
       try {
-        const response = await fetch(`evaluador.vercel.app/resultados/${proyectoId}`);
+        const response = await fetch(`https://evaluadoruam.netlify.app/resultados/${proyectoId}`);
         if (response.ok) {
           const data = await response.json();
           setResultados(data);
@@ -35,7 +35,7 @@ export function ResultadosProyecto() {
 
     const obtenerCalificacionFinal = async () => {
       try {
-        const response = await fetch(`evaluador.vercel.app/calificacion/${proyectoId}`);
+        const response = await fetch(`https://evaluadoruam.netlify.app/calificacion/${proyectoId}`);
         if (response.ok) {
           const data = await response.json();
           setCalificacionFinal(data.calificacionFinal);
@@ -133,7 +133,7 @@ export function ResultadosProyecto() {
         const searchParams = new URLSearchParams(window.location.search);
         const proyectoId = searchParams.get('proyectoId');
         
-        const response = await fetch(`evaluador.vercel.app/puntosextra/${proyectoId}`, {
+        const response = await fetch(`https://evaluadoruam.netlify.app/puntosextra/${proyectoId}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

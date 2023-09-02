@@ -37,7 +37,7 @@ export const EdicionRubrica = () => {
 
   const fetchRubricaData = async () => {
     try {
-      const response = await fetch(`evaluador.vercel.app/rubricas/${rubricaId}`);
+      const response = await fetch(`https://evaluadoruam.netlify.app/rubricas/${rubricaId}`);
       const data = await response.json();
       setRubricaData(data);
   
@@ -346,7 +346,7 @@ const handleSubmit = async (e) => {
       fetchDeletePuntos(),
     ]);
 
-    const response = await fetch(`evaluador.vercel.app/rubricas/${rubricaId}`, {
+    const response = await fetch(`https://evaluadoruam.netlify.app/rubricas/${rubricaId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -373,7 +373,7 @@ const fetchCreateTitulo = async () => {
     })),
   }
   try {
-    const response = await fetch(`evaluador.vercel.app/titulos/${rubricaId}`, {
+    const response = await fetch(`https://evaluadoruam.netlify.app/titulos/${rubricaId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -406,7 +406,7 @@ const fetchCreateCasos = async (tituloId) => {
   
   try{
 
-    const response = await fetch(`evaluador.vercel.app/casos/${tituloId}`, {
+    const response = await fetch(`https://evaluadoruam.netlify.app/casos/${tituloId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -436,7 +436,7 @@ const fetchCreatePuntos = async (casoId) => {
   };
   
 try{
-    const response = await fetch(`evaluador.vercel.app/puntos/${casoId}`, {
+    const response = await fetch(`https://evaluadoruam.netlify.app/puntos/${casoId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -456,7 +456,7 @@ try{
 const fetchDeleteTitulos = async () => {
   const responses = await Promise.all(
     titulosEliminados.map(async (rubricaId) => {
-      const response = await fetch(`evaluador.vercel.app/titulos/${rubricaId}`, {
+      const response = await fetch(`https://evaluadoruam.netlify.app/titulos/${rubricaId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -477,7 +477,7 @@ const fetchDeleteTitulos = async () => {
 
 const fetchDeleteCasos = async () => {
   await Promise.all(casosEliminados.map(async (tituloId) => {
-    const response = await fetch(`evaluador.vercel.app/casos/${tituloId}`, {
+    const response = await fetch(`https://evaluadoruam.netlify.app/casos/${tituloId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -492,7 +492,7 @@ const fetchDeleteCasos = async () => {
 
 const fetchDeletePuntos = async () => {
   await Promise.all(puntosEliminados.map(async (casoId) => {
-    const response = await fetch(`evaluador.vercel.app/puntos/${casoId}`, {
+    const response = await fetch(`https://evaluadoruam.netlify.app/puntos/${casoId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

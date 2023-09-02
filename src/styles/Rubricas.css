@@ -70,9 +70,6 @@
       background-size: 200% 100%;
       transition: background-position 0.8s ease-out;
       
-      #input:hover {
-        background-position: 100% 0;
-      }
     }
       
   
