@@ -11,7 +11,7 @@ export const Resultados = () => {
   const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
 
   useEffect(() => {
-    fetch("https://evaluadoruam.netlify.app/proyectos")
+    fetch("https://api-omega-amber.vercel.app/proyectos")
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
@@ -32,7 +32,7 @@ export const Resultados = () => {
           .replace("/view?usp=sharing", "");
         setEnlaceSeleccionado(modifiedLink);
 
-        fetch(`https://evaluadoruam.netlify.app/proyectos/${proyectoEncontrado.id}`)
+        fetch(`https://api-omega-amber.vercel.app/proyectos/${proyectoEncontrado.id}`)
           .then((response) => response.json())
           .then((data) => {
             if (data && data.rubrica) {

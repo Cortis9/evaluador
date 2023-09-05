@@ -49,7 +49,7 @@ export function Registro() {
     };
 
     try {
-      const response = await fetch('https://evaluadoruam.netlify.app/proyectos', {
+      const response = await fetch('https://api-omega-amber.vercel.app/proyectos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -85,7 +85,7 @@ export function Registro() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('https://evaluadoruam.netlify.app/upload-csv', {
+      const response = await fetch('https://api-omega-amber.vercel.app/upload-csv', {
         method: 'POST',
         body: formData,
       });
@@ -110,7 +110,7 @@ export function Registro() {
   useEffect(() => {
     const fetchRubricOptions = async () => {
       try {
-        const response = await fetch('https://evaluadoruam.netlify.app/rubricas');
+        const response = await fetch('https://api-omega-amber.vercel.app/rubricas');
         if (response.ok) {
           const data = await response.json();
           setRubricOptions(data);
