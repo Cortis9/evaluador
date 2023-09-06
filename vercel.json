@@ -6,7 +6,7 @@
     { "src": "/Evaluacion", "dest": "/" },
     { "src": "/EvaluacionProyecto", "dest": "/" },
     { "src": "/Enviado", "dest": "/" },
-    { "src": "/Resultados", "dest": "/normal/Resultados" },
+    { "src": "/Resultados", "dest": "/" },
     { "src": "/ResultadosProyecto", "dest": "/" },
     { "src": "/HomeAdmin", "dest": "/" },
     { "src": "/LoginAdmin", "dest": "/" },
