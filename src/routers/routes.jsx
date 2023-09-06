@@ -1,22 +1,22 @@
 import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
 
 import {Login} from "../pages/normal/Login";
-import {Home} from "../pages/normal/Home";
-import {Evaluacion} from "../pages/normal/Evaluacion"
-import {EvaluacionProyecto} from "../pages/normal/EvaluacionProyecto"
+import {Home} from "../pages/normal/Evaluacion";
+import {Evaluacion} from "../pages/normal/Home";
+import {EvaluacionProyecto} from "../pages/normal/EvaluacionProyecto";
 import {Enviado} from "../pages/normal/Enviado";
 import {Resultados} from "../pages/normal/Resultados"
 import {ResultadosProyecto} from "../pages/normal/ResultadosProyecto";
 
 
 
-import {HomeAdmin} from "../pages/admin/HomeAdmin"
-import {LoginAdmin} from "../pages/admin/LoginAdmin"
-import {Registro} from "../pages/admin/Registro"
-import {Rubricas} from "../pages/admin/Rubricas"
-import {Edicion} from "../pages/admin/Edicion"
-import {EdicionProyecto} from "../pages/admin/EdicionProyecto"
-import {EdicionRubrica} from "../pages/admin/EdicionRubrica"
+import {HomeAdmin} from "../pages/admin/Registro";
+import {LoginAdmin} from "../pages/admin/LoginAdmin";
+import {Registro} from "../pages/admin/HomeAdmin";
+import {Rubricas} from "../pages/admin/Rubricas";
+import {Edicion} from "../pages/admin/Edicion";
+import {EdicionProyecto} from "../pages/admin/EdicionProyecto";
+import {EdicionRubrica} from "../pages/admin/EdicionRubrica";
 import { ResultadosAdmin } from "../pages/admin/ResultadosAdmin";
 import { ResultadosProyectoAdmin } from "../pages/admin/ResultadosProyectoAdmin";
 
