@@ -2,6 +2,7 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import '../../styles/Base.css'
+import icono from '../../assets/icono.png';
 
 export function Base() {
 
@@ -17,7 +18,7 @@ export function Base() {
 
  <header>
   <a href="/Home">
- <img src="./src/assets/icono.png" height={50} width={50} id="logo"/>
+  <img src= {icono} icono height={50} width={50} id="logo" alt="Logo" />
  </a>
  <ul>
  <li><a href="/Home">Home</a></li> 
