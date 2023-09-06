@@ -19,7 +19,7 @@ export function ResultadosAdmin  ()  {
   const [exportOptionsVisible, setExportOptionsVisible] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3002/proyectos")
+    fetch("https://api-git-main-cortis9.vercel.app/proyectos")
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
@@ -40,7 +40,7 @@ export function ResultadosAdmin  ()  {
           .replace("/view?usp=sharing", "");
         setEnlaceSeleccionado(modifiedLink);
 
-        fetch(`http://localhost:3002/proyectos/${proyectoEncontrado.id}`)
+        fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoEncontrado.id}`)
           .then((response) => response.json())
           .then((data) => {
             if (data && data.rubrica) {
@@ -80,7 +80,7 @@ export function ResultadosAdmin  ()  {
 
   const obtenerResultados = async () => {
     try {
-      const response = await fetch(`http://localhost:3002/calificacion`);
+      const response = await fetch(`https://api-git-main-cortis9.vercel.app/calificacion`);
       if (response.ok) {
         const data = await response.json();
         setCalificacionFinal(data);
@@ -161,7 +161,7 @@ export function ResultadosAdmin  ()  {
   const eliminarInformacionDeTablas = async () => {
     try {
      
-      const response = await fetch('http://localhost:3002/resultados', {
+      const response = await fetch('https://api-git-main-cortis9.vercel.app/resultados', {
         method: 'DELETE',
         
         headers: {

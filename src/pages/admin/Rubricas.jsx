@@ -76,7 +76,7 @@ export function Rubricas  ()  {
 
   const verificarExistenciaRubrica = async (nombreRubrica) => {
     try {
-      const response = await fetch(`http://localhost:3002/rubricas`);
+      const response = await fetch(`https://api-git-main-cortis9.vercel.app/rubricas`);
       if (response.ok) {
         const data = await response.json();
         const existeRubrica = data.some((rubrica) => rubrica.nombre === nombreRubrica);
@@ -108,7 +108,7 @@ export function Rubricas  ()  {
         })),
       };    
   
-      const response = await fetch('http://localhost:3002/rubricas', {
+      const response = await fetch('https://api-git-main-cortis9.vercel.app/rubricas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

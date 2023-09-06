@@ -23,7 +23,7 @@ export function EdicionProyecto  ()  {
 
   const fetchProyecto = async () => {
     try {
-      const response = await fetch(`http://localhost:3002/proyectos/${proyectoId}`);
+      const response = await fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoId}`);
       const data = await response.json();
       setEditedData(data);
     } catch (error) {
