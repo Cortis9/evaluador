@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {Base} from '../admin/BaseAdmin'
 import '../../styles/Edicionproyecto.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export function EdicionProyecto  ()  {
   const { proyectoId } = useParams();
