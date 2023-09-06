@@ -1,21 +1,21 @@
 {
   "version": 2,
   "routes": [
-    { "src": "/Login", "dest": "/normal/Login" },
-    { "src": "/Home", "dest": "/normal/Home" },
-    { "src": "/Evaluacion", "dest": "/normal/Evaluacion" },
-    { "src": "/EvaluacionProyecto", "dest": "/normal/EvaluacionProyecto" },
-    { "src": "/Enviado", "dest": "/normal/Enviado" },
+    { "src": "/Login", "dest": "/" },
+    { "src": "/Home", "dest": "/" },
+    { "src": "/Evaluacion", "dest": "/" },
+    { "src": "/EvaluacionProyecto", "dest": "/" },
+    { "src": "/Enviado", "dest": "/" },
     { "src": "/Resultados", "dest": "/normal/Resultados" },
-    { "src": "/ResultadosProyecto", "dest": "/normal/ResultadosProyecto" },
-    { "src": "/HomeAdmin", "dest": "/admin/HomeAdmin" },
-    { "src": "/LoginAdmin", "dest": "/admin/LoginAdmin" },
-    { "src": "/Registro", "dest": "/admin/Registro" },
-    { "src": "/Rubricas", "dest": "/admin/Rubricas" },
-    { "src": "/Edicion", "dest": "/admin/Edicion" },
-    { "src": "/EdicionProyecto", "dest": "/admin/EdicionProyecto" },
-    { "src": "/EdicionRubrica", "dest": "/admin/EdicionRubrica" },
-    { "src": "/ResultadosAdmin", "dest": "/admin/ResultadosAdmin" },
-    { "src": "/ResultadosProyectoAdmin", "dest": "/admin/ResultadosProyectoAdmin" }
+    { "src": "/ResultadosProyecto", "dest": "/" },
+    { "src": "/HomeAdmin", "dest": "/" },
+    { "src": "/LoginAdmin", "dest": "/" },
+    { "src": "/Registro", "dest": "/" },
+    { "src": "/Rubricas", "dest": "/" },
+    { "src": "/Edicion", "dest": "/" },
+    { "src": "/EdicionProyecto", "dest": "/" },
+    { "src": "/EdicionRubrica", "dest": "/" },
+    { "src": "/ResultadosAdmin", "dest": "/" },
+    { "src": "/ResultadosProyectoAdmin", "dest": "/" }
   ]
 }
