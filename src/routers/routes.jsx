@@ -1,21 +1,23 @@
-import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
-import {Home} from "../pages/normal/Home";
-import {Login} from "../pages/normal/Login";
-import {Registro} from "../pages/admin/Registro"
-import {HomeAdmin} from "../pages/admin/HomeAdmin"
-import {LoginAdmin} from "../pages/admin/LoginAdmin"
-import {Rubricas} from "../pages/admin/Rubricas"
-import {Resultados} from "../pages/normal/Resultados"
-import {Evaluacion} from "../pages/normal/Evaluacion"
-import {Edicion} from "../pages/admin/Edicion"
-import {EdicionProyecto} from "../pages/admin/EdicionProyecto"
-import {EdicionRubrica} from "../pages/admin/EdicionRubrica"
-import {useAuth} from "../context/AuthContext";
-import {EvaluacionProyecto} from "../pages/normal/EvaluacionProyecto"
-import {ResultadosProyecto} from "../pages/normal/ResultadosProyecto";
-import {Enviado} from "../pages/normal/Enviado";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+
+import { Home } from "../pages/normal/Home";
+import { Login } from "../pages/normal/Login";
+import { Resultados } from "../pages/normal/Resultados";
+import { Evaluacion } from "../pages/normal/Evaluacion";
+import { ResultadosProyecto } from "../pages/normal/ResultadosProyecto";
+
+import { Registro } from "../pages/admin/Registro";
+import { HomeAdmin } from "../pages/admin/HomeAdmin";
+import { LoginAdmin } from "../pages/admin/LoginAdmin";
+import { Rubricas } from "../pages/admin/Rubricas";
+import { Edicion } from "../pages/admin/Edicion";
+import { EdicionProyecto } from "../pages/admin/EdicionProyecto";
+import { EdicionRubrica } from "../pages/admin/EdicionRubrica";
 import { ResultadosAdmin } from "../pages/admin/ResultadosAdmin";
 import { ResultadosProyectoAdmin } from "../pages/admin/ResultadosProyectoAdmin";
+
+import { useAuth } from "../context/AuthContext";
+import { EvaluacionProyecto } from "../pages/normal/EvaluacionProyecto";
 
 export function MyRoutes() {
 
@@ -240,26 +242,25 @@ export function MyRoutes() {
   
 
   return (
-    
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PrivateLogin/>} />
-        <Route path="/Home" element={<ProtectedRouteHome />}></Route>
-        <Route path="/Resultados" element={<ProtectedRouteResultados />}></Route>
-        <Route path="/ResultadosProyecto" element= {<ProtectedRouteResultadosProyecto/>}></Route>
-        <Route path="/Evaluacion" element={<ProtectedRouteEvaluacion />}></Route>
-        <Route path="/EvaluacionProyecto/:nombreRubrica" element= {<ProtectedRouteEvaluacionProyecto/>}></Route>
-        <Route path="/Enviado" element={<ProtectedRouteEnviado />}></Route>
+        <Route path="/" element={<Navigate to="/LoginAdmin" />} />
+        <Route path="/Home" element={<ProtectedRouteHome />} />
+        <Route path="/Resultados" element={<ProtectedRouteResultados />} />
+        <Route path="/ResultadosProyecto" element={<ProtectedRouteResultadosProyecto />} />
+        <Route path="/Evaluacion" element={<ProtectedRouteEvaluacion />} />
+        <Route path="/EvaluacionProyecto/:nombreRubrica" element={<ProtectedRouteEvaluacionProyecto />} />
+        <Route path="/Enviado" element={<ProtectedRouteEnviado />} />
 
-        <Route path="/LoginAdmin" element={<PrivateLoginAdmin/>} />
-        <Route path="/HomeAdmin" element={<PrivateRoute />} /><Route />
-        <Route path="/Registro" element={<PrivateRouteRegistro />} /><Route />
-        <Route path="/Rubricas" element={<PrivateRouteRubricas />} /><Route />
-        <Route path="/Edicion" element={<PrivateRouteEdicion />} /><Route />
-        <Route path="/edicion/proyecto/:proyectoId" element={<PrivateRouteEdicion2 />} /><Route />
-        <Route path="/edicion/rubrica/:rubricaId" element={<PrivateRouteEdicion3 />} /><Route />
-        <Route path="/ResultadosAdmin" element={<PrivateRouteResuladosAdmin />} /><Route />
-        <Route path="/ResultadosProyectoAdmin" element={<PrivateRouteResuladosProyectoAdmin />} /><Route />
+        <Route path="/LoginAdmin" element={<PrivateLoginAdmin />} />
+        <Route path="/HomeAdmin" element={<PrivateRoute />} />
+        <Route path="/Registro" element={<PrivateRouteRegistro />} />
+        <Route path="/Rubricas" element={<PrivateRouteRubricas />} />
+        <Route path="/Edicion" element={<PrivateRouteEdicion />} />
+        <Route path="/edicion/proyecto/:proyectoId" element={<PrivateRouteEdicion2 />} />
+        <Route path="/edicion/rubrica/:rubricaId" element={<PrivateRouteEdicion3 />} />
+        <Route path="/ResultadosAdmin" element={<PrivateRouteResuladosAdmin />} />
+        <Route path="/ResultadosProyectoAdmin" element={<PrivateRouteResuladosProyectoAdmin />} />
         <Route />
       </Routes>
     </BrowserRouter>
