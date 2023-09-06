@@ -1,21 +1,24 @@
 import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
-import {Home} from "../pages/normal/Home";
+
 import {Login} from "../pages/normal/Login";
-import {Registro} from "../pages/admin/Registro"
+import {Home} from "../pages/normal/Home";
+import {Evaluacion} from "../pages/normal/Evaluacion"
+import {EvaluacionProyecto} from "../pages/normal/EvaluacionProyecto"
+import {Enviado} from "../pages/normal/Enviado";
+import {Resultados} from "../pages/normal/Resultados"
+import {ResultadosProyecto} from "../pages/normal/ResultadosProyecto";
+
 import {HomeAdmin} from "../pages/admin/HomeAdmin"
 import {LoginAdmin} from "../pages/admin/LoginAdmin"
+import {Registro} from "../pages/admin/Registro"
 import {Rubricas} from "../pages/admin/Rubricas"
-import {Resultados} from "../pages/normal/Resultados"
-import {Evaluacion} from "../pages/normal/Evaluacion"
 import {Edicion} from "../pages/admin/Edicion"
 import {EdicionProyecto} from "../pages/admin/EdicionProyecto"
 import {EdicionRubrica} from "../pages/admin/EdicionRubrica"
-import {useAuth} from "../context/AuthContext";
-import {EvaluacionProyecto} from "../pages/normal/EvaluacionProyecto"
-import {ResultadosProyecto} from "../pages/normal/ResultadosProyecto";
-import {Enviado} from "../pages/normal/Enviado";
 import { ResultadosAdmin } from "../pages/admin/ResultadosAdmin";
 import { ResultadosProyectoAdmin } from "../pages/admin/ResultadosProyectoAdmin";
+
+import {useAuth} from "../context/AuthContext";
 
 export function MyRoutes() {
 
