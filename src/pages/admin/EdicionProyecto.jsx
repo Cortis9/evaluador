@@ -41,7 +41,7 @@ export function EdicionProyecto  ()  {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3002/proyectos/${proyectoId}`, {
+      const response = await fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ export function EdicionProyecto  ()  {
  
         <form onSubmit={handleSubmit} id='form3'>
         <button onClick={handleGoBack} id='bregresa'>
-          <FontAwesomeIcon icon={faArrowleft} />
+          <FontAwesomeIcon icon={faArrowLeft} />
         </button>
 
           <div>
