@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
 
-import {Login} from "../pages/normal/Login";
-import {Home} from "../pages/normal/Home";
-import {Evaluacion} from "../pages/normal/Evaluacion"
-import {EvaluacionProyecto} from "../pages/normal/EvaluacionProyecto"
-import {Enviado} from "../pages/normal/Enviado";
-import {Resultados} from "../pages/normal/Resultados"
-import {ResultadosProyecto} from "../pages/normal/ResultadosProyecto";
+import {Login} from "../../normal/Login";
+import {Home} from "../../normal/Home";
+import {Evaluacion} from "../../normal/Evaluacion"
+import {EvaluacionProyecto} from "../../normal/EvaluacionProyecto"
+import {Enviado} from "../../normal/Enviado";
+import {Resultados} from "../../normal/Resultados"
+import {ResultadosProyecto} from "../../normal/ResultadosProyecto";
 
 import {HomeAdmin} from "../pages/admin/HomeAdmin"
 import {LoginAdmin} from "../pages/admin/LoginAdmin"
