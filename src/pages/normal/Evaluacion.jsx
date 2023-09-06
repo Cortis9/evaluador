@@ -3,7 +3,7 @@ import { Base } from "../normal/Base";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Evaluacion.css";
 
-export function Evaluacion = () => {
+export function Evaluacion () {
   const navigate = useNavigate();
   const [proyectos, setProyectos] = useState([]);
   const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
