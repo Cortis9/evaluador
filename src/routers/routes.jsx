@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
 
 import {Login} from "../pages/normal/Login";
-import {Evaluacion} from "../pages/normal/Home";
-import {Home} from "../pages/normal/Evaluacion"
+import {Home} from "../pages/normal/Home";
+import {Evaluacion} from "../pages/normal/Evaluacion"
 import {EvaluacionProyecto} from "../pages/normal/EvaluacionProyecto"
 import {Enviado} from "../pages/normal/Enviado";
 import {Resultados} from "../pages/normal/Resultados"
@@ -19,7 +19,6 @@ import { ResultadosAdmin } from "../pages/admin/ResultadosAdmin";
 import { ResultadosProyectoAdmin } from "../pages/admin/ResultadosProyectoAdmin";
 
 import {useAuth} from "../context/AuthContext";
-
 
 export function MyRoutes() {
 
@@ -249,11 +248,12 @@ export function MyRoutes() {
       <Routes>
         <Route path="/" element={<PrivateLogin/>} />
         <Route path="/Home" element={<ProtectedRouteHome />}></Route>
-        <Route path="/Resultados" element={<ProtectedRouteResultados />}></Route>
-        <Route path="/ResultadosProyecto" element= {<ProtectedRouteResultadosProyecto/>}></Route>
         <Route path="/Evaluacion" element={<ProtectedRouteEvaluacion />}></Route>
         <Route path="/EvaluacionProyecto/:nombreRubrica" element= {<ProtectedRouteEvaluacionProyecto/>}></Route>
         <Route path="/Enviado" element={<ProtectedRouteEnviado />}></Route>
+        <Route path="/Resultados" element={<ProtectedRouteResultados />}></Route>
+        <Route path="/ResultadosProyecto" element= {<ProtectedRouteResultadosProyecto/>}></Route>
+        
 
         <Route path="/LoginAdmin" element={<PrivateLoginAdmin/>} />
         <Route path="/HomeAdmin" element={<PrivateRoute />} /><Route />

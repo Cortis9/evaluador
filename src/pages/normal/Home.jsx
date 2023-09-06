@@ -3,7 +3,7 @@ import { Base } from "../normal/Base";
 
 
 
-export function Evaluacion() {
+export function Home() {
 
 return (
 
