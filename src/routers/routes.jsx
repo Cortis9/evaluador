@@ -3,6 +3,11 @@ import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
 import {Login} from "../pages/normal/Login";
 import {Home} from "../pages/normal/Home";
 import {Evaluacion} from "../pages/normal/Evaluacion"
+import {EvaluacionProyecto} from "../pages/normal/EvaluacionProyecto"
+import {Enviado} from "../pages/normal/Enviado";
+import {Resultados} from "../pages/normal/Resultados"
+import {ResultadosProyecto} from "../pages/normal/ResultadosProyecto";
+
 
 
 import {HomeAdmin} from "../pages/admin/HomeAdmin"
