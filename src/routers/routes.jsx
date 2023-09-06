@@ -32,7 +32,7 @@ export function MyRoutes() {
       return <Navigate to="/" />;
     } else {
      
-      return <Evaluacion/>;
+      return <Home/>;
     }
   };
   
@@ -65,7 +65,7 @@ export function MyRoutes() {
       return <Navigate to="/" />;
     } else {
       
-      return <Home/>;
+      return <Evaluacion/>;
     }
   };
     
