@@ -1,47 +1,19 @@
-# Redirección para la página de inicio
-/ /Home 200
+# Redirecciones para rutas normales
+/Login /normal/Login
+/Home /normal/Home
+/Evaluacion /normal/Evaluacion
+/EvaluacionProyecto /normal/EvaluacionProyecto
+/Enviado /normal/Enviado
+/Resultados /normal/Resultados
+/ResultadosProyecto /normal/ResultadosProyecto
 
-# Redirección para la página de evaluación
-/Evaluacion /Evaluacion 200
-
-# Redirección para la página de evaluación de proyecto
-/EvaluacionProyecto/* /EvaluacionProyecto/:splat 200
-
-# Redirección para la página de resultados
-/Resultados /Resultados 200
-
-# Redirección para la página de resultados de proyecto
-/ResultadosProyecto /ResultadosProyecto 200
-
-# Redirección para la página de envío
-/Enviado /Enviado 200
-
-# Redirección para la página de inicio de administrador
-/HomeAdmin /HomeAdmin 200
-
-# Redirección para la página de inicio de sesión de administrador
-/LoginAdmin /LoginAdmin 200
-
-# Redirección para la página de registro de administrador
-/Registro /Registro 200
-
-# Redirección para la página de rubricas de administrador
-/Rubricas /Rubricas 200
-
-# Redirección para la página de edición de administrador
-/Edicion /Edicion 200
-
-# Redirección para la página de edición de proyecto de administrador
-/edicion/proyecto/:proyectoId /edicion/proyecto/:proyectoId 200
-
-# Redirección para la página de edición de rubrica de administrador
-/edicion/rubrica/:rubricaId /edicion/rubrica/:rubricaId 200
-
-# Redirección para la página de resultados de administrador
-/ResultadosAdmin /ResultadosAdmin 200
-
-# Redirección para la página de resultados de proyecto de administrador
-/ResultadosProyectoAdmin /ResultadosProyectoAdmin 200
-
-# Cualquier otra ruta no encontrada redirecciona a la página de inicio
-/* / 200
+# Redirecciones para rutas de administrador
+/HomeAdmin /admin/HomeAdmin
+/LoginAdmin /admin/LoginAdmin
+/Registro /admin/Registro
+/Rubricas /admin/Rubricas
+/Edicion /admin/Edicion
+/EdicionProyecto /admin/EdicionProyecto
+/EdicionRubrica /admin/EdicionRubrica
+/ResultadosAdmin /admin/ResultadosAdmin
+/ResultadosProyectoAdmin /admin/ResultadosProyectoAdmin
