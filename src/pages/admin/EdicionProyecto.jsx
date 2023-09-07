@@ -5,7 +5,7 @@ import '../../styles/Edicionproyecto.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
-export function EdicionProyecto  ()  {
+export const EdicionProyecto = () => {
   const { proyectoId } = useParams();
   const navigate = useNavigate();
   const [editedData, setEditedData] = useState({
@@ -23,7 +23,7 @@ export function EdicionProyecto  ()  {
 
   const fetchProyecto = async () => {
     try {
-      const response = await fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoId}`);
+      const response = await fetch(`/proyectos/${proyectoId}`);
       const data = await response.json();
       setEditedData(data);
     } catch (error) {
@@ -41,7 +41,7 @@ export function EdicionProyecto  ()  {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoId}`, {
+      const response = await fetch(`/proyectos/${proyectoId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

@@ -3,8 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Base } from './BaseAdmin';
 import '../../styles/EdicionRubrica.css';
 
-export function EdicionRubrica ()  {
-  
+export const EdicionRubrica = () => {
   const { rubricaId } = useParams();
   const [rubricaNombre, setRubricaNombre] = useState('');
   const [titulosInputData, setTitulosInputData] = useState([]);
@@ -38,7 +37,7 @@ export function EdicionRubrica ()  {
 
   const fetchRubricaData = async () => {
     try {
-      const response = await fetch(`https://api-git-main-cortis9.vercel.app/rubricas/${rubricaId}`);
+      const response = await fetch(`/rubricas/${rubricaId}`);
       const data = await response.json();
       setRubricaData(data);
   
@@ -347,7 +346,7 @@ const handleSubmit = async (e) => {
       fetchDeletePuntos(),
     ]);
 
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/rubricas/${rubricaId}`, {
+    const response = await fetch(`/rubricas/${rubricaId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -374,7 +373,7 @@ const fetchCreateTitulo = async () => {
     })),
   }
   try {
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/titulos/${rubricaId}`, {
+    const response = await fetch(`/titulos/${rubricaId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -407,7 +406,7 @@ const fetchCreateCasos = async (tituloId) => {
   
   try{
 
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/casos/${tituloId}`, {
+    const response = await fetch(`/casos/${tituloId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -437,7 +436,7 @@ const fetchCreatePuntos = async (casoId) => {
   };
   
 try{
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/puntos/${casoId}`, {
+    const response = await fetch(`/puntos/${casoId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -457,7 +456,7 @@ try{
 const fetchDeleteTitulos = async () => {
   const responses = await Promise.all(
     titulosEliminados.map(async (rubricaId) => {
-      const response = await fetch(`https://api-git-main-cortis9.vercel.app/titulos/${rubricaId}`, {
+      const response = await fetch(`/titulos/${rubricaId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -478,7 +477,7 @@ const fetchDeleteTitulos = async () => {
 
 const fetchDeleteCasos = async () => {
   await Promise.all(casosEliminados.map(async (tituloId) => {
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/casos/${tituloId}`, {
+    const response = await fetch(`/casos/${tituloId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -493,7 +492,7 @@ const fetchDeleteCasos = async () => {
 
 const fetchDeletePuntos = async () => {
   await Promise.all(puntosEliminados.map(async (casoId) => {
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/puntos/${casoId}`, {
+    const response = await fetch(`http://localhost:3002/puntos/${casoId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

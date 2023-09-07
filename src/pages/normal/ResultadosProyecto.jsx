@@ -3,7 +3,7 @@ import { Base } from "../normal/Base";
 import { Chart } from 'chart.js/auto';
 import '../../styles/ResultadosProyecto.css';
 
-export function ResultadosProyecto(){
+export function ResultadosProyecto() {
   const [resultados, setResultados] = useState([]);
   const [calificacionFinal, setCalificacionFinal] = useState(0);
   const [puntosExtras, setPuntosExtras] = useState(0);
@@ -19,7 +19,7 @@ export function ResultadosProyecto(){
 
     const obtenerResultados = async () => {
       try {
-        const response = await fetch(`https://api-git-main-cortis9.vercel.app/resultados/${proyectoId}`);
+        const response = await fetch(`/resultados/${proyectoId}`);
         if (response.ok) {
           const data = await response.json();
           setResultados(data);
@@ -35,7 +35,7 @@ export function ResultadosProyecto(){
 
     const obtenerCalificacionFinal = async () => {
       try {
-        const response = await fetch(`https://api-git-main-cortis9.vercel.app/calificacion/${proyectoId}`);
+        const response = await fetch(`/calificacion/${proyectoId}`);
         if (response.ok) {
           const data = await response.json();
           setCalificacionFinal(data.calificacionFinal);
@@ -133,7 +133,7 @@ export function ResultadosProyecto(){
         const searchParams = new URLSearchParams(window.location.search);
         const proyectoId = searchParams.get('proyectoId');
         
-        const response = await fetch(`https://api-git-main-cortis9.vercel.app/puntosextra/${proyectoId}`, {
+        const response = await fetch(`/puntosextra/${proyectoId}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

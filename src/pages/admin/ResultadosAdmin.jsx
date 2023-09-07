@@ -8,8 +8,7 @@ import jsonimg from "../../assets/json.png";
 import excelimg from "../../assets/excel.png";
 import * as XLSX from "xlsx";
 
-export function ResultadosAdmin  ()  {
-  
+export const ResultadosAdmin = () => {
   const navigate = useNavigate();
   const [proyectos, setProyectos] = useState([]);
   const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
@@ -19,7 +18,7 @@ export function ResultadosAdmin  ()  {
   const [exportOptionsVisible, setExportOptionsVisible] = useState(false);
 
   useEffect(() => {
-    fetch("https://api-git-main-cortis9.vercel.app/proyectos")
+    fetch("/proyectos")
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
@@ -40,7 +39,7 @@ export function ResultadosAdmin  ()  {
           .replace("/view?usp=sharing", "");
         setEnlaceSeleccionado(modifiedLink);
 
-        fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoEncontrado.id}`)
+        fetch(`/proyectos/${proyectoEncontrado.id}`)
           .then((response) => response.json())
           .then((data) => {
             if (data && data.rubrica) {
@@ -80,7 +79,7 @@ export function ResultadosAdmin  ()  {
 
   const obtenerResultados = async () => {
     try {
-      const response = await fetch(`https://api-git-main-cortis9.vercel.app/calificacion`);
+      const response = await fetch(`/calificacion`);
       if (response.ok) {
         const data = await response.json();
         setCalificacionFinal(data);
@@ -161,7 +160,7 @@ export function ResultadosAdmin  ()  {
   const eliminarInformacionDeTablas = async () => {
     try {
      
-      const response = await fetch('https://api-git-main-cortis9.vercel.app/resultados', {
+      const response = await fetch('/resultados', {
         method: 'DELETE',
         
         headers: {

@@ -3,7 +3,7 @@ import { Base } from "../normal/Base";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Evaluacion.css";
 
-export function Resultados () {
+export const Resultados = () => {
   const navigate = useNavigate();
   const [proyectos, setProyectos] = useState([]);
   const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
@@ -11,7 +11,7 @@ export function Resultados () {
   const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
 
   useEffect(() => {
-    fetch("https://api-git-main-cortis9.vercel.app/proyectos")
+    fetch("/proyectos")
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
@@ -32,7 +32,7 @@ export function Resultados () {
           .replace("/view?usp=sharing", "");
         setEnlaceSeleccionado(modifiedLink);
 
-        fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoEncontrado.id}`)
+        fetch(`/proyectos/${proyectoEncontrado.id}`)
           .then((response) => response.json())
           .then((data) => {
             if (data && data.rubrica) {

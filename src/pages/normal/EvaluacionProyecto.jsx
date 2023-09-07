@@ -3,7 +3,7 @@ import { Base } from "../normal/Base";
 import "../../styles/EvaluacionProyecto.css";
 import { useNavigate } from "react-router-dom";
 
-export function EvaluacionProyecto ()  {
+export const EvaluacionProyecto = () => {
   const [rubricaData, setRubricaData] = useState({
     rubrica: {
       id: 0,
@@ -44,7 +44,7 @@ export function EvaluacionProyecto ()  {
 
   const fetchRubricaData = async () => {
     try {
-      const response = await fetch(`https://api-git-main-cortis9.vercel.app/rubricas/${rubricaId}`);
+      const response = await fetch(`/rubricas/${rubricaId}`);
       const data = await response.json();
       setRubricaData(data);
       setNombreRubrica(data.rubrica.nombre);
@@ -64,7 +64,7 @@ export function EvaluacionProyecto ()  {
 
   const enviarCalificacionFinal = async (calificacion) => {
     try {
-      const response = await fetch("https://api-git-main-cortis9.vercel.app/calificacion", {
+      const response = await fetch("/calificacion", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export function EvaluacionProyecto ()  {
           ],
         };
 
-        const response = await fetch("https://api-git-main-cortis9.vercel.app/resultados", {
+        const response = await fetch("/resultados", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export function EvaluacionProyecto ()  {
         if (response.ok) {
           console.log("Resultados enviados correctamente");
   
-          await fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoId}/estado`, {
+          await fetch(`/proyectos/${proyectoId}/estado`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",

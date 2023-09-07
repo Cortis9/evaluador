@@ -8,8 +8,7 @@ import jsonimg from '../../assets/json.png';
 import excelimg from '../../assets/excel.png';
 import * as XLSX from 'xlsx';
 
-export function Edicion () {
-  
+export const Edicion = () => {
   const [proyectos, setProyectos] = useState([]);
   const [rubricas, setRubricas] = useState([]);
   const [categorias, setCategorias] = useState([]);

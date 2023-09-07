@@ -1,42 +1,75 @@
-import React from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import '../../styles/BaseAdmin.css'
 import icono from '../../assets/ico.png';
 
 export function Base() {
-
   const navigate = useNavigate();
   const auth = useAuth();
-  
-    const HandleLogout = () => {
-        auth.logout();
-        navigate("/");
-      }
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1000);
+  const [showMenu, setShowMenu] = useState(false);
+
+  const handleLogout = () => {
+    auth.logout();
+    navigate("/");
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1000);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
 
   return (
-
-
-<div>
- <header>
- <a href="/HomeAdmin">
- <img src= {icono} icono height={50} width={50} id="logo" alt="Logo" />
-</a>
-
- <ul>
- <li><a href="/HomeAdmin">Home</a></li> 
- <li><a href="/Registro">Registro</a></li>
- <li><a href="/Rubricas">Rubricas</a></li> 
- <li><a href="/Edicion">Dashboard</a></li> 
- <li><a href="/ResultadosAdmin">Resultados</a></li> 
- </ul> 
- 
- <button onClick={()=> HandleLogout()} className="button" id="botonL">Logout</button>
- </header>
- </div>
-
+    <div>
+      <header>
+        <a href="/HomeAdmin">
+          <img src={icono} icono height={50} width={50} id="logo" alt="Logo" />
+        </a>
+        {isMobile ? (
+          <div>
+            <button className="menu-button" onClick={toggleMenu}>
+              Menu
+            </button>
+            <ul className={`menu-dropdown ${showMenu ? "open" : ""}`}>
+              <li><a href="/HomeAdmin">Home</a></li>
+              <li><a href="/Registro">Registro</a></li>
+              <li><a href="/Rubricas">Rubricas</a></li>
+              <li><a href="/Edicion">Dashboard</a></li>
+              <li><a href="/ResultadosAdmin">Resultados</a></li>
+              <li>
+                <button onClick={handleLogout} className="button" id="botonL">
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </div>
+        ) : (
+          <ul className="menu">
+            <li><a href="/HomeAdmin">Home</a></li>
+            <li><a href="/Registro">Registro</a></li>
+            <li><a href="/Rubricas">Rubricas</a></li>
+            <li><a href="/Edicion">Dashboard</a></li>
+            <li><a href="/ResultadosAdmin">Resultados</a></li>
+          </ul>
+        )}
+        {!isMobile ? (
+      <button onClick={handleLogout} className="button" id="botonL">
+        Logout
+      </button>
+    ) : null}
+      </header>
+    </div>
   );
-
 }
-
-

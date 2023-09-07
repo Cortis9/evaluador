@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import '../../styles/Rubricas.css';
 import { Base } from '../admin/BaseAdmin';
 
-export function Rubricas  ()  {
-  
+export const Rubricas = () => {
   const [nombre, setRubricaNombre] = useState("");
   const [titulos, setTitulos] = useState([]);
   const [titulo, setTitulo] = useState("");
@@ -76,7 +75,7 @@ export function Rubricas  ()  {
 
   const verificarExistenciaRubrica = async (nombreRubrica) => {
     try {
-      const response = await fetch(`https://api-git-main-cortis9.vercel.app/rubricas`);
+      const response = await fetch(`/rubricas`);
       if (response.ok) {
         const data = await response.json();
         const existeRubrica = data.some((rubrica) => rubrica.nombre === nombreRubrica);
@@ -108,7 +107,7 @@ export function Rubricas  ()  {
         })),
       };    
   
-      const response = await fetch('https://api-git-main-cortis9.vercel.app/rubricas', {
+      const response = await fetch('/rubricas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

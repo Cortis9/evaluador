@@ -2,7 +2,7 @@ import React from 'react';
 import { Base } from "../normal/Base";
 import '../../styles/Enviado.css'
 
-export function Enviado  () {
+export const Enviado = () => {
   return (
     <>
     <Base />
