@@ -31,7 +31,6 @@ export function Base() {
     setShowMenu(!showMenu);
   };
 
- 
 return (
   <header>
     <a href="/Home">

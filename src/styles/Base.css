@@ -1,75 +1,54 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins: 300, 400, 500, 600, 700, 800, 900&display=swap');
-*
-{
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap');
+
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
 
-
-#html{
+#html {
   margin: 0;
   padding: 0;
   height: flex;
   width: flex;
   margin-bottom: auto;
-  
 }
 
-header
-{
-  position: fixed; top: 0;
-  Left: 0;
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 20px;
-  padding: 30px 100px; display: flex;
+  padding: 30px 100px;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #fff;
 }
 
-
-header ul
-{
+header ul {
   display: flex;
-  justify-content: center; 
-  align-items: center;
-
+  justify-content: flex;
+  align-items: flex;
 }
 
-header ul li
-{
-List-style: none;
-margin-left: 20px;
+header ul li {
+  list-style: none;
+  margin-left: 20px;
 }
 
-header ul li a
-{
-text-decoration: none; 
-padding: 6px 15px; 
-color: #000000;
-border-radius: 20px;
-}
-
-header ul li a:hover
-{
-    background: #ff5900 ;
-    color: #ffffff;
-}
-
-#pie{
-  position:absolute; 
-  justify-content: center;
-  margin-top: 250px;
-  Left: 0;
-  padding: 20px;
-	text-align: center;
-  width: 100%;
-  display: flex;
-  background-color: #fff;
+header ul li a {
+  text-decoration: none;
+  padding: 6px 15px;
   color: #000000;
-  
+  border-radius: 20px;
+}
+
+header ul li a:hover {
+  background: #ff5900;
+  color: #ffffff;
 }
 
 
@@ -83,4 +62,49 @@ header ul li a:hover
 	border-radius: 5px;
 	cursor: pointer;
 }
+
+
+.menu-dropdown {
+  display: none; 
+  position: absolute;
+  top: 70px; 
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 1;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center; 
+}
+
+.menu-dropdown.open {
+  display: block; 
+}
+
+.menu-dropdown li {
+  list-style: none;
+  margin-left: 0;
+  margin-bottom: 10px; 
+}
+
+.menu-dropdown a {
+  text-decoration: none;
+  display: block; 
+  padding: 6px 0; 
+  color: #000000;
+}
+
+
+.menu-dropdown button {
+  background-color: #ff5900;
+  color: white;
+  font-size: 1.2em;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; 
+}
+
+
+
 
