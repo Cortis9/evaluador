@@ -1,285 +1,140 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useEffect } from "react";
 import { Base } from "../admin/BaseAdmin";
-import { Chart } from 'chart.js/auto';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import '../../styles/ResultadosProyecto.css';
-import csvimg from '../../assets/csv.png';
-import jsonimg from '../../assets/json.png';
-import excelimg from '../../assets/excel.png';
-import * as XLSX from 'xlsx';
+import { useNavigate } from "react-router-dom";
+import "../../styles/Evaluacion.css";
+import csvimg from "../../assets/csv.png";
+import searchimg from "../../assets/search.png";
+import jsonimg from "../../assets/json.png";
+import excelimg from "../../assets/excel.png";
+import * as XLSX from "xlsx";
 
-export function ResultadosProyectoAdmin() {
-  const [resultados, setResultados] = useState([]);
+export const ResultadosAdmin = () => {
+  const navigate = useNavigate();
+  const [proyectos, setProyectos] = useState([]);
+  const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
+  const [enlaceSeleccionado, setEnlaceSeleccionado] = useState("");
+  const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
   const [calificacionFinal, setCalificacionFinal] = useState(0);
-  const [correoDestino, setCorreoDestino] = useState('');
-  const [asunto, setAsunto] = useState('');
-  const [contenidoCorreo, setContenidoCorreo] = useState('');
-  const [puntosextra, setPuntosextra] = useState('');
-  const [correopuntosextra, setCorreopuntosextra] = useState('');
-  const [detallepuntosextra, setDetallepuntosextra] = useState('');
-  const chartRef = useRef(null);
-  const chartInstanceRef = useRef(null);
-  const [archivoAdjunto, setArchivoAdjunto] = useState(null);
   const [exportOptionsVisible, setExportOptionsVisible] = useState(false);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const proyectoId = searchParams.get('proyectoId');
-
-    const obtenerResultados = async () => {
-      try {
-        const response = await fetch(`https://api-git-main-cortis9.vercel.app/resultados/${proyectoId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setResultados(data);
-        } else {
-          console.error('Error al obtener los resultados');
+    fetch("https://api-git-main-cortis9.vercel.app/proyectos")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.length > 0) {
+          setProyectos(data);
         }
-      } catch (error) {
-        console.error('Error al realizar la solicitud:', error);
-      }
-    };
-
-    obtenerResultados();
-
-    const obtenerCalificacionFinal = async () => {
-      try {
-        const response = await fetch(`https://api-git-main-cortis9.vercel.app/calificacion/${proyectoId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setCalificacionFinal(data.calificacionFinal);
-          setCorreoDestino(data.correoJuez);
-        } else {
-          console.error('Error al obtener la calificación final');
-        }
-      } catch (error) {
-        console.error('Error al realizar la solicitud:', error);
-      }
-    };
-
-    obtenerCalificacionFinal();
-
-    const obtenerDatosAdicionales = async () => {
-      try {
-        const response = await fetch(`https://api-git-main-cortis9.vercel.app/puntosextra/${proyectoId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setPuntosextra(data.puntosextra);
-          setCorreopuntosextra(data.correopuntosextra);
-          setDetallepuntosextra(data.detallepuntosextra);
-        } else {
-          console.error('Error al obtener los datos adicionales');
-        }
-      } catch (error) {
-        console.error('Error al realizar la solicitud:', error);
-      }
-    };
-
-    obtenerDatosAdicionales();
+      });
   }, []);
 
   useEffect(() => {
-    if (resultados.length > 0) {
-      
-      let labels = [];
+    if (proyectos.length > 0 && proyectoSeleccionado !== "") {
+      const proyectoEncontrado = proyectos.find(
+        (proyecto) => proyecto.titulo === proyectoSeleccionado
+      );
 
-      for (const result of resultados) {
-        
-        if (result.puntos && Array.isArray(result.puntos)) {
-          labels = result.puntos.map(punto => punto.nombre);
-        }
-      }
-  
-      const datasets = resultados.map(result => ({
-        label: '', 
-        data: result.puntos.map(punto => punto.valor),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
-      }));
+      if (proyectoEncontrado) {
+        const modifiedLink = proyectoEncontrado.link
+          .replace("/file/d/", "/uc?export=view&id=")
+          .replace("/view?usp=sharing", "");
+        setEnlaceSeleccionado(modifiedLink);
 
-      const calificacionFinalData = new Array(labels.length).fill(0);
-      calificacionFinalData.push(calificacionFinal);
-
-      if (chartInstanceRef.current) {
-        chartInstanceRef.current.destroy();
-      }
-
-      const chartConfig = {
-        type: 'bar',
-        data: {
-          labels: ['puntos', 'Calificación Final'],
-          datasets: [
-            ...datasets,
-            {
-              label: 'Calificación Final',
-              data: calificacionFinalData,
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-          tooltips: {
-            callbacks: {
-              title: function (tooltipItem) {
-                const index = tooltipItem[0].datasetIndex;
-                return datasets[index].label; 
-              },
-              label: function (tooltipItem) {
-                return tooltipItem.formattedValue; 
-              },
-            },
-          },
-        },
-      };
-
-      const ctx = chartRef.current.getContext('2d');
-      chartInstanceRef.current = new Chart(ctx, chartConfig);
-    }
-  }, [resultados, calificacionFinal]);
-
-  const exportarImagen = () => {
-    html2canvas(chartRef.current).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.href = imgData;
-      link.download = 'grafica.png';
-      link.click();
-    });
-  };
-
-  const exportarPDF = () => {
-    const pdf = new jsPDF();
-    html2canvas(chartRef.current).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      pdf.addImage(imgData, 'PNG', 10, 10, 190, 100);
-      pdf.save('grafica.pdf');
-    });
-  };
-
-  const actualizarCalificacionFinal = async () => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const proyectoId = searchParams.get('proyectoId');
-
-    try {
-      const response = await fetch(`https://api-git-main-cortis9.vercel.app/calificacion/${proyectoId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ calificacionFinal }),
-      });
-
-      if (response.ok) {
-        console.log('Calificación final actualizada correctamente');
+        fetch(`https://api-git-main-cortis9.vercel.app/${proyectoEncontrado.id}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data && data.rubrica) {
+              setRubricaSeleccionada(data.rubrica);
+            }
+          });
       } else {
-        console.error('Error al actualizar la calificación final');
+        setEnlaceSeleccionado("");
+        setRubricaSeleccionada("");
       }
-    } catch (error) {
-      console.error('Error al realizar la solicitud:', error);
+    }
+  }, [proyectos, proyectoSeleccionado]);
+
+  const handleProyectoSeleccionado = (event) => {
+    const proyecto = event.target.value;
+    setProyectoSeleccionado(proyecto);
+  };
+
+  const navigateToEvaluacionProyecto = () => {
+    const modifiedLink = enlaceSeleccionado
+      .replace("/file/d/", "/uc?export=view&id=")
+      .replace("/view?usp=sharing", "");
+
+    const proyectoEncontrado = proyectos.find(
+      (proyecto) => proyecto.titulo === proyectoSeleccionado
+    );
+
+    if (proyectoEncontrado) {
+      const proyectoId = proyectoEncontrado.id;
+      navigate(`/ResultadosProyectoAdmin?proyectoId=${proyectoId}`);
     }
   };
 
-  const handleFileUpload = (files) => {
-    if (files.length > 0) {
-      const selectedFile = files[0];
-      setArchivoAdjunto(selectedFile);
-    }
-  };
+  useEffect(() => {
+    obtenerResultados();
+  }, []);
 
-  const sendDataToAPI = async () => {
-    const formData = new FormData();
-    formData.append("text", contenidoCorreo);
-    formData.append("to", correoDestino);
-    formData.append("subject", asunto);
-  
-
-    if (archivoAdjunto) {
-      formData.append("archivoAdjunto", archivoAdjunto);
-    }
-  
+  const obtenerResultados = async () => {
     try {
-      const response = await fetch("https://api-git-main-cortis9.vercel.app/send-email", {
-        method: "POST",
-        body: formData,
-      });
-  
+      const response = await fetch(`https://api-git-main-cortis9.vercel.app/calificacion`);
       if (response.ok) {
-        console.log("Datos enviados correctamente");
+        const data = await response.json();
+        setCalificacionFinal(data);
       } else {
-        console.error("Error al enviar los datos");
+        console.error("Error al obtener los resultados");
       }
     } catch (error) {
       console.error("Error al realizar la solicitud:", error);
     }
   };
-  
-  const enviarCorreo = () => {
-    sendDataToAPI();
-  };
 
-  const handleExportProyecto = (exportType) => {
-    if (exportType === 'toJSON') {
-      const json = toJSON(resultados);
-      downloadFile(json, 'json', 'proyecto');
-    } else if (exportType === 'toCSV') {
-      const csv = toCSV(resultados);
-      downloadFile(csv, 'csv', 'proyecto');
-    } else if (exportType === 'toEXCEL') {
-      const excel = toExcel(resultados);
-      downloadFile(excel, 'xlsx', 'proyecto');
+  const handleExportResultados = (exportType) => {
+    if (exportType === "toJSON-resultados") {
+      const json = toJSON(calificacionFinal);
+      downloadFile(json, "json", "resultados");
+    } else if (exportType === "toCSV-resultados") {
+      const csv = toCSV(calificacionFinal);
+      downloadFile(csv, "csv", "resultados");
+    } else if (exportType === "toEXCEL-resultados") {
+      const excel = toExcel(calificacionFinal);
+      downloadFile(excel, "xlsx", "resultados");
     }
   };
+
   const toJSON = (data) => {
     return JSON.stringify(data, null, 4);
   };
 
   const toCSV = (data) => {
-    const headers = ['Caso', 'Puntos'];
-    const rows = data.map((item) => {
-      const casoNombre = item.caso.nombre;
-      const puntos = item.puntos.map((punto) => `${punto.nombre}: ${punto.valor}`).join(', '); 
-      return `"${casoNombre}", "${puntos}"`;
-    });
-    return [headers.join(','), ...rows].join('\n');
+    const headers = "id,proyectoId,calificacionFinal,correojuez";
+    const rows = data.map(
+      (calificacionFinal) =>
+        `${calificacionFinal.id},${calificacionFinal.proyectoId},${calificacionFinal.calificacionFinal},${calificacionFinal.correojuez}`
+    );
+    return `${headers}\n${rows.join("\n")}`;
   };
-  
+
   const toExcel = (data) => {
-    const excelData = [];
-  
-    excelData.push(['Casos', 'Puntos']);
-  
-    data.forEach((item) => {
-      const casoNombre = item.caso.nombre;
-      const puntos = item.puntos.map((punto) => `${punto.nombre}: ${punto.valor}`).join(', ');
-      excelData.push([casoNombre, puntos]);
-    });
-  
     const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.aoa_to_sheet(excelData);
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Proyecto');
-    return XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Resultados");
+    const excelData = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    return excelData;
   };
-  
-  const toggleExportOptions = () => {
-    setExportOptionsVisible((prevState) => !prevState);
-  };
-  const downloadFile = (data, fileType, fileName = '') => {
-    const a = document.createElement('a');
-    a.download = fileName + '.' + fileType;
+
+  const downloadFile = (data, fileType, fileName = "") => {
+    const a = document.createElement("a");
+    a.download = fileName + "." + fileType;
     const mimeType = {
-      json: 'application/json',
-      csv: 'text/csv',
-      xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      json: "application/json",
+      csv: "text/csv",
+      xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     };
     const blob = new Blob([data], { type: mimeType[fileType] });
     const url = URL.createObjectURL(blob);
@@ -289,154 +144,106 @@ export function ResultadosProyectoAdmin() {
     document.body.removeChild(a);
   };
 
-  const eliminarResultados = async () => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const proyectoId = searchParams.get('proyectoId');
-    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar estos resultados?');
-
-    if (!confirmDelete) {
-    
-      return;
+  const toggleExportOptions = () => {
+    setExportOptionsVisible(!exportOptionsVisible);
+  };
+  const eliminarInformacion = () => {
+  
+    const confirmarEliminacion = window.confirm("¿Estás seguro de que deseas eliminar la información de todas las tablas de resultados?");
+  
+    if (confirmarEliminacion) {
+     
+      eliminarInformacionDeTablas();
     }
+  };
 
+  const eliminarInformacionDeTablas = async () => {
     try {
-      const response = await fetch(`https://api-git-main-cortis9.vercel.app/resultados/${proyectoId}`, {
+     
+      const response = await fetch('http://localhost:3002/resultados', {
         method: 'DELETE',
+        
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-
+  
       if (response.ok) {
-        console.log('Resultados eliminados con éxito');
-       
+        console.log('Información de las tablas eliminada con éxito');
+        
       } else {
-        console.error('Error al eliminar resultados');
+        console.error('Error al eliminar información de las tablas');
+        
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
+      
     }
   };
   
   return (
-    <div>
+    <>
       <Base />
 
-      <div id="contenedor">
-
-       
-      <button id='deleteButton' onClick={eliminarResultados}>🗑️</button>
-        <div className="export__file2">
-          <label
-            htmlFor="export-file2"
-            className="export__file-btn2"
-            title="Export File"
-            onClick={toggleExportOptions}
-          ></label>
-          <input type="checkbox" id="export-file2" />
-          {exportOptionsVisible && (
-            <div className="export__file-options2">
-              <label htmlFor="toJSON-resultados" onClick={() => handleExportProyecto('toJSON')}>
-                JSON <img src={jsonimg} alt="" />
-              </label>
-              <label htmlFor="toCSV-resultados" onClick={() => handleExportProyecto('toCSV')}>
-                CSV <img src={csvimg} alt="" />
-              </label>
-              <label htmlFor="toEXCEL-resultados" onClick={() => handleExportProyecto('toEXCEL')}>
-                EXCEL <img src={excelimg} alt="" />
-              </label>
-            </div>
-          )}
-        </div>
-        <h2 id="titulo">Resultados</h2>
-        <div className="chart-container">
-          <canvas ref={chartRef} id="grafica"></canvas>
-          <div className="export-buttons">
-            <button id='exportbt' onClick={exportarImagen}>Exportar como imagen</button>
-            <button id='exportbt' onClick={exportarPDF}>Exportar como PDF</button>
+      <form id="form2">
+        <section>
+          <div className="export__file2">
+            <label
+              htmlFor="export-file2"
+              className="export__file-btn2"
+              title="Export File"
+              onClick={toggleExportOptions}
+            ></label>
+            <input type="checkbox" id="export-file2" />
+            {exportOptionsVisible && (
+              <div className="export__file-options2">
+                <label
+                  htmlFor="toJSON-resultados"
+                  onClick={() => handleExportResultados("toJSON-resultados")}
+                >
+                  JSON <img src={jsonimg} alt="" />
+                </label>
+                <label
+                  htmlFor="toCSV-resultados"
+                  onClick={() => handleExportResultados("toCSV-resultados")}
+                >
+                  CSV <img src={csvimg} alt="" />
+                </label>
+                <label
+                  htmlFor="toEXCEL-resultados"
+                  onClick={() => handleExportResultados("toEXCEL-resultados")}
+                >
+                  EXCEL <img src={excelimg} alt="" />
+                </label>
+              </div>
+            )}
           </div>
-        </div>
-        <label htmlFor="input-puntosextra">Puntos Extra:</label>
-      <input
-        id="input-puntosextra"
-        type="number"
-        name="puntosextra"
-        value={puntosextra}
-        onChange={(e) => setPuntosextra(e.target.value)}
-        disabled
-      />
-
-      <label htmlFor="input-correo-puntosextra">Correo de Puntos Extra:</label>
-      <input
-        id="input-correo-puntosextra"
-        type="text"
-        name="correopuntosextra"
-        value={correopuntosextra}
-        onChange={(e) => setCorreopuntosextra(e.target.value)}
-        disabled
-      />
-
-      <label htmlFor="input-detalle-puntosextra">Detalle de Puntos Extra:</label>
-      <textarea
-        id="detalles"
-        type="text"
-        name="detallepuntosextra"
-        value={detallepuntosextra}
-        onChange={(e) => setDetallepuntosextra(e.target.value)}
-        disabled
-      />
-        <label htmlFor="input-calificacion-final">Calificación Final:</label>
-        <input
-          id="input-calificacion-final"
-          type="text"
-          name="calificacionFinal"
-          value={calificacionFinal}
-          onChange={(e) => setCalificacionFinal(e.target.value)}
-        />
-       <button  id='export1' onClick={actualizarCalificacionFinal}>Guardar Cambios</button>
-        <div>
-          <label htmlFor="input-correo-destino">Correo de destino:</label>
-          <input
-            id="input-correo-destino"
-            type="text"
-            name="correoDestino"
-            value={correoDestino}
-            onChange={(e) => setCorreoDestino(e.target.value)}
-          />
-
-          <label htmlFor="input-asunto">Asunto del correo:</label>
-          <input
-            id="input-asunto"
-            type="text"
-            name="asunto"
-            value={asunto}
-            onChange={(e) => setAsunto(e.target.value)}
-          />
-        </div>
-
-        {archivoAdjunto === null ? (
-          <div>
-            <input
-              type="file"
-              id="input-adjuntar-archivo"
-              onChange={(e) => handleFileUpload(e.target.files)}
-            />
-            <span style={{ color: 'black' }}>
-              {archivoAdjunto ? `${archivoAdjunto.name}` : 'Ningún archivo seleccionado'}
-            </span>
+          <button id='botoneliminar' onClick={eliminarInformacion}>
+                            <span className="icono-papelera">🗑️</span>
+                          </button>
+        </section>
+        <h2 id="h2">Resultados</h2>
+        <select
+          id="proyecto"
+          value={proyectoSeleccionado}
+          onChange={handleProyectoSeleccionado}
+        >
+          <option value="">Seleccione un proyecto</option>
+          {proyectos.map((proyecto) => (
+            <option key={proyecto.id} value={proyecto.titulo}>
+              {proyecto.titulo}
+            </option>
+          ))}
+        </select>
+        {enlaceSeleccionado && (
+          <div id="img">
+            <img src={enlaceSeleccionado} alt="Proyecto" />
           </div>
-        ) : null}
-
-        <label htmlFor="input-correo">Contenido del correo:</label>
-        <textarea
-          id="detalles"
-          name="contenidoCorreo"
-          value={contenidoCorreo}
-          onChange={(e) => setContenidoCorreo(e.target.value)}
-        ></textarea>
-       
-       <div><button id='export1' onClick={enviarCorreo}>Enviar Correo</button></div>
-        
-
-        
-      </div>
-    </div>
+        )}
+        <button id="buttonsiguiente" onClick={navigateToEvaluacionProyecto}>
+          Siguiente
+        </button>
+      </form>
+    </>
   );
-}
+};
