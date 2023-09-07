@@ -39,7 +39,7 @@ export const ResultadosAdmin = () => {
           .replace("/view?usp=sharing", "");
         setEnlaceSeleccionado(modifiedLink);
 
-        fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoEncontrado.id}`)
+        fetch(`https://api-git-main-cortis9.vercel.app/${proyectoEncontrado.id}`)
           .then((response) => response.json())
           .then((data) => {
             if (data && data.rubrica) {
@@ -69,7 +69,7 @@ export const ResultadosAdmin = () => {
 
     if (proyectoEncontrado) {
       const proyectoId = proyectoEncontrado.id;
-      navigate(`https://api-git-main-cortis9.vercel.app/ResultadosProyectoAdmin?proyectoId=${proyectoId}`);
+      navigate(`/ResultadosProyectoAdmin?proyectoId=${proyectoId}`);
     }
   };
 
@@ -160,7 +160,7 @@ export const ResultadosAdmin = () => {
   const eliminarInformacionDeTablas = async () => {
     try {
      
-      const response = await fetch('https://api-git-main-cortis9.vercel.app/resultados', {
+      const response = await fetch('http://localhost:3002/resultados', {
         method: 'DELETE',
         
         headers: {
