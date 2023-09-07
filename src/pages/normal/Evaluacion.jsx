@@ -11,7 +11,7 @@ export const Evaluacion = () => {
   const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
 
   useEffect(() => {
-    fetch("/proyectos")
+    fetch("https://api-git-main-cortis9.vercel.app/proyectos")
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
@@ -32,7 +32,7 @@ export const Evaluacion = () => {
           .replace("/view?usp=sharing", "");
         setEnlaceSeleccionado(modifiedLink);
 
-        fetch(`/proyectos/${proyectoEncontrado.id}`)
+        fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoEncontrado.id}`)
           .then((response) => response.json())
           .then((data) => {
             if (data && data.rubrica) {

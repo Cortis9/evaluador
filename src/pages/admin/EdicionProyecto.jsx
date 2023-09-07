@@ -23,7 +23,7 @@ export const EdicionProyecto = () => {
 
   const fetchProyecto = async () => {
     try {
-      const response = await fetch(`/proyectos/${proyectoId}`);
+      const response = await fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoId}`);
       const data = await response.json();
       setEditedData(data);
     } catch (error) {
@@ -41,7 +41,7 @@ export const EdicionProyecto = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`/proyectos/${proyectoId}`, {
+      const response = await fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
