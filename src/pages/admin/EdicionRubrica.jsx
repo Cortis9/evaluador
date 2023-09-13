@@ -172,129 +172,116 @@ const handlePuntoValorChange = (e, casoId, puntoId) => {
   setPuntosData(nuevosPuntos);
 };
 
-
-const handleAddNewTitle = (tituloId) => {
-  const newTitleId = tituloId + 1;
-  const newCaseId = newTitleId;
-  const newPointId = newCaseId;
-
+const handleAddNewTitle = (rubricaId) => {
+  const newTitleId = rubricaId+1;
   const newTitle = { id: newTitleId, titulo: '' };
+  const newCaseId = newTitleId;
   const newCase = { id: newCaseId, tituloId: newTitleId, nombre: '', detalle: '' };
+  const newPointId = newCaseId;
   const newPoint = { id: newPointId, casoId: newCaseId, nombre: '', valor: 0 };
 
   setNewTitle(newTitle);
   setNewCase(newCase);
   setNewPoint(newPoint);
-
-  setTitulosData((prevTitulos) => [...prevTitulos, newTitle]);
-  setCasosData((prevCasos) => [...prevCasos, newCase]);
-  setPuntosData((prevPuntos) => [...prevPuntos, newPoint]);
+  setTitulosData([...titulosData, newTitle]);
+  setCasosData([...casoData, newCase]);
+  setPuntosData([...puntoData, newPoint]);
   setIsNewTitleAdded(true);
   setIsNewCaseAdded(true);
   setIsNewPointAdded(true);
 };
 
-const handleAddNewCaso = (tituloId) => {
-  const newCaseId = Date.now();
-  setIsNewCaseAdded(true)
-  setCasosData((prevCasos) => [
-    ...prevCasos,
-    { id: newCaseId, tituloId: tituloId, nombre: '', detalle: '' },
-  ]);
 
-  setCasosEliminados((prevCasosEliminados) =>
-    prevCasosEliminados.filter(id => id !== tituloId)
-  );
+const handleAddNewCaso = (tituloId) => {
+  const newCaseId = tituloId + 1 ;
+  const newCase = { id: newCaseId, tituloId: tituloId, nombre: '', detalle: '' };
+  const newPointId = newCaseId;
+  const newPoint = { id: newPointId, casoId: newCaseId, nombre: '', valor: 0 };
+
+  setIsNewCaseAdded(true);
+  setIsNewPointAdded(true);
+  setCasosData([...casoData, newCase]);
+  setPuntosData([...puntoData, newPoint]);
 };
+
 
 const handleAddNewPunto = (casoId) => {
-  const newPointId = Date.now();
-  setIsNewPointAdded(true)
-
-  setPuntosData((prevPuntos) => [
-    ...prevPuntos,
-    { id: newPointId, casoId: casoId, nombre: '', valor: 0 },
-  ]);
-
-  setPuntosEliminados((prevPuntosEliminados) =>
-    prevPuntosEliminados.filter(id => id !== casoId)
-  );
+  const newPointId = casoId + 1;
+  const newPoint = { id: newPointId, casoId: casoId, nombre: '', valor: 0 };
+  setIsNewPointAdded(true);
+  setPuntosData([...puntoData, newPoint]);
 };
 
+const handleDeleteTitulo = async (tituloId) => {
+  try {
+    const casosAEliminar = casoData.filter((caso) => caso.tituloId === tituloId);
 
-const handleDeleteTitle = (tituloId,casoId) => {
+    for (const caso of casosAEliminar) {
+      const puntosAEliminar = puntoData.filter((punto) => punto.casoId === caso.id);
 
-  setTitulosEliminados((prevTitulosEliminados) => [...prevTitulosEliminados, tituloId]);
-  setHiddenTitles((prevHiddenTitles) => [...prevHiddenTitles, tituloId]);
-  const casosAEliminar = casoData.filter((caso) => caso.tituloId === tituloId);
-  casosAEliminar.forEach((caso) => {
-    handleDeleteCaso(caso.id, tituloId);
-    setHiddenCases((prevHiddenCases) => [...prevHiddenCases, casoId]);
-  });
-
-  const puntosAEliminar = puntoData.filter((punto) => punto.casoId === casoId);
-  puntosAEliminar.forEach((punto) => {
-    handleDeletePunto(punto.id);
-    setHiddenPoints((prevHiddenPoints) => [...prevHiddenPoints, punto.id]);
-  });
-
-  setTitulosData((prevTitulosData) =>
-    prevTitulosData.map((titulo) => {
-      if (titulo.id === tituloId) {
-        return {
-          ...titulo,
-          eliminado: true, 
-        };
+      for (const punto of puntosAEliminar) {
+        await fetchDeletePuntos(punto.casoId); 
       }
-      return titulo;
-    })
-  );
-  
 
+      await fetchDeleteCasos(caso.tituloId); 
+      setCasosData((prevState) => prevState.filter((c) => c.id !== caso.id));
+    }
+
+    const tituloAEliminar = titulosData.find((titulo) => titulo.id === tituloId);
+      await fetchDeleteTitulos(tituloAEliminar.id); 
+      setTitulosData((prevState) => prevState.filter((t) => t.id !== tituloId));
+      setTitulosEliminados((prevState) => [...prevState, tituloId]);
+    
+  } catch (error) {
+    console.error("Error al eliminar el título:", error);
+  }
 };
 
-const handleDeleteCaso = (casoId, tituloId) => {
-  setCasosEliminados((prevCasosEliminados) => [...prevCasosEliminados, tituloId]);
-  setHiddenCases((prevHiddenCases) => [...prevHiddenCases, casoId]);
 
-  const puntosAEliminar = puntoData.filter((punto) => punto.casoId === casoId);
-  puntosAEliminar.forEach((punto) => {
-    handleDeletePunto(punto.id);
-    setHiddenPoints((prevHiddenPoints) => [...prevHiddenPoints, punto.id]);
-  });
+const handleDeleteCaso = async (casoId, tituloId) => {
+  try {
+    
+    const puntosAEliminar = puntoData.filter((punto) => punto.casoId === casoId);
+    puntosAEliminar.forEach(async (punto) => {
+      await fetchDeletePuntos(punto.casoId); 
+    });
+    const casoAEliminar = casoData.find((caso) => caso.id === casoId);
+    await fetchDeleteCasos(casoAEliminar.id);
 
-  setCasosData((prevCasosData) =>
-    prevCasosData.map((caso) => {
-      if (caso.id === casoId) {
-        return {
-          ...caso,
-          eliminado: true, 
-        };
-      }
-      return caso;
-    })
-  );
+    setCasosData((prevState) => prevState.filter((caso) => caso.id !== casoId));
+    setPuntosData((prevState) => prevState.filter((punto) => punto.casoId !== casoId));
 
+    setCasosEliminados((prevState) => [...prevState, casoId]);
+
+  } catch (error) {
+    console.error("Error al eliminar el caso:", error);
+  }
 };
 
-const handleDeletePunto = (puntoId, casoId) => {
 
-  setPuntosEliminados((prevPuntosEliminados) => [...prevPuntosEliminados, casoId]);
-  setPuntosData((prevPuntosData) =>
-    prevPuntosData.map((punto) => {
-      if (punto.id === puntoId) {
-        return {
-          ...punto,
-          eliminado: true, 
-        };
-      }
-      return punto;
-    })
-  );
-  
-  setHiddenPoints((prevHiddenPoints) => [...prevHiddenPoints, puntoId]);
+const handleDeletePunto = async (puntoId, casoId) => {
+  try {
 
+    const puntoAEliminar = puntoData.find((punto) => punto.casoId === casoId);
+
+    await fetchDeletePuntos(puntoAEliminar.casoId);
+
+
+    setPuntosData((prevState) => prevState.filter((punto) => punto.id !== puntoId));
+
+
+    setPuntosEliminados((prevState) => [...prevState, puntoId]);
+
+    const puntosAsociados = puntoData.filter((punto) => punto.casoId === casoId);
+    const puntosOcultos = puntosAsociados.every((punto) => hiddenPoints.includes(punto.id));
+    if (puntosOcultos) {
+      handleDeleteCaso(casoId, casoData.find((caso) => caso.id === casoId).tituloId);
+        }
+  } catch (error) {
+    console.error("Error al eliminar el punto:", error);
+  }
 };
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -337,15 +324,10 @@ const handleSubmit = async (e) => {
 
     if(isNewPointAdded){
 
-     await fetchCreatePuntos(casoIds);
+      await fetchCreatePuntos(casoIds);
     }
 
-    await Promise.all([
-      fetchDeleteTitulos(),
-      fetchDeleteCasos(),
-      fetchDeletePuntos(),
-    ]);
-
+   
     const response = await fetch(`https://api-git-main-cortis9.vercel.app/rubricas/${rubricaId}`, {
       method: 'PUT',
       headers: {
@@ -373,7 +355,7 @@ const fetchCreateTitulo = async () => {
     })),
   }
   try {
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/titulos/${rubricaId}`, {
+    const response = await fetch(`http://localhost:3002/titulos/${rubricaId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -397,16 +379,18 @@ const fetchCreateCasos = async (tituloId) => {
       casos: casoData
         .map((caso) => ({
           id: caso.id,
-          rubricaId: rubricaId,
+          rubricaId:rubricaId,
           nombre: caso.nombre,
           detalle: caso.detalle,
         })),
 
   };
   
+
+
   try{
 
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/casos/${tituloId}`, {
+    const response = await fetch(`http://localhost:3002/casos/${tituloId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -434,9 +418,9 @@ const fetchCreatePuntos = async (casoId) => {
               valor: parseInt(punto.valor),
             })),
   };
-  
+console.log(requestData)
 try{
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/puntos/${casoId}`, {
+    const response = await fetch(`http://localhost:3002/puntos/${casoId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -453,31 +437,9 @@ try{
   }
 };
 
-const fetchDeleteTitulos = async () => {
-  const responses = await Promise.all(
-    titulosEliminados.map(async (rubricaId) => {
-      const response = await fetch(`https://api-git-main-cortis9.vercel.app/titulos/${rubricaId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      return response;
-    })
-  );
-
-  responses.forEach((response, index) => {
-    if (!response.ok) {
-      console.error(`Error al eliminar el título ${titulosEliminados[index]}`);
-    }
-  });
-};
-
-
-const fetchDeleteCasos = async () => {
-  await Promise.all(casosEliminados.map(async (tituloId) => {
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/casos/${tituloId}`, {
+const fetchDeleteTitulos = async (tituloId) => {
+  try {
+    const response = await fetch(`http://localhost:3002/titulos/${tituloId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -485,14 +447,17 @@ const fetchDeleteCasos = async () => {
     });
 
     if (!response.ok) {
-      console.error(`Error al eliminar el caso ${tituloId}`);
+      console.error(`Error al eliminar el título ${tituloId}`);
     }
-  }));
+  } catch (error) {
+    console.error("Error al eliminar el título:", error);
+  }
 };
 
-const fetchDeletePuntos = async () => {
-  await Promise.all(puntosEliminados.map(async (casoId) => {
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/puntos/${casoId}`, {
+
+const fetchDeleteCasos = async (casoId) => {
+  try {
+    const response = await fetch(`http://localhost:3002/casos/${casoId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -500,9 +465,28 @@ const fetchDeletePuntos = async () => {
     });
 
     if (!response.ok) {
-      console.error(`Error al eliminar el punto ${casoId}`);
+      console.error(`Error al eliminar el caso ${casoId}`);
     }
-  }));
+  } catch (error) {
+    console.error("Error al eliminar el caso:", error);
+  }
+};
+
+const fetchDeletePuntos = async (puntoId) => {
+  try {
+    const response = await fetch(`http://localhost:3002/puntos/${puntoId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`Error al eliminar el punto ${puntoId}`);
+    }
+  } catch (error) {
+    console.error("Error al eliminar el punto:", error);
+  }
 };
 
 
@@ -527,7 +511,7 @@ return (
             onChange={handleRubricaNombreChange}
           />
           <br /><br />
-
+          
           {titulosData.length > 0 ? (
             titulosData.map((titulo) => {
               if (hiddenTitles.includes(titulo.id)) {
@@ -545,7 +529,7 @@ return (
                     onChange={(e) => handleTituloNameChange(e, titulo.id)}
                   />
 
-                  <button onClick={() => handleDeleteTitle(titulo.id)}>Eliminar Título</button>
+                  <button onClick={() => handleDeleteTitulo(titulo.id)}>Eliminar Título</button>
 
                   {casoData.length > 0 && casoData.filter((caso) => caso.tituloId === titulo.id).length > 0 && (
                     casoData
@@ -575,7 +559,7 @@ return (
                                 value={caso.detalle || ''}
                                 onChange={(e) => handleCasoDetalleChange(e, caso.id)}
                               />
-                              <button onClick={() => handleDeleteCaso(caso.id, caso.tituloId)}>Eliminar Caso</button>
+                              <button onClick={() => handleDeleteCaso(caso.id, titulo.id)}>Eliminar Caso</button>
                               <button onClick={() => handleAddNewCaso(titulo.id)}>Nuevo Caso</button>
                             </div>
 
@@ -618,7 +602,7 @@ return (
                         );
                       })
                   )}
-                    <button type='button' onClick={() => handleAddNewTitle(titulo.id)}>Nuevo Título</button>
+                  <button type='button' onClick={() => handleAddNewTitle(titulo.id)}>Nuevo Título</button>
                 </div>
               );
             })
@@ -626,12 +610,10 @@ return (
             <div>No hay títulos asociados</div>
           )}
 
-        
           <button type='submit'>Guardar cambios</button>
         </form>
       </div>
     )}
   </div>
 );
-
 };

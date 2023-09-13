@@ -160,7 +160,7 @@ export const ResultadosAdmin = () => {
   const eliminarInformacionDeTablas = async () => {
     try {
      
-      const response = await fetch('http://localhost:3002/resultados', {
+      const response = await fetch('https://api-git-main-cortis9.vercel.app/resultados', {
         method: 'DELETE',
         
         headers: {
