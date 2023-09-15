@@ -40,13 +40,9 @@ export const EdicionRubrica = () => {
       const response = await fetch(`https://api-git-main-cortis9.vercel.app/rubricas/${rubricaId}`);
       const data = await response.json();
       setRubricaData(data);
-  
-      const titulos = data.titulos.map((titulo) => ({
-        id: titulo.id,
-        titulo: titulo.titulo,
-      }));
 
-      setTitulosData(titulos);
+
+      setTitulosData(data.titulos);
       setCasosData(data.casos);
       setPuntosData(data.puntos);
     }catch{
@@ -172,12 +168,15 @@ const handlePuntoValorChange = (e, casoId, puntoId) => {
   setPuntosData(nuevosPuntos);
 };
 
-const handleAddNewTitle = (rubricaId) => {
-  const newTitleId = rubricaId+1;
+const handleAddNewTitle = () => {
+  const ultimoId = titulosData.length > 0 ? titulosData[titulosData.length - 1].id : null;
+  const newTitleId = ultimoId+1;
   const newTitle = { id: newTitleId, titulo: '' };
-  const newCaseId = newTitleId;
+  const ultimoIdCasos = casoData.length > 0 ? casoData[casoData.length - 1].id : null;
+  const newCaseId =  ultimoIdCasos+1;
   const newCase = { id: newCaseId, tituloId: newTitleId, nombre: '', detalle: '' };
-  const newPointId = newCaseId;
+  const ultimoIdPuntos = puntoData.length > 0 ? puntoData[puntoData.length - 1].id : null;
+  const newPointId = ultimoIdPuntos+1;
   const newPoint = { id: newPointId, casoId: newCaseId, nombre: '', valor: 0 };
 
   setNewTitle(newTitle);
@@ -187,26 +186,31 @@ const handleAddNewTitle = (rubricaId) => {
   setCasosData([...casoData, newCase]);
   setPuntosData([...puntoData, newPoint]);
   setIsNewTitleAdded(true);
-  setIsNewCaseAdded(true);
-  setIsNewPointAdded(true);
 };
 
 
 const handleAddNewCaso = (tituloId) => {
-  const newCaseId = tituloId + 1 ;
+  const ultimoIdCasos = casoData.length > 0 ? casoData[casoData.length - 1].id : null;
+  
+  const newCaseId = ultimoIdCasos + 1 ;
   const newCase = { id: newCaseId, tituloId: tituloId, nombre: '', detalle: '' };
-  const newPointId = newCaseId;
+
+  const ultimoIdPuntos = puntoData.length > 0 ? puntoData[puntoData.length - 1].id : null;
+  const newPointId = ultimoIdPuntos + 1;
   const newPoint = { id: newPointId, casoId: newCaseId, nombre: '', valor: 0 };
 
-  setIsNewCaseAdded(true);
-  setIsNewPointAdded(true);
-  setCasosData([...casoData, newCase]);
-  setPuntosData([...puntoData, newPoint]);
+
+  if (newCaseId !== null && newPointId !== null) {
+    setIsNewCaseAdded(true);
+    setCasosData([...casoData, newCase]);
+    setPuntosData([...puntoData, newPoint]);
+  }
 };
 
 
 const handleAddNewPunto = (casoId) => {
-  const newPointId = casoId + 1;
+ const ultimoIdPuntos = puntoData.length > 0 ? puntoData[puntoData.length - 1].id : null;
+  const newPointId = ultimoIdPuntos+1;
   const newPoint = { id: newPointId, casoId: casoId, nombre: '', valor: 0 };
   setIsNewPointAdded(true);
   setPuntosData([...puntoData, newPoint]);
@@ -246,7 +250,8 @@ const handleDeleteCaso = async (casoId, tituloId) => {
       await fetchDeletePuntos(punto.casoId); 
     });
     const casoAEliminar = casoData.find((caso) => caso.id === casoId);
-    await fetchDeleteCasos(casoAEliminar.id);
+    const nombreCasoAEliminar = casoAEliminar ? casoAEliminar.nombre : '';
+    await fetchDeleteCasos(tituloId,nombreCasoAEliminar , casoId);
 
     setCasosData((prevState) => prevState.filter((caso) => caso.id !== casoId));
     setPuntosData((prevState) => prevState.filter((punto) => punto.casoId !== casoId));
@@ -261,33 +266,30 @@ const handleDeleteCaso = async (casoId, tituloId) => {
 
 const handleDeletePunto = async (puntoId, casoId) => {
   try {
-
-    const puntoAEliminar = puntoData.find((punto) => punto.casoId === casoId);
-
-    await fetchDeletePuntos(puntoAEliminar.casoId);
-
+    const puntoAEliminar = puntoData.find((punto) => punto.id === puntoId);
+    const nombrePuntoAEliminar = puntoAEliminar ? puntoAEliminar.nombre : '';
+    
+    await fetchDeletePuntos(casoId, nombrePuntoAEliminar, puntoId); 
 
     setPuntosData((prevState) => prevState.filter((punto) => punto.id !== puntoId));
-
-
     setPuntosEliminados((prevState) => [...prevState, puntoId]);
-
+    
     const puntosAsociados = puntoData.filter((punto) => punto.casoId === casoId);
     const puntosOcultos = puntosAsociados.every((punto) => hiddenPoints.includes(punto.id));
+    
     if (puntosOcultos) {
       handleDeleteCaso(casoId, casoData.find((caso) => caso.id === casoId).tituloId);
-        }
+    }
   } catch (error) {
     console.error("Error al eliminar el punto:", error);
   }
 };
 
 
+
+
 const handleSubmit = async (e) => {
   e.preventDefault();
-
-  const tituloIds = titulosData.map(titulo => titulo.id);
-  const casoIds = casoData.map(caso => caso.id);
 
   const requestData = {
     rubrica: { nombre: rubricaNombre },
@@ -315,16 +317,18 @@ const handleSubmit = async (e) => {
 
     if (isNewTitleAdded) {
         await fetchCreateTitulo();
+        await fetchCreateCasos();
+        await fetchCreatePuntos();
       }
 
     if(isNewCaseAdded){
-        await fetchCreateCasos(tituloIds);
-
+        await fetchCreateCasos();
+        await fetchCreatePuntos();
     }
 
     if(isNewPointAdded){
 
-      await fetchCreatePuntos(casoIds);
+      await fetchCreatePuntos();
     }
 
    
@@ -355,7 +359,7 @@ const fetchCreateTitulo = async () => {
     })),
   }
   try {
-    const response = await fetch(`http://localhost:3002/titulos/${rubricaId}`, {
+    const response = await fetch(`https://api-git-main-cortis9.vercel.app/titulos/${rubricaId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -367,30 +371,26 @@ const fetchCreateTitulo = async () => {
       throw new Error('Error al crear el nuevo título');
     }
 
+    return response.json(); 
+
   } catch (error) {
     throw new Error('Error en la solicitud para crear el nuevo título: ' + error.message);
   }
 };
 
-const fetchCreateCasos = async (tituloId) => {
 
+const fetchCreateCasos = async () => {
   const requestData = {
-   
-      casos: casoData
-        .map((caso) => ({
-          id: caso.id,
-          rubricaId:rubricaId,
-          nombre: caso.nombre,
-          detalle: caso.detalle,
-        })),
-
+    casos: casoData.map((caso) => ({
+      tituloId: caso.tituloId,
+      rubricaId: rubricaId,
+      nombre: caso.nombre,
+      detalle: caso.detalle,
+    })),
   };
-  
 
-
-  try{
-
-    const response = await fetch(`http://localhost:3002/casos/${tituloId}`, {
+  try {
+    const response = await fetch(`https://api-git-main-cortis9.vercel.app/casos`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -402,25 +402,24 @@ const fetchCreateCasos = async (tituloId) => {
       throw new Error('Error al crear el nuevo caso');
     }
 
+   
+    return response.json();
   } catch (error) {
     throw new Error('Error en la solicitud para crear el nuevo caso: ' + error.message);
   }
-
 };
 
-const fetchCreatePuntos = async (casoId) => {
-
+const fetchCreatePuntos = async () => {
   const requestData = {
-          puntos: puntoData
-            .map((punto) => ({
-              id: punto.id,
-              nombre: punto.nombre,
-              valor: parseInt(punto.valor),
-            })),
+    puntos: puntoData.map((punto) => ({
+      casoId: punto.casoId,
+      nombre: punto.nombre,
+      valor: parseInt(punto.valor),
+    })),
   };
-console.log(requestData)
-try{
-    const response = await fetch(`http://localhost:3002/puntos/${casoId}`, {
+
+  try {
+    const response = await fetch(`https://api-git-main-cortis9.vercel.app/puntos`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -429,17 +428,20 @@ try{
     });
 
     if (!response.ok) {
-      throw new Error('Error al crear el nuevo puntos');
+      throw new Error('Error al crear el nuevo punto');
     }
+
  
+    return response.json();
   } catch (error) {
     throw new Error('Error en la solicitud para crear el nuevo punto: ' + error.message);
   }
 };
 
+
 const fetchDeleteTitulos = async (tituloId) => {
   try {
-    const response = await fetch(`http://localhost:3002/titulos/${tituloId}`, {
+    const response = await fetch(`https://api-git-main-cortis9.vercel.app/titulos/${tituloId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -455,13 +457,14 @@ const fetchDeleteTitulos = async (tituloId) => {
 };
 
 
-const fetchDeleteCasos = async (casoId) => {
+const fetchDeleteCasos = async (tituloId,nombreCasoAEliminar, casoId) => {
   try {
-    const response = await fetch(`http://localhost:3002/casos/${casoId}`, {
+    const response = await fetch(`https://api-git-main-cortis9.vercel.app/casos/${tituloId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ nombre: nombreCasoAEliminar, id: casoId }),
     });
 
     if (!response.ok) {
@@ -472,22 +475,24 @@ const fetchDeleteCasos = async (casoId) => {
   }
 };
 
-const fetchDeletePuntos = async (puntoId) => {
+const fetchDeletePuntos = async (casoId, nombrePuntoAEliminar, puntoId) => {
   try {
-    const response = await fetch(`http://localhost:3002/puntos/${puntoId}`, {
+    const response = await fetch(`https://api-git-main-cortis9.vercel.app/puntos/${casoId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ nombre: nombrePuntoAEliminar, id: puntoId }), 
     });
 
     if (!response.ok) {
-      console.error(`Error al eliminar el punto ${puntoId}`);
+      console.error(`Error al eliminar el punto "${nombrePuntoAEliminar}"`);
     }
   } catch (error) {
     console.error("Error al eliminar el punto:", error);
   }
 };
+
 
 
 return (
