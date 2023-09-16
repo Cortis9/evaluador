@@ -1,10 +1,24 @@
 #evaluacion{
     position: center;
-    background-color: aliceblue;
+    background-color: #ffffff;
     border-radius: 20px;
-    color: black;
+    color:  #ff5900;
+    margin-top: 50px;
+    padding: 50px;
 }
 
 #h1{
-    margin: 100px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+#leonel{
+    margin-left: 90px;
+    margin-bottom: 0px;
+}
+
+#btr{
+    background-color: black;
+    margin-left: 200px;
+    width: 300px;
 }

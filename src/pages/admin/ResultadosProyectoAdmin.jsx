@@ -319,7 +319,7 @@ export function ResultadosProyectoAdmin() {
     <div>
       <Base />
 
-      <div id="contenedor">
+      <div id="contenedor" className="table-responsive">
       
         <div className="export__file2">
         <button id='deleteButton' onClick={eliminarResultados}>🗑️</button>
@@ -348,8 +348,8 @@ export function ResultadosProyectoAdmin() {
         <div className="chart-container">
           <canvas ref={chartRef} id="grafica"></canvas>
           <div className="export-buttons">
-            <button id='exportbt' onClick={exportarImagen}>Exportar como imagen</button>
-            <button id='exportbt' onClick={exportarPDF}>Exportar como PDF</button>
+            <button id='exporbt1' onClick={exportarImagen}>Exportar como imagen</button>
+            <button id='exportb2' onClick={exportarPDF}>Exportar como PDF</button>
           </div>
         </div>
         <label htmlFor="input-puntosextra">Puntos Extra:</label>

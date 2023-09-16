@@ -36,7 +36,8 @@
     background: #fff6 url(../assets/export.png) center / 80% no-repeat;
     border-radius: 50%;
     transition: .2s ease-in-out;
-    margin-left: 450px;
+    margin-left: 370px;
+    margin-right: 30px;
    
     margin-bottom: 0;
 }
@@ -110,30 +111,38 @@
     color: #fff;
     margin-bottom: 20px;
     margin-top: 20px;
+    
 }
 
-#exportbt{
+#exportb1{
     background-color: black;
     color: #fff;
-    margin-left: 80px;
     margin-top: 20px;
+ 
+
 }
 
-#correo{
 
-    margin-left: 0px;
+#exportb2{
+    background-color: black;
+    color: #fff;
+    margin-top: 20px;
+
 }
+
 
 #btenviar{
     background-color: black;
     color: #fff;
-    margin-left: 200px;
+    margin-left: 100px;
+    margin-top: 20px;
 }
 
 #detalles{
 
     height: 100px;
-    width: 600px;
+    width: 350px;
+    margin-right: 100px;
 }
 
 #input-adjuntar-archivo{
@@ -150,4 +159,9 @@
     background-color: black;
     margin-top: 15px;
     margin-left: 30px;
+}
+
+#correo{
+
+    width: 200px;
 }

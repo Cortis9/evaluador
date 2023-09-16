@@ -257,6 +257,7 @@ const handleDeleteCaso = async (casoId, tituloId) => {
     });
     const casoAEliminar = casoData.find((caso) => caso.id === casoId);
     const nombreCasoAEliminar = casoAEliminar ? casoAEliminar.nombre : '';
+
     await fetchDeleteCasos(tituloId,nombreCasoAEliminar , casoId);
 
     setCasosData((prevState) => prevState.filter((caso) => caso.id !== casoId));
@@ -347,7 +348,7 @@ const handleSubmit = async (e) => {
     });
 
     if (response.ok) {
-      console.log('Rubrica actualizada con éxito');
+      window.alert('Rubrica actualizada con éxito');
     } else {
       console.error('Error al guardar los cambios');
     }
@@ -464,8 +465,9 @@ const fetchDeleteTitulos = async (tituloId) => {
 
 
 const fetchDeleteCasos = async (tituloId,nombreCasoAEliminar, casoId) => {
+  
   try {
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/casos/${tituloId}`, {
+    const response = await fetch(`http://localhost:3002/casos/${tituloId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
