@@ -70,6 +70,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem("user", JSON.stringify(userWithAdmin));
     } catch (error) {
       console.log(error);
+      throw error;
     }
   };
 

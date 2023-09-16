@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import '../../styles/Base.css';
+import '../../styles/normal/Base.css';;
 import icono from '../../assets/ico.png';
 
 export function Base() {

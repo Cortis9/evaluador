@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Base } from "../normal/Base";
 import { useNavigate } from "react-router-dom";
-import "../../styles/Evaluacion.css";
+import "../../styles/normal/Evaluacion.css";
 
 export const Resultados = () => {
   const navigate = useNavigate();

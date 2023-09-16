@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import '../../styles/BaseAdmin.css'
-import icono from '../../assets/ico.png';
+import '../../styles/admin/BaseAdmin.css'
+import icono from '../../assets/iconoAdmin.png';
 
 export function Base() {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ export function Base() {
     <div>
       <header>
         <a href="/HomeAdmin">
-          <img src={icono} icono height={50} width={50} id="logo" alt="Logo" />
+          <img src={icono} icono height={50} width={170} id="logo" alt="Logo" />
         </a>
         {isMobile ? (
           <div>

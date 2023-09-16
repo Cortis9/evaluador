@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Base } from "../normal/Base";
-import "../../styles/EvaluacionProyecto.css";
+import "../../styles/normal/EvaluacionProyecto.css";
 import { useNavigate } from "react-router-dom";
 
 export const EvaluacionProyecto = () => {
@@ -53,6 +53,10 @@ export const EvaluacionProyecto = () => {
       setTitulosData(sortedTitulosData);
     } catch (error) {
       console.error("Error al obtener los datos de la rubrica: ", error);
+      window.alert('Error al obtener los datos de la rubrica, falta asignar una rubrica')
+      navigate('/Home')
+      location.reload(); 
+
     }
   };
 

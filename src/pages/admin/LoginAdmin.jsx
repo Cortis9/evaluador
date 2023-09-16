@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/firebase.config";
-import '../../styles/LoginAdmin.css'
-
-import {
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import '../../styles/Login.css'
+import {signInWithEmailAndPassword} from "firebase/auth";
+import icono from '../../assets/iconoAdmin.png';
 
 export function LoginAdmin() {
   const [user, setUser] = useState({ email: "", password: "", isAdmin: false });
@@ -13,8 +11,8 @@ export function LoginAdmin() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
+    event.preventDefault(); 
+    try { 
       if (user.email === 'prueba@prueba.com' && user.password === 'Hola1234') {
         const response = await signInWithEmailAndPassword(auth, user.email, user.password);
         setUser(prevUser => ({ ...prevUser, isAdmin: true })); 
@@ -22,9 +20,12 @@ export function LoginAdmin() {
         navigate("/HomeAdmin");
       } else {
         setErrorMessage('Correo electrónico o contraseña incorrectos.');
+        setUser(prevUser => ({ ...prevUser, email: '', password: '' }));
       }
     } catch (error) {
       console.log(error);
+      setErrorMessage('Correo electrónico o contraseña incorrectos.');
+      setUser(prevUser => ({ ...prevUser, email: '', password: '' }));
     }
   };
 
@@ -47,10 +48,15 @@ export function LoginAdmin() {
          <div class="form-box">
              <div class="form-value">
                  <form onSubmit={handleSubmit}>
-        {errorMessage && <p>{errorMessage}</p>}
-                     <h2 id="login">Login Admin</h2>
+                 <img src={icono} icono height={70} width={200} id="logola" alt="Logo" />
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <a href="/HomeAdmin">
+         
+        </a>
+          
                      <div class="inputbox">
                      <input
+                     id="inputl"
                      value={user.email} onChange={handleChange}
                      name="email"
                      className="input"
@@ -61,6 +67,7 @@ export function LoginAdmin() {
                      <div class="inputbox">
                          <ion-icon name="lock-closed-outline"></ion-icon>
                          <input
+                           id="inputl"
                           name="password" value={user.password} onChange={handleChange}
                          className="input"
                          type="password"

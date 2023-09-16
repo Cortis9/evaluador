@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Base } from '../admin/BaseAdmin';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/Edicion.css';
+import '../../styles/admin/Edicion.css';
 import csvimg from '../../assets/csv.png';
 import searchimg from '../../assets/search.png';
 import jsonimg from '../../assets/json.png';

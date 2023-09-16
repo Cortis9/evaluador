@@ -320,10 +320,9 @@ export function ResultadosProyectoAdmin() {
       <Base />
 
       <div id="contenedor">
-
-       
-      <button id='deleteButton' onClick={eliminarResultados}>🗑️</button>
+      
         <div className="export__file2">
+        <button id='deleteButton' onClick={eliminarResultados}>🗑️</button>
           <label
             htmlFor="export-file2"
             className="export__file-btn2"

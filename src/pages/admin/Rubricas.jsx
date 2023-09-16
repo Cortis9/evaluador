@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../styles/Rubricas.css';
+import '../../styles/admin/Rubricas.css';
 import { Base } from '../admin/BaseAdmin';
 
 export const Rubricas = () => {

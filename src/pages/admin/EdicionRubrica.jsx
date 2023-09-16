@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Base } from './BaseAdmin';
-import '../../styles/EdicionRubrica.css';
+import '../../styles/admin/EdicionRubrica.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export const EdicionRubrica = () => {
   const { rubricaId } = useParams();
@@ -22,6 +24,7 @@ export const EdicionRubrica = () => {
   const [isNewTitleAdded, setIsNewTitleAdded] = useState(false);
   const [isNewCaseAdded, setIsNewCaseAdded] = useState(false);
   const [isNewPointAdded, setIsNewPointAdded] = useState(false);
+  const navigate = useNavigate();
 
   const [rubricaData, setRubricaData] = useState({
     rubrica: null,
@@ -34,6 +37,9 @@ export const EdicionRubrica = () => {
     fetchRubricaData();
   }, [rubricaId]);
 
+  const handleGoBack = () => {
+    navigate('/edicion');
+  };
 
   const fetchRubricaData = async () => {
     try {
@@ -500,7 +506,9 @@ return (
     <Base />
     {rubricaData.rubrica && (
       <div id='divrubrica'>
-        <h1 id='rubricat'>Editar Rúbrica</h1>
+        <button onClick={handleGoBack} id='bregresa'>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </button>
 
         <form onSubmit={handleSubmit}>
           <h2>Rúbrica:</h2>
@@ -607,7 +615,7 @@ return (
                         );
                       })
                   )}
-                  <button type='button' onClick={() => handleAddNewTitle(titulo.id)}>Nuevo Título</button>
+                  <button id='btitulo' type='button' onClick={() => handleAddNewTitle(titulo.id)}>Nuevo Título</button>
                 </div>
               );
             })

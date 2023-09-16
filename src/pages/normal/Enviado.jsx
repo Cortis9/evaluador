@@ -1,6 +1,6 @@
 import React from 'react';
 import { Base } from "../normal/Base";
-import '../../styles/Enviado.css'
+import '../../styles/normal/Enviado.css'
 
 export const Enviado = () => {
   return (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/Registro.css';
+import '../../styles/admin/Registro.css';
 import { Base } from '../admin/BaseAdmin';
 
 export function Registro() {
