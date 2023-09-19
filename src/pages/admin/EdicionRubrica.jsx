@@ -8,19 +8,19 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 export const EdicionRubrica = () => {
   const { rubricaId } = useParams();
   const [rubricaNombre, setRubricaNombre] = useState('');
-  const [titulosInputData, setTitulosInputData] = useState([]);
-  const [titulosData, setTitulosData] = useState([]);
-  const [casoData, setCasosData] = useState([]);
+  const [categoriacriteriosInputData, setcategoriacriteriosInputData] = useState([]);
+  const [categoriacriteriosData, setcategoriacriteriosData] = useState([]);
+  const [criterioData, setcriteriosData] = useState([]);
   const [puntoData, setPuntosData] = useState([]);
-  const [titulosEliminados, setTitulosEliminados] = useState([]);
-  const [casosEliminados, setCasosEliminados] = useState([]);
+  const [categoriacriteriosEliminados, setcategoriacriteriosEliminados] = useState([]);
+  const [criteriosEliminados, setcriteriosEliminados] = useState([]);
   const [puntosEliminados, setPuntosEliminados] = useState([]);
   const [hiddenTitles, setHiddenTitles] = useState([]);
   const [hiddenCases, setHiddenCases] = useState([]);
   const [hiddenPoints, setHiddenPoints] = useState([]);
-  const [newTitle, setNewTitle] = useState({ id: null, titulo: '' });
-  const [newCase, setNewCase] = useState({ id: null, tituloId: null, nombre: '', detalle: '' });
-  const [newPoint, setNewPoint] = useState({ id: null, casoId: null, nombre: '', valor: 0 });
+  const [newTitle, setNewTitle] = useState({ id: null, categoriacriterio: '' });
+  const [newCase, setNewCase] = useState({ id: null, categoriacriterioId: null, nombre: '', detalle: '' });
+  const [newPoint, setNewPoint] = useState({ id: null, criterioId: null, nombre: '', valor: 0 });
   const [isNewTitleAdded, setIsNewTitleAdded] = useState(false);
   const [isNewCaseAdded, setIsNewCaseAdded] = useState(false);
   const [isNewPointAdded, setIsNewPointAdded] = useState(false);
@@ -28,8 +28,8 @@ export const EdicionRubrica = () => {
 
   const [rubricaData, setRubricaData] = useState({
     rubrica: null,
-    titulos: [],
-    casos: {},
+    categoriacriterios: [],
+    criterios: {},
     puntos: {},
   });
   
@@ -48,8 +48,8 @@ export const EdicionRubrica = () => {
       setRubricaData(data);
 
 
-      setTitulosData(data.titulos);
-      setCasosData(data.casos);
+      setcategoriacriteriosData(data.categoriacriterios);
+      setcriteriosData(data.criterios);
       setPuntosData(data.puntos);
     }catch{
 
@@ -62,18 +62,18 @@ export const EdicionRubrica = () => {
     if (rubricaData.rubrica) {
       setRubricaNombre(rubricaData.rubrica.nombre);
   
-      const titulosInputData = titulosData.map((titulo) => {
-        const casos = titulosData.map((titulo) => {
-          const casosArray = casoData[titulo.id];
-          if (!casosArray) return {}; 
+      const categoriacriteriosInputData = categoriacriteriosData.map((categoriacriterio) => {
+        const criterios = categoriacriteriosData.map((categoriacriterio) => {
+          const criteriosArray = criterioData[categoriacriterio.id];
+          if (!criteriosArray) return {}; 
           return {
-            id: titulo.id,
-            nombre: titulo.nombre,
-            casos: Object.values(casosArray).map((caso) => ({
-              id: caso.id,
-              nombre: caso.nombre,
-              detalle: caso.detalle,
-              puntos: (puntoData[caso.id] || []).map((punto) => ({
+            id: categoriacriterio.id,
+            nombre: categoriacriterio.nombre,
+            criterios: Object.values(criteriosArray).map((criterio) => ({
+              id: criterio.id,
+              nombre: criterio.nombre,
+              detalle: criterio.detalle,
+              puntos: (puntoData[criterio.id] || []).map((punto) => ({
                 id: punto.id,
                 nombre: punto.nombre,
                 valor: punto.valor,
@@ -83,70 +83,70 @@ export const EdicionRubrica = () => {
         });
         
         return {
-          id: titulo.id,
-          nombre: titulo.nombre,
-          casos: casos,
+          id: categoriacriterio.id,
+          nombre: categoriacriterio.nombre,
+          criterios: criterios,
         };
       });
   
-      setTitulosInputData(titulosInputData);
+      setcategoriacriteriosInputData(categoriacriteriosInputData);
     }
-  }, [rubricaData, titulosData, casoData, puntoData]);
+  }, [rubricaData, categoriacriteriosData, criterioData, puntoData]);
 
 
 const handleRubricaNombreChange = (e) => {
   setRubricaNombre(e.target.value);
 };
 
-const handleTituloNameChange = (e, tituloId) => {
+const handlecategoriacriterioNameChange = (e, categoriacriterioId) => {
   const { value } = e.target;
-  setTitulosData((prevState) =>
-    prevState.map((titulo) => {
-      if (titulo.id === tituloId) {
+  setcategoriacriteriosData((prevState) =>
+    prevState.map((categoriacriterio) => {
+      if (categoriacriterio.id === categoriacriterioId) {
         return {
-          ...titulo,
-          titulo: value,
+          ...categoriacriterio,
+          categoriacriterio: value,
         };
       }
-      return titulo;
+      return categoriacriterio;
     })
   );
 };
 
-const handleCasoNameChange = (e, casoId) => {
+const handlecriterioNameChange = (e, criterioId) => {
   const { value } = e.target;
-  setCasosData((prevState) =>
-    prevState.map((caso) => {
-      if (caso.id === casoId) {
+  setcriteriosData((prevState) =>
+    prevState.map((criterio) => {
+      if (criterio.id === criterioId) {
         return {
-          ...caso,
+          ...criterio,
           nombre: value,
         };
       }
-      return caso;
+      return criterio;
     })
   );
 };
 
-const handleCasoDetalleChange = (e, casoId) => {
+const handlecriterioDetalleChange = (e, criterioId) => {
   const { value } = e.target;
-  setCasosData((prevState) =>
-    prevState.map((caso) => {
-      if (caso.id === casoId) {
+  setcriteriosData((prevState) =>
+    prevState.map((criterio) => {
+      if (criterio.id === criterioId) {
         return {
-          ...caso,
+          ...criterio,
           detalle: value,
         };
       }
-      return caso;
+      return criterio;
     })
   );
 };
-const handlePuntoNameChange = (e, casoId, puntoId) => {
+const handlePuntoNameChange = (e, criterioId, puntoId) => {
   const { value } = e.target;
 
   const nuevosPuntos = puntoData.map((punto) => {
-    if (punto.casoId === casoId && punto.id === puntoId) {
+    if (punto.criterioId === criterioId && punto.id === puntoId) {
       return {
         ...punto,
         nombre: value,
@@ -158,11 +158,11 @@ const handlePuntoNameChange = (e, casoId, puntoId) => {
   setPuntosData(nuevosPuntos);
 };
 
-const handlePuntoValorChange = (e, casoId, puntoId) => {
+const handlePuntoValorChange = (e, criterioId, puntoId) => {
   const { value } = e.target;
 
   const nuevosPuntos = puntoData.map((punto) => {
-    if (punto.casoId === casoId && punto.id === puntoId) {
+    if (punto.criterioId === criterioId && punto.id === puntoId) {
       return {
         ...punto,
         valor: value,
@@ -175,72 +175,72 @@ const handlePuntoValorChange = (e, casoId, puntoId) => {
 };
 
 const handleAddNewTitle = () => {
-  const ultimoId = titulosData.length > 0 ? titulosData[titulosData.length - 1].id : null;
+  const ultimoId = categoriacriteriosData.length > 0 ? categoriacriteriosData[categoriacriteriosData.length - 1].id : null;
   const newTitleId = ultimoId+1;
-  const newTitle = { id: newTitleId, titulo: '' };
-  const ultimoIdCasos = casoData.length > 0 ? casoData[casoData.length - 1].id : null;
-  const newCaseId =  ultimoIdCasos+1;
-  const newCase = { id: newCaseId, tituloId: newTitleId, nombre: '', detalle: '' };
+  const newTitle = { id: newTitleId, categoriacriterio: '' };
+  const ultimoIdcriterios = criterioData.length > 0 ? criterioData[criterioData.length - 1].id : null;
+  const newCaseId =  ultimoIdcriterios+1;
+  const newCase = { id: newCaseId, categoriacriterioId: newTitleId, nombre: '', detalle: '' };
   const ultimoIdPuntos = puntoData.length > 0 ? puntoData[puntoData.length - 1].id : null;
   const newPointId = ultimoIdPuntos+1;
-  const newPoint = { id: newPointId, casoId: newCaseId, nombre: '', valor: 0 };
+  const newPoint = { id: newPointId, criterioId: newCaseId, nombre: '', valor: 0 };
 
   setNewTitle(newTitle);
   setNewCase(newCase);
   setNewPoint(newPoint);
-  setTitulosData([...titulosData, newTitle]);
-  setCasosData([...casoData, newCase]);
+  setcategoriacriteriosData([...categoriacriteriosData, newTitle]);
+  setcriteriosData([...criterioData, newCase]);
   setPuntosData([...puntoData, newPoint]);
   setIsNewTitleAdded(true);
 };
 
 
-const handleAddNewCaso = (tituloId) => {
-  const ultimoIdCasos = casoData.length > 0 ? casoData[casoData.length - 1].id : null;
+const handleAddNewcriterio = (categoriacriterioId) => {
+  const ultimoIdcriterios = criterioData.length > 0 ? criterioData[criterioData.length - 1].id : null;
   
-  const newCaseId = ultimoIdCasos + 1 ;
-  const newCase = { id: newCaseId, tituloId: tituloId, nombre: '', detalle: '' };
+  const newCaseId = ultimoIdcriterios + 1 ;
+  const newCase = { id: newCaseId, categoriacriterioId: categoriacriterioId, nombre: '', detalle: '' };
 
   const ultimoIdPuntos = puntoData.length > 0 ? puntoData[puntoData.length - 1].id : null;
   const newPointId = ultimoIdPuntos + 1;
-  const newPoint = { id: newPointId, casoId: newCaseId, nombre: '', valor: 0 };
+  const newPoint = { id: newPointId, criterioId: newCaseId, nombre: '', valor: 0 };
 
 
   if (newCaseId !== null && newPointId !== null) {
     setIsNewCaseAdded(true);
-    setCasosData([...casoData, newCase]);
+    setcriteriosData([...criterioData, newCase]);
     setPuntosData([...puntoData, newPoint]);
   }
 };
 
 
-const handleAddNewPunto = (casoId) => {
+const handleAddNewPunto = (criterioId) => {
  const ultimoIdPuntos = puntoData.length > 0 ? puntoData[puntoData.length - 1].id : null;
   const newPointId = ultimoIdPuntos+1;
-  const newPoint = { id: newPointId, casoId: casoId, nombre: '', valor: 0 };
+  const newPoint = { id: newPointId, criterioId: criterioId, nombre: '', valor: 0 };
   setIsNewPointAdded(true);
   setPuntosData([...puntoData, newPoint]);
 };
 
-const handleDeleteTitulo = async (tituloId) => {
+const handleDeletecategoriacriterio = async (categoriacriterioId) => {
   try {
-    const casosAEliminar = casoData.filter((caso) => caso.tituloId === tituloId);
+    const criteriosAEliminar = criterioData.filter((criterio) => criterio.categoriacriterioId === categoriacriterioId);
 
-    for (const caso of casosAEliminar) {
-      const puntosAEliminar = puntoData.filter((punto) => punto.casoId === caso.id);
+    for (const criterio of criteriosAEliminar) {
+      const puntosAEliminar = puntoData.filter((punto) => punto.criterioId === criterio.id);
 
       for (const punto of puntosAEliminar) {
-        await fetchDeletePuntos(punto.casoId); 
+        await fetchDeletePuntos(punto.criterioId); 
       }
 
-      await fetchDeleteCasos(caso.tituloId); 
-      setCasosData((prevState) => prevState.filter((c) => c.id !== caso.id));
+      await fetchDeletecriterios(criterio.categoriacriterioId); 
+      setcriteriosData((prevState) => prevState.filter((c) => c.id !== criterio.id));
     }
 
-    const tituloAEliminar = titulosData.find((titulo) => titulo.id === tituloId);
-      await fetchDeleteTitulos(tituloAEliminar.id); 
-      setTitulosData((prevState) => prevState.filter((t) => t.id !== tituloId));
-      setTitulosEliminados((prevState) => [...prevState, tituloId]);
+    const categoriacriterioAEliminar = categoriacriteriosData.find((categoriacriterio) => categoriacriterio.id === categoriacriterioId);
+      await fetchDeletecategoriacriterios(categoriacriterioAEliminar.id); 
+      setcategoriacriteriosData((prevState) => prevState.filter((t) => t.id !== categoriacriterioId));
+      setcategoriacriteriosEliminados((prevState) => [...prevState, categoriacriterioId]);
     
   } catch (error) {
     console.error("Error al eliminar el título:", error);
@@ -248,44 +248,44 @@ const handleDeleteTitulo = async (tituloId) => {
 };
 
 
-const handleDeleteCaso = async (casoId, tituloId) => {
+const handleDeletecriterio = async (criterioId, categoriacriterioId) => {
   try {
     
-    const puntosAEliminar = puntoData.filter((punto) => punto.casoId === casoId);
+    const puntosAEliminar = puntoData.filter((punto) => punto.criterioId === criterioId);
     puntosAEliminar.forEach(async (punto) => {
-      await fetchDeletePuntos(punto.casoId); 
+      await fetchDeletePuntos(punto.criterioId); 
     });
-    const casoAEliminar = casoData.find((caso) => caso.id === casoId);
-    const nombreCasoAEliminar = casoAEliminar ? casoAEliminar.nombre : '';
+    const criterioAEliminar = criterioData.find((criterio) => criterio.id === criterioId);
+    const nombrecriterioAEliminar = criterioAEliminar ? criterioAEliminar.nombre : '';
 
-    await fetchDeleteCasos(tituloId,nombreCasoAEliminar , casoId);
+    await fetchDeletecriterios(categoriacriterioId,nombrecriterioAEliminar , criterioId);
 
-    setCasosData((prevState) => prevState.filter((caso) => caso.id !== casoId));
-    setPuntosData((prevState) => prevState.filter((punto) => punto.casoId !== casoId));
+    setcriteriosData((prevState) => prevState.filter((criterio) => criterio.id !== criterioId));
+    setPuntosData((prevState) => prevState.filter((punto) => punto.criterioId !== criterioId));
 
-    setCasosEliminados((prevState) => [...prevState, casoId]);
+    setcriteriosEliminados((prevState) => [...prevState, criterioId]);
 
   } catch (error) {
-    console.error("Error al eliminar el caso:", error);
+    console.error("Error al eliminar el criterio:", error);
   }
 };
 
 
-const handleDeletePunto = async (puntoId, casoId) => {
+const handleDeletePunto = async (puntoId, criterioId) => {
   try {
     const puntoAEliminar = puntoData.find((punto) => punto.id === puntoId);
     const nombrePuntoAEliminar = puntoAEliminar ? puntoAEliminar.nombre : '';
     
-    await fetchDeletePuntos(casoId, nombrePuntoAEliminar, puntoId); 
+    await fetchDeletePuntos(criterioId, nombrePuntoAEliminar, puntoId); 
 
     setPuntosData((prevState) => prevState.filter((punto) => punto.id !== puntoId));
     setPuntosEliminados((prevState) => [...prevState, puntoId]);
     
-    const puntosAsociados = puntoData.filter((punto) => punto.casoId === casoId);
+    const puntosAsociados = puntoData.filter((punto) => punto.criterioId === criterioId);
     const puntosOcultos = puntosAsociados.every((punto) => hiddenPoints.includes(punto.id));
     
     if (puntosOcultos) {
-      handleDeleteCaso(casoId, casoData.find((caso) => caso.id === casoId).tituloId);
+      handleDeletecriterio(criterioId, criterioData.find((criterio) => criterio.id === criterioId).categoriacriterioId);
     }
   } catch (error) {
     console.error("Error al eliminar el punto:", error);
@@ -300,17 +300,17 @@ const handleSubmit = async (e) => {
 
   const requestData = {
     rubrica: { nombre: rubricaNombre },
-    titulos: titulosData.map((titulo) => ({
-      id: titulo.id,
-      titulo: titulo.titulo,
-      casos: casoData
-        .filter((caso) => caso.tituloId === titulo.id)
-        .map((caso) => ({
-          id: caso.id,
-          nombre: caso.nombre,
-          detalle: caso.detalle,
+    categoriacriterios: categoriacriteriosData.map((categoriacriterio) => ({
+      id: categoriacriterio.id,
+      categoriacriterio: categoriacriterio.categoriacriterio,
+      criterios: criterioData
+        .filter((criterio) => criterio.categoriacriterioId === categoriacriterio.id)
+        .map((criterio) => ({
+          id: criterio.id,
+          nombre: criterio.nombre,
+          detalle: criterio.detalle,
           puntos: puntoData
-            .filter((punto) => punto.casoId === caso.id)
+            .filter((punto) => punto.criterioId === criterio.id)
             .map((punto) => ({
               id: punto.id,
               nombre: punto.nombre,
@@ -323,13 +323,13 @@ const handleSubmit = async (e) => {
   try {
 
     if (isNewTitleAdded) {
-        await fetchCreateTitulo();
-        await fetchCreateCasos();
+        await fetchCreatecategoriacriterio();
+        await fetchCreatecriterios();
         await fetchCreatePuntos();
       }
 
     if(isNewCaseAdded){
-        await fetchCreateCasos();
+        await fetchCreatecriterios();
         await fetchCreatePuntos();
     }
 
@@ -358,20 +358,20 @@ const handleSubmit = async (e) => {
 };
 
 
-const fetchCreateTitulo = async () => {
+const fetchCreatecategoriacriterio = async () => {
   const requestData = {
-    titulos: titulosData.map((titulo) => ({
-      id: titulo.id,
-      titulo: titulo.titulo,
+    categoriacriterios: categoriacriteriosData.map((categoriacriterio) => ({
+      id: categoriacriterio.id,
+      categoriacriterio: categoriacriterio.categoriacriterio,
     })),
   }
   try {
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/titulos/${rubricaId}`, {
+    const response = await fetch(`https://api-git-main-cortis9.vercel.app/categoriacriterios/${rubricaId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(requestData.titulos),
+      body: JSON.stringify(requestData.categoriacriterios),
     });
 
     if (!response.ok) {
@@ -386,40 +386,40 @@ const fetchCreateTitulo = async () => {
 };
 
 
-const fetchCreateCasos = async () => {
+const fetchCreatecriterios = async () => {
   const requestData = {
-    casos: casoData.map((caso) => ({
-      tituloId: caso.tituloId,
+    criterios: criterioData.map((criterio) => ({
+      categoriacriterioId: criterio.categoriacriterioId,
       rubricaId: rubricaId,
-      nombre: caso.nombre,
-      detalle: caso.detalle,
+      nombre: criterio.nombre,
+      detalle: criterio.detalle,
     })),
   };
 
   try {
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/casos`, {
+    const response = await fetch(`https://api-git-main-cortis9.vercel.app/criterios`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(requestData.casos),
+      body: JSON.stringify(requestData.criterios),
     });
 
     if (!response.ok) {
-      throw new Error('Error al crear el nuevo caso');
+      throw new Error('Error al crear el nuevo criterio');
     }
 
    
     return response.json();
   } catch (error) {
-    throw new Error('Error en la solicitud para crear el nuevo caso: ' + error.message);
+    throw new Error('Error en la solicitud para crear el nuevo criterio: ' + error.message);
   }
 };
 
 const fetchCreatePuntos = async () => {
   const requestData = {
     puntos: puntoData.map((punto) => ({
-      casoId: punto.casoId,
+      criterioId: punto.criterioId,
       nombre: punto.nombre,
       valor: parseInt(punto.valor),
     })),
@@ -446,9 +446,9 @@ const fetchCreatePuntos = async () => {
 };
 
 
-const fetchDeleteTitulos = async (tituloId) => {
+const fetchDeletecategoriacriterios = async (categoriacriterioId) => {
   try {
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/titulos/${tituloId}`, {
+    const response = await fetch(`https://api-git-main-cortis9.vercel.app/categoriacriterios/${categoriacriterioId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -456,7 +456,7 @@ const fetchDeleteTitulos = async (tituloId) => {
     });
 
     if (!response.ok) {
-      console.error(`Error al eliminar el título ${tituloId}`);
+      console.error(`Error al eliminar el título ${categoriacriterioId}`);
     }
   } catch (error) {
     console.error("Error al eliminar el título:", error);
@@ -464,28 +464,28 @@ const fetchDeleteTitulos = async (tituloId) => {
 };
 
 
-const fetchDeleteCasos = async (tituloId,nombreCasoAEliminar, casoId) => {
+const fetchDeletecriterios = async (categoriacriterioId,nombrecriterioAEliminar, criterioId) => {
   
   try {
-    const response = await fetch(`http://localhost:3002/casos/${tituloId}`, {
+    const response = await fetch(`http://localhost:3002/criterios/${categoriacriterioId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ nombre: nombreCasoAEliminar, id: casoId }),
+      body: JSON.stringify({ nombre: nombrecriterioAEliminar, id: criterioId }),
     });
 
     if (!response.ok) {
-      console.error(`Error al eliminar el caso ${casoId}`);
+      console.error(`Error al eliminar el criterio ${criterioId}`);
     }
   } catch (error) {
-    console.error("Error al eliminar el caso:", error);
+    console.error("Error al eliminar el criterio:", error);
   }
 };
 
-const fetchDeletePuntos = async (casoId, nombrePuntoAEliminar, puntoId) => {
+const fetchDeletePuntos = async (criterioId, nombrePuntoAEliminar, puntoId) => {
   try {
-    const response = await fetch(`https://api-git-main-cortis9.vercel.app/puntos/${casoId}`, {
+    const response = await fetch(`https://api-git-main-cortis9.vercel.app/puntos/${criterioId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -527,61 +527,61 @@ return (
           />
           <br /><br />
           
-          {titulosData.length > 0 ? (
-            titulosData.map((titulo) => {
-              if (hiddenTitles.includes(titulo.id)) {
+          {categoriacriteriosData.length > 0 ? (
+            categoriacriteriosData.map((categoriacriterio) => {
+              if (hiddenTitles.includes(categoriacriterio.id)) {
                 return null;
               }
 
               return (
-                <div key={titulo.id}>
-                  <label htmlFor={`tituloNombre_${titulo.id}`}>Nombre del título:</label>
+                <div key={categoriacriterio.id}>
+                  <label htmlFor={`categoriacriterioNombre_${categoriacriterio.id}`}>Nombre del título:</label>
                   <input
                     type='text'
-                    id={`tituloNombre_${titulo.id}`}
-                    name={`tituloNombre_`}
-                    value={titulo.titulo || ''}
-                    onChange={(e) => handleTituloNameChange(e, titulo.id)}
+                    id={`categoriacriterioNombre_${categoriacriterio.id}`}
+                    name={`categoriacriterioNombre_`}
+                    value={categoriacriterio.categoriacriterio || ''}
+                    onChange={(e) => handlecategoriacriterioNameChange(e, categoriacriterio.id)}
                   />
 
-                  <button onClick={() => handleDeleteTitulo(titulo.id)}>Eliminar Título</button>
+                  <button onClick={() => handleDeletecategoriacriterio(categoriacriterio.id)}>Eliminar Título</button>
 
-                  {casoData.length > 0 && casoData.filter((caso) => caso.tituloId === titulo.id).length > 0 && (
-                    casoData
-                      .filter((caso) => caso.tituloId === titulo.id)
-                      .map((caso) => {
-                        if (hiddenCases.includes(caso.id)) {
+                  {criterioData.length > 0 && criterioData.filter((criterio) => criterio.categoriacriterioId === categoriacriterio.id).length > 0 && (
+                    criterioData
+                      .filter((criterio) => criterio.categoriacriterioId === categoriacriterio.id)
+                      .map((criterio) => {
+                        if (hiddenCases.includes(criterio.id)) {
                           return null;
                         }
 
                         return (
-                          <div key={caso.id}>
-                            <label htmlFor={`casoNombre_${caso.id}`}>Nombre del caso:</label>
+                          <div key={criterio.id}>
+                            <label htmlFor={`criterioNombre_${criterio.id}`}>Nombre del criterio:</label>
                             <input
                               type='text'
-                              id={`casoNombre_${caso.id}`}
-                              name='casoNombre'
-                              value={caso.nombre || ''}
-                              onChange={(e) => handleCasoNameChange(e, caso.id)}
+                              id={`criterioNombre_${criterio.id}`}
+                              name='criterioNombre'
+                              value={criterio.nombre || ''}
+                              onChange={(e) => handlecriterioNameChange(e, criterio.id)}
                             />
 
                             <div>
-                              <label htmlFor={`casoDetalle_${caso.id}`}>Detalle del caso:</label>
+                              <label htmlFor={`criterioDetalle_${criterio.id}`}>Detalle del criterio:</label>
                               <input
                                 type='text'
-                                id={`casoDetalle_${caso.id}`}
-                                name='casoDetalle'
-                                value={caso.detalle || ''}
-                                onChange={(e) => handleCasoDetalleChange(e, caso.id)}
+                                id={`criterioDetalle_${criterio.id}`}
+                                name='criterioDetalle'
+                                value={criterio.detalle || ''}
+                                onChange={(e) => handlecriterioDetalleChange(e, criterio.id)}
                               />
-                              <button onClick={() => handleDeleteCaso(caso.id, titulo.id)}>Eliminar Caso</button>
-                              <button onClick={() => handleAddNewCaso(titulo.id)}>Nuevo Caso</button>
+                              <button onClick={() => handleDeletecriterio(criterio.id, categoriacriterio.id)}>Eliminar criterio</button>
+                              <button onClick={() => handleAddNewcriterio(categoriacriterio.id)}>Nuevo criterio</button>
                             </div>
 
                             {puntoData.length > 0 &&
-                              puntoData.filter((punto) => punto.casoId === caso.id).length > 0 && (
+                              puntoData.filter((punto) => punto.criterioId === criterio.id).length > 0 && (
                                 puntoData
-                                  .filter((punto) => punto.casoId === caso.id)
+                                  .filter((punto) => punto.criterioId === criterio.id)
                                   .map((punto) => {
                                     if (hiddenPoints.includes(punto.id)) {
                                       return null;
@@ -595,7 +595,7 @@ return (
                                           id={`puntoNombre_${punto.id}`}
                                           name='puntoNombre'
                                           value={punto.nombre || ''}
-                                          onChange={(e) => handlePuntoNameChange(e, caso.id, punto.id)}
+                                          onChange={(e) => handlePuntoNameChange(e, criterio.id, punto.id)}
                                         />
 
                                         <label htmlFor={`puntoValor_${punto.id}`}>Valor de Punto:</label>
@@ -604,11 +604,11 @@ return (
                                           id={`puntoValor_${punto.id}`}
                                           name='puntoValor'
                                           value={punto.valor || ''}
-                                          onChange={(e) => handlePuntoValorChange(e, caso.id, punto.id)}
+                                          onChange={(e) => handlePuntoValorChange(e, criterio.id, punto.id)}
                                         />
 
-                                        <button onClick={() => handleDeletePunto(punto.id, punto.casoId)}>Eliminar Punto</button>
-                                        <button onClick={() => handleAddNewPunto(caso.id)}>Nuevo Punto</button>
+                                        <button onClick={() => handleDeletePunto(punto.id, punto.criterioId)}>Eliminar Punto</button>
+                                        <button onClick={() => handleAddNewPunto(criterio.id)}>Nuevo Punto</button>
                                       </div>
                                     );
                                   })
@@ -617,7 +617,7 @@ return (
                         );
                       })
                   )}
-                  <button id='btitulo' type='button' onClick={() => handleAddNewTitle(titulo.id)}>Nuevo Título</button>
+                  <button id='bcategoriacriterio' type='button' onClick={() => handleAddNewTitle(categoriacriterio.id)}>Nuevo Título</button>
                 </div>
               );
             })

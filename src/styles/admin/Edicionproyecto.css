@@ -7,7 +7,7 @@
 
 }
 
-#tituloedicion{
+#categoriacriterioedicion{
 
     height: 50px;
     width: 350px;
@@ -86,7 +86,7 @@ label {
 
 }
 
-#btitulo{
+#bcategoriacriterio{
 
     background-color: #000000;
     color: #fff;

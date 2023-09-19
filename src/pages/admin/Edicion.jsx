@@ -97,28 +97,28 @@ export const Edicion = () => {
       const response = await fetch('https://api-git-main-cortis9.vercel.app/rubricas');
       const rubricasData = await response.json();
 
-      const rubricasWithCasos = await Promise.all(
+      const rubricasWithcriterios = await Promise.all(
         rubricasData.map(async (rubrica) => {
-          const casosResponse = await fetch(`https://api-git-main-cortis9.vercel.app/casos?rubricaId=${rubrica.id}`);
-          const casosData = await casosResponse.json();
-          return { ...rubrica, casos: casosData };
+          const criteriosResponse = await fetch(`https://api-git-main-cortis9.vercel.app/criterios?rubricaId=${rubrica.id}`);
+          const criteriosData = await criteriosResponse.json();
+          return { ...rubrica, criterios: criteriosData };
         })
       );
 
-      const rubricasWithCasosAndPuntos = await Promise.all(
-        rubricasWithCasos.map(async (rubrica) => {
-          const casosWithPuntos = await Promise.all(
-            rubrica.casos.map(async (caso) => {
-              const puntosResponse = await fetch(`https://api-git-main-cortis9.vercel.app/puntos?casoId=${caso.id}`);
+      const rubricasWithcriteriosAndPuntos = await Promise.all(
+        rubricasWithcriterios.map(async (rubrica) => {
+          const criteriosWithPuntos = await Promise.all(
+            rubrica.criterios.map(async (criterio) => {
+              const puntosResponse = await fetch(`https://api-git-main-cortis9.vercel.app/puntos?criterioId=${criterio.id}`);
               const puntosData = await puntosResponse.json();
-              return { ...caso, puntos: puntosData };
+              return { ...criterio, puntos: puntosData };
             })
           );
-          return { ...rubrica, casos: casosWithPuntos };
+          return { ...rubrica, criterios: criteriosWithPuntos };
         })
       );
 
-      setRubricas(rubricasWithCasosAndPuntos);
+      setRubricas(rubricasWithcriteriosAndPuntos);
     } catch (error) {
       console.error('Error al obtener las rubricas: ', error);
     }
@@ -182,11 +182,11 @@ export const Edicion = () => {
   };
 
   const toCSV = (data) => {
-    const headers = ['titulo', 'nombre', 'correo', 'categoria','rubrica', 'link'];
+    const headers = ['categoriacriterio', 'nombre', 'correo', 'categoria','rubrica', 'link'];
 
   const rows = data.map(
     (proyecto) =>
-      `${proyecto.titulo},${proyecto.nombre},${proyecto.correo},${proyecto.categoria},${proyecto.rubrica},${proyecto.link}`
+      `${proyecto.categoriacriterio},${proyecto.nombre},${proyecto.correo},${proyecto.categoria},${proyecto.rubrica},${proyecto.link}`
   );
 
   return [headers.join(','), ...rows].join('\n');
@@ -204,12 +204,12 @@ export const Edicion = () => {
   const convertToCSV = (data) => {
     let csvContent = '';
 
-    csvContent += '"Rubrica ID","Rubrica","Rubrica-Caso ID","Caso ID","Caso","Punto ID","Caso-Punto ID","Punto","Valor-Punto"\n';
+    csvContent += '"Rubrica ID","Rubrica","Rubrica-criterio ID","criterio ID","criterio","Punto ID","criterio-Punto ID","Punto","Valor-Punto"\n';
 
     data.forEach((rubrica) => {
-      rubrica.casos.forEach((caso) => {
-        caso.puntos.forEach((punto) => {
-          const row = `"${rubrica.id}","${rubrica.nombre}","${caso.rubricaId}","${caso.id}","${caso.nombre}","${punto.id}","${punto.casoId}","${punto.nombre}","${punto.valor}"\n`;
+      rubrica.criterios.forEach((criterio) => {
+        criterio.puntos.forEach((punto) => {
+          const row = `"${rubrica.id}","${rubrica.nombre}","${criterio.rubricaId}","${criterio.id}","${criterio.nombre}","${punto.id}","${punto.criterioId}","${punto.nombre}","${punto.valor}"\n`;
           csvContent += row;
         });
       });
@@ -222,11 +222,11 @@ export const Edicion = () => {
     const workbook = XLSX.utils.book_new();
 
     data.forEach((rubrica) => {
-      const worksheetData = [['Rubrica ID', 'Rubrica', 'Rubrica-Caso ID', 'Caso ID', 'Caso', 'Punto ID', 'Caso-Punto ID', 'Punto', 'Valor-Punto']];
+      const worksheetData = [['Rubrica ID', 'Rubrica', 'Rubrica-criterio ID', 'criterio ID', 'criterio', 'Punto ID', 'criterio-Punto ID', 'Punto', 'Valor-Punto']];
 
-      rubrica.casos.forEach((caso) => {
-        caso.puntos.forEach((punto) => {
-          const row = [rubrica.id, rubrica.nombre, caso.rubricaId, caso.id, caso.nombre, punto.id, punto.casoId, punto.nombre, punto.valor];
+      rubrica.criterios.forEach((criterio) => {
+        criterio.puntos.forEach((punto) => {
+          const row = [rubrica.id, rubrica.nombre, criterio.rubricaId, criterio.id, criterio.nombre, punto.id, punto.criterioId, punto.nombre, punto.valor];
           worksheetData.push(row);
         });
       });
@@ -331,7 +331,7 @@ export const Edicion = () => {
       />
                 <img src={searchimg} alt="" />
               </div>
-              <div id='titulotablap'> <h2 >Proyectos</h2></div>
+              <div id='categoriacriteriotablap'> <h2 >Proyectos</h2></div>
               <div className="export__file">
                 <label
                   htmlFor="export-file2"
@@ -362,7 +362,7 @@ export const Edicion = () => {
             <div id="proyectosTable">
               {categorias.map((categoria) => (
                 <div key={categoria}>
-                  <div id='divc'>  <h3 id='titulocategoria'>{categoria}</h3></div>
+                  <div id='divc'>  <h3 id='categoriacriteriocategoria'>{categoria}</h3></div>
                   <table>
                     <thead>
                       <tr>
@@ -375,10 +375,10 @@ export const Edicion = () => {
                     </thead>
                     <tbody>
                       {proyectos
-                        .filter((proyecto) => proyecto.categoria === categoria && proyecto.titulo.includes(searchQueryProyectos))
+                        .filter((proyecto) => proyecto.categoria === categoria && proyecto.categoriacriterio.includes(searchQueryProyectos))
                         .map((proyecto) => (
                           <tr key={proyecto.id}>
-                            <td>{proyecto.titulo}</td>
+                            <td>{proyecto.categoriacriterio}</td>
                             <td>{proyecto.nombre}</td>
                             <td>{proyecto.estado}</td>
                             <td>{typeof correoJuez === 'string' ? correoJuez : ''}</td>
@@ -409,7 +409,7 @@ export const Edicion = () => {
       />
                 <img src={searchimg} alt="" />
               </div>
-              <div id='titulotablar'><h2 >Rúbricas</h2></div>
+              <div id='categoriacriteriotablar'><h2 >Rúbricas</h2></div>
   
   <div className="export__file">
     <label

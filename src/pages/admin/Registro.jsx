@@ -3,7 +3,7 @@ import '../../styles/admin/Registro.css';
 import { Base } from '../admin/BaseAdmin';
 
 export function Registro() {
-  const [titulo, setTitulo] = useState('');
+  const [categoriacriterio, setcategoriacriterio] = useState('');
   const [categoria, setCategoria] = useState('');
   const [rubrica, setRubrica] = useState('');
   const [file, setFile] = useState(null);
@@ -15,7 +15,7 @@ export function Registro() {
 
   const handleTitleChange = (event) => {
     const value = event.target.value.replace(/(^['"]|['"]$)/g, '');
-    setTitulo(value);
+    setcategoriacriterio(value);
   };
 
   const handleCategoryChange = (event) => {
@@ -40,7 +40,7 @@ export function Registro() {
     event.preventDefault();
 
     const formData = {
-      titulo,
+      categoriacriterio,
       nombre,
       correo,
       categoria,
@@ -61,7 +61,7 @@ export function Registro() {
         const data = await response.json();
         console.log(data.message);
         window.alert('Datos enviados con éxito');
-        setTitulo('');
+        setcategoriacriterio('');
         setCategoria('');
         setRubrica('');
         setFile(null);
@@ -93,7 +93,7 @@ export function Registro() {
       if (response.ok) {
         const data = await response.json();
         setUploadStatus('Carga exitosa');
-        console.log(data.message);
+  
         
       } else {
         setUploadStatus('Error al cargar el archivo CSV');
@@ -131,12 +131,23 @@ export function Registro() {
 
      
 
-          <div id="archivo">
-            <input id="inputarchivo" type="file" name="file" accept=".csv" onChange={handleFileChange} />
-            {file && !link && <span id="nombrearchivo">{file.name}</span>}
-            <button  onClick={handleCSVUpload} id="botonarchivo">Subir archivo CSV</button>
-            {uploadStatus && <div>{uploadStatus}</div>}
-          </div>
+         <div id="archivo">
+      <label id="custom-file-upload" htmlFor="inputarchivo">
+        
+      </label>
+      <input
+        id="inputarchivo"
+        type="file"
+        name="file"
+        accept=".csv"
+        onChange={handleFileChange}
+      />
+      {file && !uploadStatus && <span id="nombrearchivo">{file.name}</span>}
+      <button onClick={handleCSVUpload} id="botonarchivo">
+        Enviar
+      </button>
+      {uploadStatus && <div id="uploadStatus">{uploadStatus}</div>}
+    </div>
 
           
 
@@ -144,7 +155,7 @@ export function Registro() {
             <div id='participantes'>
               <label htmlFor="title">Título:</label>
               <input type="text" id="title" name="title" 
-              placeholder="Titulo" onChange={handleTitleChange} value={titulo} />
+              placeholder="categoriacriterio" onChange={handleTitleChange} value={categoriacriterio} />
             </div>
 
             <div id='participantes'>

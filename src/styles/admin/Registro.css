@@ -1,4 +1,4 @@
-#titulo {
+#categoriacriterio {
   margin-top: 30px;
   margin-left: 30px;
   margin-right: 30px;
@@ -134,11 +134,48 @@ body{
   margin-top: 30px;
 }
 
-#inputarchivo
-{
- margin-top: 20px;
 
+#custom-file-upload {
+  display: inline-block;
+  width: 50px; 
+  height: 50px; 
+  background-size: cover;
+  background-image: url('/src/assets/carga.png'); 
+  cursor: pointer; 
+  text-align: center;
+  line-height: 200px; 
 }
+
+
+#inputarchivo {
+  display: none; 
+}
+
+
+#nombrearchivo {
+  margin-top: 10px;
+  color: #000;
+  
+}
+
+
+#botonarchivo {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+#uploadStatus {
+  margin-top: 10px;
+  color: #007bff;
+  font-weight: bold;
+}
+
 
 #archivo
 {

@@ -9,19 +9,19 @@ export const EvaluacionProyecto = () => {
       id: 0,
       nombre: "",
     },
-    titulos: [],
-    casos: [],
+    categoriacriterios: [],
+    criterios: [],
     puntos: [],
   });
 
   const [puntosSeleccionados, setPuntosSeleccionados] = useState([]);
-  const [casosPuntosRelacionados, setCasosPuntosRelacionados] = useState([]);
+  const [criteriosPuntosRelacionados, setcriteriosPuntosRelacionados] = useState([]);
   const [sumaValores, setSumaValores] = useState(0);
   const [correojuez, setCorreoJuez] = useState("");
   const [NombreRubrica, setNombreRubrica] = useState("");
   const [usuario, setUsuario] = useState(null);
   const navigate = useNavigate();
-  const [titulosData, setTitulosData] = useState([]);
+  const [categoriacriteriosData, setcategoriacriteriosData] = useState([]);
 
   const pathname = window.location.pathname;
   const parts = pathname.split("/");
@@ -49,8 +49,8 @@ export const EvaluacionProyecto = () => {
       setRubricaData(data);
       setNombreRubrica(data.rubrica.nombre);
 
-      const sortedTitulosData = data.titulos ? data.titulos.sort((a, b) => a.id - b.id) : [];
-      setTitulosData(sortedTitulosData);
+      const sortedcategoriacriteriosData = data.categoriacriterios ? data.categoriacriterios.sort((a, b) => a.id - b.id) : [];
+      setcategoriacriteriosData(sortedcategoriacriteriosData);
     } catch (error) {
       console.error("Error al obtener los datos de la rubrica: ", error);
       window.alert('Error al obtener los datos de la rubrica, falta asignar una rubrica')
@@ -89,20 +89,20 @@ export const EvaluacionProyecto = () => {
 
   const enviarResultados = async () => {
     try {
-      for (const casoPunto of casosPuntosRelacionados) {
-        const { casoId, casoNombre, casoDetalle } = casoPunto;
-        const puntosSeleccionadosCaso = puntosSeleccionados.filter(
-          (punto) => punto.casoId === casoId 
+      for (const criterioPunto of criteriosPuntosRelacionados) {
+        const { criterioId, criterioNombre, criterioDetalle } = criterioPunto;
+        const puntosSeleccionadoscriterio = puntosSeleccionados.filter(
+          (punto) => punto.criterioId === criterioId 
         );
   
         const resultados = {
           proyectoId,
-          casosPuntosRelacionados: [
+          criteriosPuntosRelacionados: [
             {
-              casoId,
-              casoNombre,
-              casoDetalle,
-              puntos: puntosSeleccionadosCaso,
+              criterioId,
+              criterioNombre,
+              criterioDetalle,
+              puntos: puntosSeleccionadoscriterio,
             },
           ],
         };
@@ -145,33 +145,33 @@ export const EvaluacionProyecto = () => {
   };
   
 
-  const handlePuntoSeleccionado = (casoId, puntoId, isChecked) => {
-    setCasosPuntosRelacionados((prevState) => {
-      return prevState.map((caso) => {
-        if (caso.casoId === casoId) {
-          const updatedPuntos = caso.puntos.map((punto) => {
+  const handlePuntoSeleccionado = (criterioId, puntoId, isChecked) => {
+    setcriteriosPuntosRelacionados((prevState) => {
+      return prevState.map((criterio) => {
+        if (criterio.criterioId === criterioId) {
+          const updatedPuntos = criterio.puntos.map((punto) => {
             return {
               ...punto,
               seleccionado: punto.id === puntoId,
             };
           });
           return {
-            ...caso,
+            ...criterio,
             puntos: updatedPuntos,
           };
         }
-        return caso;
+        return criterio;
       });
     });
   
     setPuntosSeleccionados((prevSelected) => {
      
-      const filteredSelected = prevSelected.filter((punto) => punto.casoId !== casoId);
+      const filteredSelected = prevSelected.filter((punto) => punto.criterioId !== criterioId);
   
     
       if (isChecked) {
-        const puntoSeleccionado = casosPuntosRelacionados
-          .find((caso) => caso.casoId === casoId)
+        const puntoSeleccionado = criteriosPuntosRelacionados
+          .find((criterio) => criterio.criterioId === criterioId)
           .puntos.find((punto) => punto.id === puntoId);
   
         if (puntoSeleccionado) {
@@ -186,8 +186,8 @@ export const EvaluacionProyecto = () => {
 
   const calcularSumaValores = () => {
     let suma = 0;
-    casosPuntosRelacionados.forEach((caso) => {
-      caso.puntos.forEach((punto) => {
+    criteriosPuntosRelacionados.forEach((criterio) => {
+      criterio.puntos.forEach((punto) => {
         if (punto.seleccionado) {
           suma += punto.valor;
         }
@@ -200,25 +200,25 @@ export const EvaluacionProyecto = () => {
   useEffect(() => {
     const suma = calcularSumaValores();
     setSumaValores(suma);
-  }, [casosPuntosRelacionados]);
+  }, [criteriosPuntosRelacionados]);
 
 
   useEffect(() => {
-    const casosPuntos = rubricaData.casos.map(caso => {
+    const criteriosPuntos = rubricaData.criterios.map(criterio => {
       const puntosRelacionados = rubricaData.puntos.filter(
-        punto => punto.casoId === caso.id
+        punto => punto.criterioId === criterio.id
       );
       return {
-        casoId: caso.id,
-        tituloId: caso.tituloId,
-        casoNombre: caso.nombre,
-        casoDetalle: caso.detalle, 
+        criterioId: criterio.id,
+        categoriacriterioId: criterio.categoriacriterioId,
+        criterioNombre: criterio.nombre,
+        criterioDetalle: criterio.detalle, 
         puntos: puntosRelacionados,
       };
     });
     
 
-    setCasosPuntosRelacionados(casosPuntos);
+    setcriteriosPuntosRelacionados(criteriosPuntos);
 
   }, [rubricaData]);
 
@@ -235,28 +235,28 @@ export const EvaluacionProyecto = () => {
           )}
         </div>
         <div> <button id="imgboton" onClick={openImageInNewWindow}>Abrir imagen en nueva ventana</button></div>
-        {rubricaData && rubricaData.titulos && rubricaData.puntos ? (
+        {rubricaData && rubricaData.categoriacriterios && rubricaData.puntos ? (
           <div>
-            {titulosData.map((titulo, index) => (
-              <div key={titulo.id}>
-                <h3 id="titulo">{titulo.titulo}</h3>
-                <ul id="casos">
-                  {casosPuntosRelacionados
-                    .filter(casoPunto => casoPunto.tituloId === titulo.id)
-                    .map((caso, casoId) => (
-                      <li key={casoId}>
-                        <h3>{caso.casoNombre}</h3>
-                        <div>{caso.casoDetalle}</div>
+            {categoriacriteriosData.map((categoriacriterio, index) => (
+              <div key={categoriacriterio.id}>
+                <h3 id="categoriacriterio">{categoriacriterio.categoriacriterio}</h3>
+                <ul id="criterios">
+                  {criteriosPuntosRelacionados
+                    .filter(criterioPunto => criterioPunto.categoriacriterioId === categoriacriterio.id)
+                    .map((criterio, criterioId) => (
+                      <li key={criterioId}>
+                        <h3>{criterio.criterioNombre}</h3>
+                        <div>{criterio.criterioDetalle}</div>
                         <ul id="puntos">
-                        {caso.puntos.map((punto, puntoId) => (
+                        {criterio.puntos.map((punto, puntoId) => (
                           <li key={puntoId}>
      <label id="labelp">
     <input
       type="checkbox"
-      name={`punto-${caso.id}`}
+      name={`punto-${criterio.id}`}
       checked={punto.seleccionado}
       onChange={(e) =>
-        handlePuntoSeleccionado(caso.casoId, punto.id, e.target.checked)
+        handlePuntoSeleccionado(criterio.criterioId, punto.id, e.target.checked)
       }
     />
     {punto.nombre} - Valor: {punto.valor}

@@ -70,8 +70,7 @@ export function ResultadosProyecto() {
         borderWidth: 1,
       }));
 
-      const calificacionFinalData = new Array(labels.length).fill(0);
-      calificacionFinalData.push(calificacionFinal);
+     
 
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
@@ -80,12 +79,10 @@ export function ResultadosProyecto() {
       const chartConfig = {
         type: 'bar',
         data: {
-          labels: ['puntos', 'Calificación Final'],
+          labels: ['puntos'],
           datasets: [
             ...datasets,
             {
-              label: 'Calificación Final',
-              data: calificacionFinalData,
               backgroundColor: 'rgba(255, 99, 132, 0.2)',
               borderColor: 'rgba(255, 99, 132, 1)',
               borderWidth: 1,
@@ -116,7 +113,7 @@ export function ResultadosProyecto() {
       const ctx = chartRef.current.getContext('2d');
       chartInstanceRef.current = new Chart(ctx, chartConfig);
     }
-  }, [resultados, calificacionFinal]);
+  }, [resultados]);
 
   const enviarCambios = async () => {
   
@@ -161,7 +158,7 @@ export function ResultadosProyecto() {
       <Base />
   
       <div id="contenedor">
-        <h2 id="titulo">Resultados</h2>
+        <h2 id="categoriacriterio">Resultados</h2>
         <div className="chart-container">
           <canvas ref={chartRef} id="grafica"></canvas>
         </div>

@@ -3,7 +3,6 @@ import { Base } from "../admin/BaseAdmin";
 import { useNavigate } from "react-router-dom";
 import "../../styles/normal/Evaluacion.css";
 import csvimg from "../../assets/csv.png";
-import searchimg from "../../assets/search.png";
 import jsonimg from "../../assets/json.png";
 import excelimg from "../../assets/excel.png";
 import * as XLSX from "xlsx";
@@ -30,7 +29,7 @@ export const ResultadosAdmin = () => {
   useEffect(() => {
     if (proyectos.length > 0 && proyectoSeleccionado !== "") {
       const proyectoEncontrado = proyectos.find(
-        (proyecto) => proyecto.titulo === proyectoSeleccionado
+        (proyecto) => proyecto.categoriacriterio === proyectoSeleccionado
       );
 
       if (proyectoEncontrado) {
@@ -64,7 +63,7 @@ export const ResultadosAdmin = () => {
       .replace("/view?usp=sharing", "");
 
     const proyectoEncontrado = proyectos.find(
-      (proyecto) => proyecto.titulo === proyectoSeleccionado
+      (proyecto) => proyecto.categoriacriterio === proyectoSeleccionado
     );
 
     if (proyectoEncontrado) {
@@ -230,8 +229,8 @@ export const ResultadosAdmin = () => {
         >
           <option value="">Seleccione un proyecto</option>
           {proyectos.map((proyecto) => (
-            <option key={proyecto.id} value={proyecto.titulo}>
-              {proyecto.titulo}
+            <option key={proyecto.id} value={proyecto.categoriacriterio}>
+              {proyecto.categoriacriterio}
             </option>
           ))}
         </select>

@@ -47,7 +47,7 @@ return (
           <li><a href="/Resultados">Resultados</a></li>
           <li>
             <button onClick={handleLogout} className="button" id="botonL">
-              Logout
+             Cerrar Sesión
             </button>
           </li>
         </ul>
@@ -61,7 +61,7 @@ return (
     )}
     {!isMobile ? (
       <button onClick={handleLogout} className="button" id="botonL">
-        Logout
+        Cerrar Sesión
       </button>
     ) : null}
   </header>

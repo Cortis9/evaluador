@@ -20,14 +20,14 @@
     margin-top: 100px;
     width: 95%;
     height: auto;
-    background-color: rgba(255, 255, 255, 0.61);
+    background-color:#fff;
     box-shadow: 0 .4rem .8rem #0005;
     border-radius: .8rem;
     box-shadow: 0 .4rem .8rem #0005;
     border-radius: .8rem;
   }
   
-  /* Estilos para hacer la tabla responsive en dispositivos móviles */
+
   @media (max-width: 768px) {
     .table-responsive {
       width: 100%;
@@ -145,7 +145,7 @@
   }
   
   tbody tr:hover {
-    background-color: #fff !important;
+    background-color: #fff;
   }
   
   tbody tr td,
@@ -245,7 +245,7 @@
     display: inline-block;
     width: 2rem;
     height: 2rem;
-    background: #fff6 url(../assets/export.png) center / 80% no-repeat;
+    background: #fff6 url(/src/assets/export.png) center / 80% no-repeat;
     border-radius: 50%;
     transition: .2s ease-in-out;
     margin-bottom: 0;
@@ -317,7 +317,7 @@
     color: #000000;
   }
   
-  #titulocategoria {
+  #categoriacriteriocategoria {
     color: #000000;
     text-align-last: center;
   }

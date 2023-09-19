@@ -109,12 +109,10 @@ export function ResultadosProyectoAdmin() {
       const chartConfig = {
         type: 'bar',
         data: {
-          labels: ['puntos', 'Calificación Final'],
+          labels: ['puntos'],
           datasets: [
             ...datasets,
             {
-              label: 'Calificación Final',
-              data: calificacionFinalData,
               backgroundColor: 'rgba(255, 99, 132, 0.2)',
               borderColor: 'rgba(255, 99, 132, 1)',
               borderWidth: 1,
@@ -244,11 +242,11 @@ export function ResultadosProyectoAdmin() {
   };
 
   const toCSV = (data) => {
-    const headers = ['Caso', 'Puntos'];
+    const headers = ['criterio', 'Puntos'];
     const rows = data.map((item) => {
-      const casoNombre = item.caso.nombre;
+      const criterioNombre = item.criterio.nombre;
       const puntos = item.puntos.map((punto) => `${punto.nombre}: ${punto.valor}`).join(', '); 
-      return `"${casoNombre}", "${puntos}"`;
+      return `"${criterioNombre}", "${puntos}"`;
     });
     return [headers.join(','), ...rows].join('\n');
   };
@@ -256,12 +254,12 @@ export function ResultadosProyectoAdmin() {
   const toExcel = (data) => {
     const excelData = [];
   
-    excelData.push(['Casos', 'Puntos']);
+    excelData.push(['criterios', 'Puntos']);
   
     data.forEach((item) => {
-      const casoNombre = item.caso.nombre;
+      const criterioNombre = item.criterio.nombre;
       const puntos = item.puntos.map((punto) => `${punto.nombre}: ${punto.valor}`).join(', ');
-      excelData.push([casoNombre, puntos]);
+      excelData.push([criterioNombre, puntos]);
     });
   
     const workbook = XLSX.utils.book_new();
@@ -344,7 +342,7 @@ export function ResultadosProyectoAdmin() {
             </div>
           )}
         </div>
-        <h2 id="titulo">Resultados</h2>
+        <h2 id="categoriacriterio">Resultados</h2>
         <div className="chart-container">
           <canvas ref={chartRef} id="grafica"></canvas>
           <div className="export-buttons">

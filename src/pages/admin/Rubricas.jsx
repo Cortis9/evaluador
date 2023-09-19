@@ -4,73 +4,73 @@ import { Base } from '../admin/BaseAdmin';
 
 export const Rubricas = () => {
   const [nombre, setRubricaNombre] = useState("");
-  const [titulos, setTitulos] = useState([]);
-  const [titulo, setTitulo] = useState("");
-  const [nuevoNombreCaso, setNuevoNombreCaso] = useState(''); 
-  const [nuevoDetalleCaso, setNuevoDetalleCaso] = useState('');
+  const [categoriacriterios, setcategoriacriterios] = useState([]);
+  const [categoriacriterio, setcategoriacriterio] = useState("");
+  const [nuevoNombrecriterio, setNuevoNombrecriterio] = useState(''); 
+  const [nuevoDetallecriterio, setNuevoDetallecriterio] = useState('');
   const [puntos, setPuntos] = useState([{ nombre: "", valor: 0 }]);
   const [existeRubrica, setExisteRubrica] = useState(false);
 
-  const agregarTitulo = () => {
-    const nuevoTitulo = { titulo: titulo, casos: [] };
-    setTitulos([...titulos, nuevoTitulo]);
-    setTitulo("");
+  const agregarcategoriacriterio = () => {
+    const nuevocategoriacriterio = { categoriacriterio: categoriacriterio, criterios: [] };
+    setcategoriacriterios([...categoriacriterios, nuevocategoriacriterio]);
+    setcategoriacriterio("");
   };
 
-  const agregarCaso = (tituloIndex) => {
-    const nuevoCaso = {
-      nombre: nuevoNombreCaso,
-      detalle: nuevoDetalleCaso,
+  const agregarcriterio = (categoriacriterioIndex) => {
+    const nuevocriterio = {
+      nombre: nuevoNombrecriterio,
+      detalle: nuevoDetallecriterio,
       puntos: puntos.map((punto) => ({ nombre: punto.nombre || '', valor: punto.valor || 0 })),
     };
 
-    const updatedTitulos = [...titulos];
-    updatedTitulos[tituloIndex].casos.push(nuevoCaso);
+    const updatedcategoriacriterios = [...categoriacriterios];
+    updatedcategoriacriterios[categoriacriterioIndex].criterios.push(nuevocriterio);
 
-    setTitulos(updatedTitulos);
-    setNuevoNombreCaso("");
-    setNuevoDetalleCaso("");
+    setcategoriacriterios(updatedcategoriacriterios);
+    setNuevoNombrecriterio("");
+    setNuevoDetallecriterio("");
     setPuntos([{ nombre: "", valor: 0 }]);
   };
 
-  const agregarPunto = (tituloIndex, casoIndex) => {
-    const updatedTitulos = [...titulos];
-    const casoActualizado = { ...updatedTitulos[tituloIndex] };
-    const nuevosPuntos = [...casoActualizado.casos[casoIndex].puntos, { nombre: "", valor: 0 }];
-    casoActualizado.casos[casoIndex].puntos = nuevosPuntos;
-    updatedTitulos[tituloIndex] = casoActualizado;
-    setTitulos(updatedTitulos);
+  const agregarPunto = (categoriacriterioIndex, criterioIndex) => {
+    const updatedcategoriacriterios = [...categoriacriterios];
+    const criterioActualizado = { ...updatedcategoriacriterios[categoriacriterioIndex] };
+    const nuevosPuntos = [...criterioActualizado.criterios[criterioIndex].puntos, { nombre: "", valor: 0 }];
+    criterioActualizado.criterios[criterioIndex].puntos = nuevosPuntos;
+    updatedcategoriacriterios[categoriacriterioIndex] = criterioActualizado;
+    setcategoriacriterios(updatedcategoriacriterios);
   };
 
-  const eliminarTitulo = (tituloIndex) => {
-    const updatedTitulos = titulos.filter((_, index) => index !== tituloIndex);
-    setTitulos(updatedTitulos);
+  const eliminarcategoriacriterio = (categoriacriterioIndex) => {
+    const updatedcategoriacriterios = categoriacriterios.filter((_, index) => index !== categoriacriterioIndex);
+    setcategoriacriterios(updatedcategoriacriterios);
   };
 
-  const eliminarCaso = (tituloIndex, casoIndex) => {
-    const updatedTitulos = [...titulos];
-    const nuevosCasos = updatedTitulos[tituloIndex].casos.filter((_, index) => index !== casoIndex);
-    updatedTitulos[tituloIndex].casos = nuevosCasos;
-    setTitulos(updatedTitulos);
+  const eliminarcriterio = (categoriacriterioIndex, criterioIndex) => {
+    const updatedcategoriacriterios = [...categoriacriterios];
+    const nuevoscriterios = updatedcategoriacriterios[categoriacriterioIndex].criterios.filter((_, index) => index !== criterioIndex);
+    updatedcategoriacriterios[categoriacriterioIndex].criterios = nuevoscriterios;
+    setcategoriacriterios(updatedcategoriacriterios);
   };
 
-  const eliminarPunto = (tituloIndex, casoIndex, puntoIndex) => {
-    const updatedTitulos = [...titulos];
-    const nuevosPuntos = updatedTitulos[tituloIndex].casos[casoIndex].puntos.filter((_, index) => index !== puntoIndex);
-    updatedTitulos[tituloIndex].casos[casoIndex].puntos = nuevosPuntos;
-    setTitulos(updatedTitulos);
+  const eliminarPunto = (categoriacriterioIndex, criterioIndex, puntoIndex) => {
+    const updatedcategoriacriterios = [...categoriacriterios];
+    const nuevosPuntos = updatedcategoriacriterios[categoriacriterioIndex].criterios[criterioIndex].puntos.filter((_, index) => index !== puntoIndex);
+    updatedcategoriacriterios[categoriacriterioIndex].criterios[criterioIndex].puntos = nuevosPuntos;
+    setcategoriacriterios(updatedcategoriacriterios);
   };
 
-  const handleCasoChange = (tituloIndex, casoIndex, campo, value) => {
-    const updatedTitulos = [...titulos];
-    updatedTitulos[tituloIndex].casos[casoIndex][campo] = value;
-    setTitulos(updatedTitulos);
+  const handlecriterioChange = (categoriacriterioIndex, criterioIndex, campo, value) => {
+    const updatedcategoriacriterios = [...categoriacriterios];
+    updatedcategoriacriterios[categoriacriterioIndex].criterios[criterioIndex][campo] = value;
+    setcategoriacriterios(updatedcategoriacriterios);
   };
 
-  const handlePuntoChange = (tituloIndex, casoIndex, puntoIndex, campo, value) => {
-    const updatedTitulos = [...titulos];
-    updatedTitulos[tituloIndex].casos[casoIndex].puntos[puntoIndex][campo] = value;
-    setTitulos(updatedTitulos);
+  const handlePuntoChange = (categoriacriterioIndex, criterioIndex, puntoIndex, campo, value) => {
+    const updatedcategoriacriterios = [...categoriacriterios];
+    updatedcategoriacriterios[categoriacriterioIndex].criterios[criterioIndex].puntos[puntoIndex][campo] = value;
+    setcategoriacriterios(updatedcategoriacriterios);
   };
 
   const verificarExistenciaRubrica = async (nombreRubrica) => {
@@ -97,12 +97,12 @@ export const Rubricas = () => {
     try {
       const requestData = {
         rubricaNombre: nombre,
-        titulos: titulos.map((titulo) => ({
-          titulo: titulo.titulo,
-          casos: titulo.casos.map((caso) => ({
-            nombre: caso.nombre,
-            detalle: caso.detalle,
-            puntos: caso.puntos.map((punto) => ({ nombre: punto.nombre, valor: punto.valor })),
+        categoriacriterios: categoriacriterios.map((categoriacriterio) => ({
+          categoriacriterio: categoriacriterio.categoriacriterio,
+          criterios: categoriacriterio.criterios.map((criterio) => ({
+            nombre: criterio.nombre,
+            detalle: criterio.detalle,
+            puntos: criterio.puntos.map((punto) => ({ nombre: punto.nombre, valor: punto.valor })),
           })),
         })),
       };    
@@ -117,7 +117,7 @@ export const Rubricas = () => {
   
       if (response.ok) {
         setRubricaNombre('');
-        setTitulos([]);
+        setcategoriacriterios([]);
         setExisteRubrica(false);
         alert('Rúbrica creada con éxito.');
       } else {
@@ -142,20 +142,20 @@ export const Rubricas = () => {
         />
       </div>
       <div>
-        {titulos.map((titulo, tituloIndex) => (
-          <div key={tituloIndex}>
-            <h3 id='h2r'>{titulo.titulo}</h3>
-            {titulo.casos.map((caso, casoIndex) => (
-              <div key={casoIndex}>
+        {categoriacriterios.map((categoriacriterio, categoriacriterioIndex) => (
+          <div key={categoriacriterioIndex}>
+            <h3 id='h2r'>{categoriacriterio.categoriacriterio}</h3>
+            {categoriacriterio.criterios.map((criterio, criterioIndex) => (
+              <div key={criterioIndex}>
                 <div>
-                  <label>Caso:</label>
+                  <label>nombre del criterio:</label>
                   <input
                     type="text"
                     id='input'
-                    placeholder="Nombre del caso"
-                    value={caso.nombre}
+                    placeholder="Criterio"
+                    value={criterio.nombre}
                     onChange={(e) =>
-                      handleCasoChange(tituloIndex, casoIndex, "nombre", e.target.value)
+                      handlecriterioChange(categoriacriterioIndex, criterioIndex, "nombre", e.target.value)
                     }
                   />
                 </div>
@@ -163,14 +163,14 @@ export const Rubricas = () => {
                   <input
                     type="text"
                     id='input'
-                    placeholder="Detalle del caso"
-                    value={caso.detalle}
+                    placeholder="Detalle del criterio"
+                    value={criterio.detalle}
                     onChange={(e) =>
-                      handleCasoChange(tituloIndex, casoIndex, "detalle", e.target.value)
+                      handlecriterioChange(categoriacriterioIndex, criterioIndex, "detalle", e.target.value)
                     }
                   />
                 </div>
-                {caso.puntos.map((punto, puntoIndex) => (
+                {criterio.puntos.map((punto, puntoIndex) => (
                   <div key={puntoIndex}>
                     <label>Punto:</label>
                     <input
@@ -180,8 +180,8 @@ export const Rubricas = () => {
                       value={punto.nombre}
                       onChange={(e) =>
                         handlePuntoChange(
-                          tituloIndex,
-                          casoIndex,
+                          categoriacriterioIndex,
+                          criterioIndex,
                           puntoIndex,
                           "nombre",
                           e.target.value
@@ -195,43 +195,43 @@ export const Rubricas = () => {
                       id='input'
                       onChange={(e) =>
                         handlePuntoChange(
-                          tituloIndex,
-                          casoIndex,
+                          categoriacriterioIndex,
+                          criterioIndex,
                           puntoIndex,
                           "valor",
                           parseInt(e.target.value)
                         )
                       }
                     />
-                    <button id='button' onClick={() => eliminarPunto(tituloIndex, casoIndex, puntoIndex)}>
+                    <button id='button' onClick={() => eliminarPunto(categoriacriterioIndex, criterioIndex, puntoIndex)}>
                       Eliminar Punto
                     </button>
                   </div>
                 ))}
-                <button onClick={() => agregarPunto(tituloIndex, casoIndex)} id='button'>
+                <button onClick={() => agregarPunto(categoriacriterioIndex, criterioIndex)} id='button'>
                   Agregar Punto
                 </button>
-                <button onClick={() => eliminarCaso(tituloIndex, casoIndex)} id='button'>
-                  Eliminar Caso
+                <button onClick={() => eliminarcriterio(categoriacriterioIndex, criterioIndex)} id='button'>
+                  Eliminar Criterio
                 </button>
               </div>
             ))}
-            <button onClick={() => agregarCaso(tituloIndex)} id='button'>Agregar Caso</button>
-            <button onClick={() => eliminarTitulo(tituloIndex)} id='button'>
-              Eliminar Título
+            <button onClick={() => agregarcriterio(categoriacriterioIndex)} id='button'>Agregar Criterio</button>
+            <button onClick={() => eliminarcategoriacriterio(categoriacriterioIndex)} id='button'>
+              Eliminar Categoria
             </button>
           </div>
         ))}
         <div>
-          <label>Titulo:</label>
+          <label>Categoria:</label>
           <input
             type="text"
-            value={titulo}
+            value={categoriacriterio}
             id='input'
-            onChange={(e) => setTitulo(e.target.value)}
+            onChange={(e) => setcategoriacriterio(e.target.value)}
           />
         </div>
-        <button onClick={agregarTitulo} id='button'>Guardar Título</button>
+        <button onClick={agregarcategoriacriterio} id='button'>Guardar Categoria</button>
       </div>
       <button onClick={enviarDatos} id='guardar'>Crear Rubrica</button>
     </div>
