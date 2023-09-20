@@ -221,6 +221,10 @@ export const EvaluacionProyecto = () => {
     setcriteriosPuntosRelacionados(criteriosPuntos);
 
   }, [rubricaData]);
+    
+    const estiloParrafo = {
+      fontSize: '24px',
+    };
 
   return (
     <>
@@ -270,7 +274,7 @@ export const EvaluacionProyecto = () => {
                 </ul>
               </div>
             ))}
-            <p id="total">Total: {sumaValores}</p>
+            <p id="total" style={estiloParrafo}>Total: {sumaValores}</p>
             <button id="envio" onClick={enviarResultados}>Enviar</button>
           </div>
         ) : (

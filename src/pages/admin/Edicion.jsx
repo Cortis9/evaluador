@@ -317,6 +317,7 @@ export const Edicion = () => {
   return (
     <>
       <Base />
+      
       <main className="table">
         {proyectos && rubricas && categorias && (
           <>

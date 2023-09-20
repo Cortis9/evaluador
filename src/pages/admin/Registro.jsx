@@ -3,7 +3,7 @@ import '../../styles/admin/Registro.css';
 import { Base } from '../admin/BaseAdmin';
 
 export function Registro() {
-  const [categoriacriterio, setcategoriacriterio] = useState('');
+  const [titulo, setTitulo] = useState('');
   const [categoria, setCategoria] = useState('');
   const [rubrica, setRubrica] = useState('');
   const [file, setFile] = useState(null);
@@ -15,7 +15,7 @@ export function Registro() {
 
   const handleTitleChange = (event) => {
     const value = event.target.value.replace(/(^['"]|['"]$)/g, '');
-    setcategoriacriterio(value);
+    setTitulo(value);
   };
 
   const handleCategoryChange = (event) => {
@@ -40,7 +40,7 @@ export function Registro() {
     event.preventDefault();
 
     const formData = {
-      categoriacriterio,
+      titulo,
       nombre,
       correo,
       categoria,
@@ -61,7 +61,7 @@ export function Registro() {
         const data = await response.json();
         console.log(data.message);
         window.alert('Datos enviados con éxito');
-        setcategoriacriterio('');
+        setTitulo('');
         setCategoria('');
         setRubrica('');
         setFile(null);
@@ -155,7 +155,7 @@ export function Registro() {
             <div id='participantes'>
               <label htmlFor="title">Título:</label>
               <input type="text" id="title" name="title" 
-              placeholder="categoriacriterio" onChange={handleTitleChange} value={categoriacriterio} />
+              placeholder="Título" onChange={handleTitleChange} value={titulo} />
             </div>
 
             <div id='participantes'>
