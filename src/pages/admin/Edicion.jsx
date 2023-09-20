@@ -86,7 +86,10 @@ export const Edicion = () => {
       const data = await response.json();
       setProyectos(data);
       const proyectosIds = data.map((proyecto) => proyecto.id);
-      fetchCalificacion(proyectosIds);
+
+        fetchCalificacion(proyectosIds);
+
+      
     } catch (error) {
       console.error('Error al obtener los proyectos: ', error);
     }
@@ -186,7 +189,7 @@ export const Edicion = () => {
 
   const rows = data.map(
     (proyecto) =>
-      `${proyecto.categoriacriterio},${proyecto.nombre},${proyecto.correo},${proyecto.categoria},${proyecto.rubrica},${proyecto.link}`
+      `${proyecto.titulo},${proyecto.nombre},${proyecto.correo},${proyecto.categoria},${proyecto.rubrica},${proyecto.link}`
   );
 
   return [headers.join(','), ...rows].join('\n');
@@ -376,10 +379,10 @@ export const Edicion = () => {
                     </thead>
                     <tbody>
                       {proyectos
-                        .filter((proyecto) => proyecto.categoria === categoria && proyecto.categoriacriterio.includes(searchQueryProyectos))
+                        .filter((proyecto) => proyecto.categoria === categoria && proyecto.titulo.includes(searchQueryProyectos))
                         .map((proyecto) => (
                           <tr key={proyecto.id}>
-                            <td>{proyecto.categoriacriterio}</td>
+                            <td>{proyecto.titulo}</td>
                             <td>{proyecto.nombre}</td>
                             <td>{proyecto.estado}</td>
                             <td>{typeof correoJuez === 'string' ? correoJuez : ''}</td>

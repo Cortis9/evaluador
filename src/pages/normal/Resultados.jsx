@@ -23,7 +23,7 @@ export const Resultados = () => {
   useEffect(() => {
     if (proyectos.length > 0 && proyectoSeleccionado !== "") {
       const proyectoEncontrado = proyectos.find(
-        (proyecto) => proyecto.categoriacriterio === proyectoSeleccionado
+        (proyecto) => proyecto.titulo === proyectoSeleccionado
       );
 
       if (proyectoEncontrado) {
@@ -57,7 +57,7 @@ export const Resultados = () => {
       .replace("/view?usp=sharing", "");
   
     const proyectoEncontrado = proyectos.find(
-      (proyecto) => proyecto.categoriacriterio === proyectoSeleccionado
+      (proyecto) => proyecto.titulo === proyectoSeleccionado
     );
   
     if (proyectoEncontrado) {
@@ -79,8 +79,8 @@ export const Resultados = () => {
         >
           <option value="">Seleccione un proyecto</option>
           {proyectos.map((proyecto) => (
-            <option key={proyecto.id} value={proyecto.categoriacriterio}>
-              {proyecto.categoriacriterio}
+            <option key={proyecto.id} value={proyecto.titulo}>
+              {proyecto.titulo}
             </option>
           ))}
         </select>
