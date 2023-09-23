@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import '../../styles/Login.css'
-import icono from '../../assets/ico.png';
+import icono from '../../assets/icono.png';
+
 
 export function Login() {
   const auth = useAuth();
@@ -37,7 +38,7 @@ export function Login() {
         <div class="form-box" id="form-box">
           <div class="form-value">
             <form action="">
-            <img src={icono} icono height={70} width={70} id="logoln" alt="Logo" />
+            <img src={icono} icono height={120} width={300} id="logoln" alt="Logo" />
             {errorMessage && <p className="error-message">{errorMessage}</p>}
 
               <a href="/HomeAdmin"></a>

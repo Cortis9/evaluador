@@ -7,8 +7,9 @@ export const Evaluacion = () => {
   const navigate = useNavigate();
   const [proyectos, setProyectos] = useState([]);
   const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
-  const [enlaceSeleccionado, setEnlaceSeleccionado] = useState("");
+  const [enlaceSeleccionado2, setEnlaceSeleccionado2] = useState("");
   const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
+
 
   useEffect(() => {
     fetch("https://api-git-main-cortis9.vercel.app/proyectos")
@@ -27,10 +28,12 @@ export const Evaluacion = () => {
       );
 
       if (proyectoEncontrado) {
-        const modifiedLink = proyectoEncontrado.link
-          .replace("/file/d/", "/uc?export=view&id=")
-          .replace("/view?usp=sharing", "");
-        setEnlaceSeleccionado(modifiedLink);
+
+        const modifiedLink2 = proyectoEncontrado.link
+        .replace("/view?usp=sharing", "/preview");
+        setEnlaceSeleccionado2(modifiedLink2);
+ 
+
 
         fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoEncontrado.id}`)
           .then((response) => response.json())
@@ -40,7 +43,7 @@ export const Evaluacion = () => {
             }
           });
       } else {
-        setEnlaceSeleccionado("");
+        setEnlaceSeleccionado2("");
         setRubricaSeleccionada("");
       }
     }
@@ -52,10 +55,7 @@ export const Evaluacion = () => {
   };
 
   const navigateToEvaluacionProyecto = () => {
-    const modifiedLink = enlaceSeleccionado
-      .replace("/file/d/", "/uc?export=view&id=")
-      .replace("/view?usp=sharing", "");
-  
+
     const proyectoEncontrado = proyectos.find(
       (proyecto) => proyecto.titulo === proyectoSeleccionado
     );
@@ -63,7 +63,7 @@ export const Evaluacion = () => {
     if (proyectoEncontrado) {
       const proyectoId = proyectoEncontrado.id;
       const nombreRubrica = encodeURIComponent(rubricaSeleccionada);
-      const queryParams = `enlace=${modifiedLink}&proyectoId=${proyectoId}`;
+      const queryParams = `enlace=${enlaceSeleccionado2}&proyectoId=${proyectoId}`;
       navigate(`/EvaluacionProyecto/${nombreRubrica}?${queryParams}`);
     }
   };
@@ -86,11 +86,8 @@ export const Evaluacion = () => {
             </option>
           ))}
         </select>
-        {enlaceSeleccionado && (
-          <div id="img">
-            <img src={enlaceSeleccionado} width="600" alt="Proyecto" />
-          </div>
-        )}
+        <iframe src={enlaceSeleccionado2} width="340" height="480" allow="autoplay" id="pdf"></iframe>
+     
         <button id="buttonsiguiente" onClick={navigateToEvaluacionProyecto}>
           Siguiente
         </button>
@@ -98,3 +95,6 @@ export const Evaluacion = () => {
     </>
   );
 };
+
+
+

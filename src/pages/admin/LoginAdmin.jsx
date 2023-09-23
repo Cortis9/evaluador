@@ -5,6 +5,7 @@ import '../../styles/Login.css'
 import {signInWithEmailAndPassword} from "firebase/auth";
 import icono from '../../assets/iconoAdmin.png';
 
+
 export function LoginAdmin() {
   const [user, setUser] = useState({ email: "", password: "", isAdmin: false });
   const navigate = useNavigate();
@@ -41,14 +42,11 @@ export function LoginAdmin() {
 
   return (
     <html lang="en">
-     
-      
-     
      <section id="section">
          <div class="form-box">
              <div class="form-value">
                  <form onSubmit={handleSubmit}>
-                 <img src={icono} icono height={70} width={200} id="logola" alt="Logo" />
+                 <img src={icono} icono height={100} width={300} id="logola" alt="Logo" />
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <a href="/HomeAdmin">
          

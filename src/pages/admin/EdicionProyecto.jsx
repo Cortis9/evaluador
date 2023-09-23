@@ -9,7 +9,7 @@ export const EdicionProyecto = () => {
   const { proyectoId } = useParams();
   const navigate = useNavigate();
   const [editedData, setEditedData] = useState({
-    categoriacriterio: '',
+    titulo: '',
     nombre: '',
     correo: '',
     categoria: '',
@@ -74,8 +74,8 @@ export const EdicionProyecto = () => {
         </button>
 
           <div>
-            <label htmlFor='categoriacriterio'>Título:</label>
-            <input type='text' id='categoriacriterioedicion' name='categoriacriterio' value={editedData.categoriacriterio} onChange={handleInputChange} />
+            <label htmlFor='titulo'>Título:</label>
+            <input type='text' id='titulo' name='titulo' value={editedData.titulo} onChange={handleInputChange} />
           </div>
 
           <div>

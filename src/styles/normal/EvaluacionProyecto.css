@@ -11,12 +11,7 @@
     height: 80%;
     margin-left: 55px;
   }
-  #imgboton{
-    margin-left: 180px;
-    margin-bottom: 50px;
-    background-color: black;
-    color: #fff;
-  }
+
   
   #criterios {
     color: #ff5900;
@@ -84,4 +79,104 @@
   margin-bottom: 60px;
   background-color: black;
   color: #fff;
+}
+
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  #img2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    position: relative; 
+  }
+  
+  #img img {
+    max-width: 80%;
+    height: 80%;
+    margin-left: 55px;
+  }
+  
+  #imgboton {
+    position: absolute; 
+    bottom: 0; 
+    left: 50%;
+    transform: translateX(-50%); 
+    margin-bottom: 20px;
+    background-color: black;
+    color: #fff;
+  }
+  
+
+  #criterios {
+    margin-top: 20px;
+    list-style-type: none;
+    margin: 10px 0; 
+    padding: 0;
+    text-align: left; 
+  }
+
+  #criterios li {
+    margin-bottom: 5px; 
+  }
+
+  #criterios ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #criterios label {
+    display: block; 
+  }
+
+  #criterios input[type="checkbox"] {
+    margin-right: 5px;
+    width: 14px;
+    height: 14px;
+  }
+
+  #divpunto {
+    margin-top: 10px; 
+    margin-bottom: 20px;
+  }
+
+  #todo {
+    margin-top: 50px; 
+    border-radius: 20px;
+    background-color: #fff;
+    width: auto;
+    height: auto;
+    padding: 10px;
+  }
+
+  #total {
+    color: black;
+    margin-bottom: 10px; 
+    margin-left: 0; 
+    text-align: center; 
+  }
+
+  #categoriacriterio {
+    color: black;
+    text-align: center; 
+  }
+
+  #envio {
+    margin-left: 280px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 0; 
+    background-color: black;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
 }

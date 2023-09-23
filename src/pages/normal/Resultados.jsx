@@ -7,8 +7,8 @@ export const Resultados = () => {
   const navigate = useNavigate();
   const [proyectos, setProyectos] = useState([]);
   const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
-  const [enlaceSeleccionado, setEnlaceSeleccionado] = useState("");
   const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
+  const [enlaceSeleccionado2, setEnlaceSeleccionado2] = useState("");
 
   useEffect(() => {
     fetch("https://api-git-main-cortis9.vercel.app/proyectos")
@@ -27,10 +27,11 @@ export const Resultados = () => {
       );
 
       if (proyectoEncontrado) {
-        const modifiedLink = proyectoEncontrado.link
-          .replace("/file/d/", "/uc?export=view&id=")
-          .replace("/view?usp=sharing", "");
-        setEnlaceSeleccionado(modifiedLink);
+
+        const modifiedLink2 = proyectoEncontrado.link
+        .replace("/view?usp=sharing", "/preview");
+        setEnlaceSeleccionado2(modifiedLink2);
+
 
         fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoEncontrado.id}`)
           .then((response) => response.json())
@@ -40,7 +41,7 @@ export const Resultados = () => {
             }
           });
       } else {
-        setEnlaceSeleccionado("");
+        setEnlaceSeleccionado2("");
         setRubricaSeleccionada("");
       }
     }
@@ -52,9 +53,6 @@ export const Resultados = () => {
   };
 
   const navigateToEvaluacionProyecto = () => {
-    const modifiedLink = enlaceSeleccionado
-      .replace("/file/d/", "/uc?export=view&id=")
-      .replace("/view?usp=sharing", "");
   
     const proyectoEncontrado = proyectos.find(
       (proyecto) => proyecto.titulo === proyectoSeleccionado
@@ -84,11 +82,7 @@ export const Resultados = () => {
             </option>
           ))}
         </select>
-        {enlaceSeleccionado && (
-          <div id="img">
-            <img src={enlaceSeleccionado} width="300" alt="Proyecto" />
-          </div>
-        )}
+        <iframe src={enlaceSeleccionado2} width="340" height="480" allow="autoplay" id="pdf"></iframe>
         <button id="buttonsiguiente" onClick={navigateToEvaluacionProyecto}>
           Siguiente
         </button>

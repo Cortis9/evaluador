@@ -34,9 +34,9 @@ export const ResultadosAdmin = () => {
 
       if (proyectoEncontrado) {
         const modifiedLink = proyectoEncontrado.link
-          .replace("/file/d/", "/uc?export=view&id=")
-          .replace("/view?usp=sharing", "");
+        .replace("/view?usp=sharing", "/preview");
         setEnlaceSeleccionado(modifiedLink);
+ 
 
         fetch(`https://api-git-main-cortis9.vercel.app/${proyectoEncontrado.id}`)
           .then((response) => response.json())
@@ -58,9 +58,6 @@ export const ResultadosAdmin = () => {
   };
 
   const navigateToEvaluacionProyecto = () => {
-    const modifiedLink = enlaceSeleccionado
-      .replace("/file/d/", "/uc?export=view&id=")
-      .replace("/view?usp=sharing", "");
 
     const proyectoEncontrado = proyectos.find(
       (proyecto) => proyecto.titulo === proyectoSeleccionado
@@ -234,11 +231,7 @@ export const ResultadosAdmin = () => {
             </option>
           ))}
         </select>
-        {enlaceSeleccionado && (
-          <div id="img">
-            <img src={enlaceSeleccionado} alt="Proyecto" />
-          </div>
-        )}
+        <iframe src={enlaceSeleccionado} width="340" height="480" allow="autoplay" id="pdf"></iframe>
         <button id="buttonsiguiente" onClick={navigateToEvaluacionProyecto}>
           Siguiente
         </button>

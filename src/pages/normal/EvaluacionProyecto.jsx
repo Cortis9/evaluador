@@ -64,6 +64,7 @@ export const EvaluacionProyecto = () => {
     if (enlaceSeleccionado && id) {
       window.open(enlaceSeleccionado + "&id=" + id, "_blank");
     }
+    console.log(enlaceSeleccionado)
   };
 
   const enviarCalificacionFinal = async (calificacion) => {
@@ -231,14 +232,10 @@ export const EvaluacionProyecto = () => {
       <Base />
 
       <div id="todo">
+
         <div id="img2">
-          {enlaceSeleccionado && (
-            <div id="img">
-              <img src={enlaceSeleccionado + "&id=" + id} alt="Imagen" />
-            </div>
-          )}
+        <iframe src={enlaceSeleccionado} width="840" height="1000" allow="autoplay" id="pdf"></iframe>
         </div>
-        <div> <button id="imgboton" onClick={openImageInNewWindow}>Abrir imagen en nueva ventana</button></div>
         {rubricaData && rubricaData.categoriacriterios && rubricaData.puntos ? (
           <div>
             {categoriacriteriosData.map((categoriacriterio, index) => (
@@ -263,7 +260,7 @@ export const EvaluacionProyecto = () => {
         handlePuntoSeleccionado(criterio.criterioId, punto.id, e.target.checked)
       }
     />
-    {punto.nombre} - Valor: {punto.valor}
+    {punto.nombre} ({punto.valor})
   </label>
 </li>
 

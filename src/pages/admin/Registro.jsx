@@ -132,9 +132,10 @@ export function Registro() {
      
 
          <div id="archivo">
+         <label >Subir Archivo</label>
       <label id="custom-file-upload" htmlFor="inputarchivo">
-        
       </label>
+    
       <input
         id="inputarchivo"
         type="file"
@@ -207,7 +208,7 @@ export function Registro() {
 
             <div id="link">
               <label htmlFor="archivo">Enlace del archivo:</label>
-              <input type="text" name="fileLink" placeholder="Ingresa el enlace" value={link} onChange={handleFileChange} />
+              <input type="text" name="fileLink" placeholder="Solo se admiten enlaces de Google Drive" value={link} onChange={handleFileChange} />
             </div>
 
             <button type="submit" id='submit'>Registrar proyecto</button>
