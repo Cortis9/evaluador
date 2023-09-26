@@ -234,7 +234,7 @@ export const EvaluacionProyecto = () => {
       <div id="todo">
 
         <div id="img2">
-        <iframe src={enlaceSeleccionado} width="840" height="1000" allow="autoplay" id="pdf"></iframe>
+        <iframe src={enlaceSeleccionado}  allow="autoplay" id="pdf"></iframe>
         </div>
         {rubricaData && rubricaData.categoriacriterios && rubricaData.puntos ? (
           <div>

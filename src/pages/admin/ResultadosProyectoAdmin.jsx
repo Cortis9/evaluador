@@ -343,8 +343,8 @@ export function ResultadosProyectoAdmin() {
           )}
         </div>
         <h2 id="categoriacriterio">Resultados</h2>
+        <canvas ref={chartRef} id="grafica"></canvas>
         <div className="chart-container">
-          <canvas ref={chartRef} id="grafica"></canvas>
           <div className="export-buttons">
             <button id='exporbt1' onClick={exportarImagen}>Exportar como imagen</button>
             <button id='exportb2' onClick={exportarPDF}>Exportar como PDF</button>

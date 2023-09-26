@@ -190,12 +190,31 @@
   .status.shipped {
     background-color: #6fcaea;
   }
-  
-  @media (max-width: 1000px) {
-    td:not(:first-of-type) {
-      min-width: 12.1rem;
-    }
+
+@media (max-width: 800px) {
+  main.table {
+    width: 100%; 
+    margin-top: 10px; 
   }
+
+  thead th {
+    font-size: 10px; 
+    padding: 0.2rem; 
+  }
+
+  tbody tr {
+    font-size: 10px; 
+    margin: 0.1rem 0; 
+  }
+
+  td:not(:first-of-type) {
+    min-width: 4rem; 
+    padding: 0.1rem; 
+  }
+}
+
+
+  
   
   thead th span.icon-arrow {
     display: inline-block;

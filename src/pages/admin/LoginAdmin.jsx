@@ -49,7 +49,7 @@ export function LoginAdmin() {
                  <img src={icono} icono height={100} width={300} id="logola" alt="Logo" />
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <a href="/HomeAdmin">
-         
+        
         </a>
           
                      <div class="inputbox">

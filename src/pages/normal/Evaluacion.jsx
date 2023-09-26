@@ -86,7 +86,7 @@ export const Evaluacion = () => {
             </option>
           ))}
         </select>
-        <iframe src={enlaceSeleccionado2} width="340" height="480" allow="autoplay" id="pdf"></iframe>
+        <iframe src={enlaceSeleccionado2} width="340" height="480" allow="autoplay" id="pdfpreviw"></iframe>
      
         <button id="buttonsiguiente" onClick={navigateToEvaluacionProyecto}>
           Siguiente

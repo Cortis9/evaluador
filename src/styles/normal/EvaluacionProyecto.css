@@ -1,86 +1,87 @@
-
 #img2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-}
-  
-  #img img {
-    max-width: 80%;
-    height: 80%;
-    margin-left: 55px;
-  }
-
-  
-  #criterios {
-    color: #ff5900;
-    margin-top: 50px;
-    list-style-type: none;
-    margin: 20px 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    margin-left: 90px;
-    
-  }
-
-  
-  #criterios li {
-    margin-bottom: 10px;
-  }
-  
-  #criterios ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    
-  }
-  
-  #criterios label {
-    display: flex;
-    
-  }
-  
-  #criterios input[type="checkbox"] {
-    margin-right: 5px;
-    width: 14px;
-    height: 14px;
-  }
-  
-
-#divpunto{
-    margin-top:20px;
-    margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
 }
 
-#todo{
-    margin-top: 100px;
-    border-radius: 20px;
-    background-color: #fff;
-    width: auto;
-    height: auto;
+#img img {
+  max-width: 80%;
+  height: 80%;
+  margin-left: 55px;
 }
 
-#total{
+#imgboton {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 20px;
+  background-color: black;
+  color: #fff;
+}
+
+#criterios {
+  color: #ff5900;
+  margin-top: 50px;
+  list-style-type: none;
+  margin: 20px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  margin-left: 90px;
+}
+
+#criterios li {
+  margin-bottom: 10px;
+}
+
+#criterios ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#criterios label {
+  display: flex;
+}
+
+#criterios input[type="checkbox"] {
+  margin-right: 5px;
+  width: 14px;
+  height: 14px;
+}
+
+#divpunto {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+#todo {
+  margin-top: 100px;
+  border-radius: 20px;
+  background-color: #fff;
+  width: auto;
+  height: auto;
+}
+
+#total {
   color: black;
   margin-bottom: 20px;
   margin-left: 275px;
 }
 
-#categoriacriterio{
-
+#categoriacriterio {
   color: black;
   align-items: center;
 }
 
-#envio{
+#envio {
   margin-left: 270px;
   margin-bottom: 60px;
   background-color: black;
   color: #fff;
 }
-
 
 body {
   font-family: Arial, sans-serif;
@@ -88,42 +89,35 @@ body {
   padding: 0;
 }
 
+#pdf{
+
+  width: 700px;
+  height: 1000px;
+}
+
 @media (max-width: 768px) {
-  #img2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-    position: relative; 
-  }
-  
-  #img img {
-    max-width: 80%;
-    height: 80%;
-    margin-left: 55px;
-  }
-  
+
   #imgboton {
-    position: absolute; 
-    bottom: 0; 
+    position: absolute;
+    bottom: 0;
     left: 50%;
-    transform: translateX(-50%); 
+    transform: translateX(-50%);
     margin-bottom: 20px;
     background-color: black;
     color: #fff;
   }
-  
 
   #criterios {
     margin-top: 20px;
     list-style-type: none;
-    margin: 10px 0; 
+    margin: 10px 0;
     padding: 0;
-    text-align: left; 
+    text-align: left;
+    margin-left: 0; 
   }
 
   #criterios li {
-    margin-bottom: 5px; 
+    margin-bottom: 5px;
   }
 
   #criterios ul {
@@ -133,22 +127,22 @@ body {
   }
 
   #criterios label {
-    display: block; 
+    display: block;
   }
 
   #criterios input[type="checkbox"] {
     margin-right: 5px;
-    width: 14px;
-    height: 14px;
+    width: 28px; 
+    height: 28px; 
   }
 
   #divpunto {
-    margin-top: 10px; 
+    margin-top: 10px;
     margin-bottom: 20px;
   }
 
   #todo {
-    margin-top: 50px; 
+    margin-top: 50px;
     border-radius: 20px;
     background-color: #fff;
     width: auto;
@@ -158,25 +152,30 @@ body {
 
   #total {
     color: black;
-    margin-bottom: 10px; 
-    margin-left: 0; 
-    text-align: center; 
+    margin-bottom: 10px;
+    margin-left: 0;
+    text-align: center;
   }
 
   #categoriacriterio {
     color: black;
-    text-align: center; 
+    text-align: center;
   }
 
   #envio {
     margin-left: 280px;
     margin-top: 20px;
     margin-bottom: 20px;
-    margin-right: 0; 
+    margin-right: 0;
     background-color: black;
     color: #fff;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
+  }
+  
+  #pdf{
+    width: 100%; 
+    height: 400px;
   }
 }
