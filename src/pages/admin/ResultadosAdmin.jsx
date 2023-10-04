@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Base } from "../admin/BaseAdmin";
 import { useNavigate } from "react-router-dom";
 import "../../styles/normal/Evaluacion.css";
+import { BarLoader } from "react-spinners"; 
 import csvimg from "../../assets/csv.png";
 import jsonimg from "../../assets/json.png";
 import excelimg from "../../assets/excel.png";
@@ -15,6 +16,7 @@ export const ResultadosAdmin = () => {
   const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
   const [calificacionFinal, setCalificacionFinal] = useState(0);
   const [exportOptionsVisible, setExportOptionsVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch("https://api-git-main-cortis9.vercel.app/proyectos")
@@ -28,26 +30,37 @@ export const ResultadosAdmin = () => {
 
   useEffect(() => {
     if (proyectos.length > 0 && proyectoSeleccionado !== "") {
+      setLoading(true);
+
       const proyectoEncontrado = proyectos.find(
         (proyecto) => proyecto.titulo === proyectoSeleccionado
       );
 
       if (proyectoEncontrado) {
-        const modifiedLink = proyectoEncontrado.link
-        .replace("/view?usp=sharing", "/preview");
+        const modifiedLink = proyectoEncontrado.link.replace(
+          "/view?usp=sharing",
+          "/preview"
+        );
         setEnlaceSeleccionado(modifiedLink);
- 
 
-        fetch(`https://api-git-main-cortis9.vercel.app/${proyectoEncontrado.id}`)
+        fetch(
+          `https://api-git-main-cortis9.vercel.app/${proyectoEncontrado.id}`
+        )
           .then((response) => response.json())
           .then((data) => {
             if (data && data.rubrica) {
               setRubricaSeleccionada(data.rubrica);
             }
+          })
+          .finally(() => {
+            setTimeout(() => {
+              setLoading(false);
+            }, 4000);
           });
       } else {
         setEnlaceSeleccionado("");
         setRubricaSeleccionada("");
+        setLoading(false);
       }
     }
   }, [proyectos, proyectoSeleccionado]);
@@ -214,9 +227,9 @@ export const ResultadosAdmin = () => {
               </div>
             )}
           </div>
-          <button id='botoneliminar' onClick={eliminarInformacion}>
-                            <span className="icono-papelera">🗑️</span>
-                          </button>
+          <button id="botoneliminar" onClick={eliminarInformacion}>
+            <span className="icono-papelera">🗑️</span>
+          </button>
         </section>
         <h2 id="h2">Resultados</h2>
         <select
@@ -231,7 +244,18 @@ export const ResultadosAdmin = () => {
             </option>
           ))}
         </select>
-        <iframe src={enlaceSeleccionado} width="340" height="480" allow="autoplay" id="pdfpreviw"></iframe>
+        <div className="iframe-container">
+          {loading && (
+            <BarLoader color={"#36D7B7"} loading={loading} id="barra" width={300} />
+          )}
+          <iframe
+            src={enlaceSeleccionado}
+            width="340"
+            height="480"
+            allow="autoplay"
+            id="pdfpreviw"
+          ></iframe>
+        </div>
         <button id="buttonsiguiente" onClick={navigateToEvaluacionProyecto}>
           Siguiente
         </button>

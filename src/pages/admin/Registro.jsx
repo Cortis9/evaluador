@@ -161,7 +161,7 @@ export function Registro() {
 
             <div id='participantes'>
               <div>
-                <label>Nombre:</label>
+                <label>Autores:</label>
                 <div>
                   <input
                     type="text"

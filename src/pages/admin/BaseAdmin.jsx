@@ -45,7 +45,7 @@ export function Base() {
             <ul className={`menu-dropdown ${showMenu ? "open" : ""}`}>
               <li><a href="/HomeAdmin">Home</a></li>
               <li><a href="/Registro">Registro</a></li>
-              <li><a href="/Rubricas">Rubricas</a></li>
+              <li><a href="/Rubricas">Rúbricas</a></li>
               <li><a href="/Edicion">Dashboard</a></li>
               <li><a href="/ResultadosAdmin">Resultados</a></li>
               <li>
@@ -59,7 +59,7 @@ export function Base() {
           <ul className="menu">
             <li><a href="/HomeAdmin">Home</a></li>
             <li><a href="/Registro">Registro</a></li>
-            <li><a href="/Rubricas">Rubricas</a></li>
+            <li><a href="/Rubricas">Rúbricas</a></li>
             <li><a href="/Edicion">Dashboard</a></li>
             <li><a href="/ResultadosAdmin">Resultados</a></li>
           </ul>

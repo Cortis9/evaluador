@@ -467,7 +467,7 @@ const fetchDeletecategoriacriterios = async (categoriacriterioId) => {
 const fetchDeletecriterios = async (categoriacriterioId,nombrecriterioAEliminar, criterioId) => {
   
   try {
-    const response = await fetch(`http://localhost:3002/criterios/${categoriacriterioId}`, {
+    const response = await fetch(`https://api-git-main-cortis9.vercel.app/criterios/${categoriacriterioId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -535,7 +535,7 @@ return (
 
               return (
                 <div key={categoriacriterio.id}>
-                  <label htmlFor={`categoriacriterioNombre_${categoriacriterio.id}`}>Nombre del título:</label>
+                  <label htmlFor={`categoriacriterioNombre_${categoriacriterio.id}`}>Nombre de la Categoría:</label>
                   <input
                     type='text'
                     id={`categoriacriterioNombre_${categoriacriterio.id}`}
@@ -544,7 +544,7 @@ return (
                     onChange={(e) => handlecategoriacriterioNameChange(e, categoriacriterio.id)}
                   />
 
-                  <button onClick={() => handleDeletecategoriacriterio(categoriacriterio.id)}>Eliminar Título</button>
+                  <button onClick={() => handleDeletecategoriacriterio(categoriacriterio.id)}>Eliminar Categoría</button>
 
                   {criterioData.length > 0 && criterioData.filter((criterio) => criterio.categoriacriterioId === categoriacriterio.id).length > 0 && (
                     criterioData
@@ -617,12 +617,12 @@ return (
                         );
                       })
                   )}
-                  <button id='bcategoriacriterio' type='button' onClick={() => handleAddNewTitle(categoriacriterio.id)}>Nuevo Título</button>
+                  <button id='bcategoriacriterio' type='button' onClick={() => handleAddNewTitle(categoriacriterio.id)}>Nueva Categoría</button>
                 </div>
               );
             })
           ) : (
-            <div>No hay títulos asociados</div>
+            <div>No hay Categorías asociados</div>
           )}
 
           <button type='submit'>Guardar cambios</button>

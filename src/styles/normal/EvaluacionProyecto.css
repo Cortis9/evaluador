@@ -95,6 +95,12 @@ body {
   height: 1000px;
 }
 
+#barra{
+
+  margin-top: 20PX;
+  margin-left: 50px;
+}
+
 @media (max-width: 768px) {
 
   #imgboton {

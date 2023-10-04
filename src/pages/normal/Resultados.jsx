@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Base } from "../normal/Base";
 import { useNavigate } from "react-router-dom";
+import { BarLoader } from "react-spinners";
 import "../../styles/normal/Evaluacion.css";
 
 export const Resultados = () => {
@@ -9,6 +10,7 @@ export const Resultados = () => {
   const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
   const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
   const [enlaceSeleccionado2, setEnlaceSeleccionado2] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch("https://api-git-main-cortis9.vercel.app/proyectos")
@@ -22,27 +24,37 @@ export const Resultados = () => {
 
   useEffect(() => {
     if (proyectos.length > 0 && proyectoSeleccionado !== "") {
+      setLoading(true);
+
       const proyectoEncontrado = proyectos.find(
         (proyecto) => proyecto.titulo === proyectoSeleccionado
       );
 
       if (proyectoEncontrado) {
-
-        const modifiedLink2 = proyectoEncontrado.link
-        .replace("/view?usp=sharing", "/preview");
+        const modifiedLink2 = proyectoEncontrado.link.replace(
+          "/view?usp=sharing",
+          "/preview"
+        );
         setEnlaceSeleccionado2(modifiedLink2);
 
-
-        fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoEncontrado.id}`)
+        fetch(
+          `https://api-git-main-cortis9.vercel.app/proyectos/${proyectoEncontrado.id}`
+        )
           .then((response) => response.json())
           .then((data) => {
             if (data && data.rubrica) {
               setRubricaSeleccionada(data.rubrica);
             }
+          })
+          .finally(() => {
+            setTimeout(() => {
+              setLoading(false);
+            }, 4000);
           });
       } else {
         setEnlaceSeleccionado2("");
         setRubricaSeleccionada("");
+        setLoading(false);
       }
     }
   }, [proyectos, proyectoSeleccionado]);
@@ -53,17 +65,19 @@ export const Resultados = () => {
   };
 
   const navigateToEvaluacionProyecto = () => {
-  
     const proyectoEncontrado = proyectos.find(
       (proyecto) => proyecto.titulo === proyectoSeleccionado
     );
-  
+
     if (proyectoEncontrado) {
       const proyectoId = proyectoEncontrado.id;
       navigate(`/ResultadosProyecto?proyectoId=${proyectoId}`);
     }
   };
-  
+
+  const handleIframeLoad = () => {
+    setLoading(false);
+  };
 
   return (
     <>
@@ -82,7 +96,19 @@ export const Resultados = () => {
             </option>
           ))}
         </select>
-        <iframe src={enlaceSeleccionado2} width="340" height="480" allow="autoplay" id="pdfpreviw"></iframe>
+        <div className="iframe-container">
+          {loading && (
+            <BarLoader color={"#36D7B7"} loading={loading} id="barra" width={300} />
+          )}
+          <iframe
+            src={enlaceSeleccionado2}
+            width="340"
+            height="480"
+            allow="autoplay"
+            id="pdfpreviw"
+            onLoad={handleIframeLoad}
+          ></iframe>
+        </div>
         <button id="buttonsiguiente" onClick={navigateToEvaluacionProyecto}>
           Siguiente
         </button>

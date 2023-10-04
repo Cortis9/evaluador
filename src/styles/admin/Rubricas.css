@@ -32,6 +32,29 @@
       margin-bottom: 20px;
     }
 
+    #buttonc{
+      background-color:darkgreen;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      margin-right: 20px;
+    }
+    #buttone{
+      background-color:firebrick;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+
     #guardar {
       background-color:#28a745;
       color: #fff;

@@ -130,9 +130,9 @@ export const Rubricas = () => {
   return (
     <div id='divr'>
        <Base />
-      <h1 id='h2r'> Crear Rubrica</h1>
+      <h1 id='h2r'>Crear Rúbrica</h1>
       <div>
-        <label>Nombre de la Rubrica:</label>
+        <label>Nombre de la Rúbrica:</label>
         <input
           type="text"
           id='input'
@@ -148,7 +148,7 @@ export const Rubricas = () => {
             {categoriacriterio.criterios.map((criterio, criterioIndex) => (
               <div key={criterioIndex}>
                 <div>
-                  <label>nombre del criterio:</label>
+                  <label>Nombre del criterio:</label>
                   <input
                     type="text"
                     id='input'
@@ -203,27 +203,32 @@ export const Rubricas = () => {
                         )
                       }
                     />
-                    <button id='button' onClick={() => eliminarPunto(categoriacriterioIndex, criterioIndex, puntoIndex)}>
+               
+
+                    <button id='buttone' onClick={() => eliminarPunto(categoriacriterioIndex, criterioIndex, puntoIndex)}>
                       Eliminar Punto
                     </button>
+                    <div><button onClick={() => agregarPunto(categoriacriterioIndex, criterioIndex)} id='buttonc'>
+                  Agregar Punto
+                </button></div> 
                   </div>
                 ))}
-                <button onClick={() => agregarPunto(categoriacriterioIndex, criterioIndex)} id='button'>
-                  Agregar Punto
-                </button>
-                <button onClick={() => eliminarcriterio(categoriacriterioIndex, criterioIndex)} id='button'>
+            
+                <button onClick={() => eliminarcriterio(categoriacriterioIndex, criterioIndex)} id='buttone'>
                   Eliminar Criterio
                 </button>
               </div>
             ))}
-            <button onClick={() => agregarcriterio(categoriacriterioIndex)} id='button'>Agregar Criterio</button>
-            <button onClick={() => eliminarcategoriacriterio(categoriacriterioIndex)} id='button'>
-              Eliminar Categoria
+         <div><button onClick={() => agregarcriterio(categoriacriterioIndex)} id='buttonc'>Agregar Criterio</button></div>
+            <button onClick={() => eliminarcategoriacriterio(categoriacriterioIndex)} id='buttone'>
+              Eliminar Categoría
             </button>
+           
+            
           </div>
         ))}
         <div>
-          <label>Categoria:</label>
+          <label>Categoría:</label>
           <input
             type="text"
             value={categoriacriterio}

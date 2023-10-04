@@ -98,21 +98,37 @@ export const Edicion = () => {
   const fetchRubricas = async () => {
     try {
       const response = await fetch('https://api-git-main-cortis9.vercel.app/rubricas');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch rubricas: ${response.status}`);
+      }
+  
       const rubricasData = await response.json();
-
-      const rubricasWithcriterios = await Promise.all(
+  
+      if (!Array.isArray(rubricasData)) {
+        throw new Error('Data received from the API is not an array.');
+      }
+  
+      const rubricasWithCriterios = await Promise.all(
         rubricasData.map(async (rubrica) => {
-          const criteriosResponse = await fetch(`https://api-git-main-cortis9.vercel.app/criterios?rubricaId=${rubrica.id}`);
+          const criteriosResponse = await fetch(`https://api-git-main-cortis9.vercel.app/criterios/${rubrica.id}`);
+          if (!criteriosResponse.ok) {
+            throw new Error(`Failed to fetch criterios for rubrica ${rubrica.id}: ${criteriosResponse.status}`);
+          }
+  
           const criteriosData = await criteriosResponse.json();
           return { ...rubrica, criterios: criteriosData };
         })
       );
-
-      const rubricasWithcriteriosAndPuntos = await Promise.all(
-        rubricasWithcriterios.map(async (rubrica) => {
+  
+      const rubricasWithCriteriosAndPuntos = await Promise.all(
+        rubricasWithCriterios.map(async (rubrica) => {
           const criteriosWithPuntos = await Promise.all(
             rubrica.criterios.map(async (criterio) => {
-              const puntosResponse = await fetch(`https://api-git-main-cortis9.vercel.app/puntos?criterioId=${criterio.id}`);
+              const puntosResponse = await fetch(`https://api-git-main-cortis9.vercel.app/puntos/${criterio.id}`);
+              if (!puntosResponse.ok) {
+                throw new Error(`Failed to fetch puntos for criterio ${criterio.id}: ${puntosResponse.status}`);
+              }
+  
               const puntosData = await puntosResponse.json();
               return { ...criterio, puntos: puntosData };
             })
@@ -120,12 +136,13 @@ export const Edicion = () => {
           return { ...rubrica, criterios: criteriosWithPuntos };
         })
       );
-
-      setRubricas(rubricasWithcriteriosAndPuntos);
+  
+      setRubricas(rubricasWithCriteriosAndPuntos);
     } catch (error) {
       console.error('Error al obtener las rubricas: ', error);
     }
   };
+  
 
   const fetchCategorias = async () => {
     try {
@@ -317,175 +334,174 @@ export const Edicion = () => {
     }
   
 
-  return (
-    <>
-      <Base />
-      
-      <main className="table">
-        {proyectos && rubricas && categorias && (
-          <>
-            <section className="table__header">
-            <div className="input-group">
-            <input
-            id='search'
-        type="search"
-        placeholder="Buscar rúbricas..."
-        value={searchQueryRubricas}
-        onChange={(e) => setSearchQueryRubricas(e.target.value)}
-      />
-                <img src={searchimg} alt="" />
-              </div>
-              <div id='categoriacriteriotablap'> <h2 >Proyectos</h2></div>
-              <div className="export__file">
-                <label
-                  htmlFor="export-file2"
-                  className="export__file-btn"
-                  title="Export File"
-                  onClick={toggleExportOptions}
-                ></label>
-                <input type="checkbox" id="export-file" />
-                {exportOptionsVisible && (
-                  <div className="export__file-options">
-                    <label htmlFor="toJSON-resultados" onClick={() => handleExportProyectos('toJSON')}>
-                      JSON <img src={jsonimg} alt="" />
-                    </label>
-                    <label htmlFor="toCSV-resultados" onClick={() => handleExportProyectos('toCSV')}>
-                      CSV <img src={csvimg} alt="" />
-                    </label>
-                    <label htmlFor="toEXCEL-resultados" onClick={() => handleExportProyectos('toEXCEL')}>
-                      EXCEL <img src={excelimg} alt="" />
-                    </label>
-                    <label  onClick={() => eliminarProyectos()}>
-                       <span  className="icono-papelera">🗑️</span>
-                    </label>
-                  </div>
-                )}
-                
-              </div>
-            </section>
-            <div id="proyectosTable">
-              {categorias.map((categoria) => (
-                <div key={categoria}>
-                  <div id='divc'>  <h3 id='categoriacriteriocategoria'>{categoria}</h3></div>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Proyecto</th>
-                        <th>Participante o grupo</th>
-                        <th>Estado</th>
-                        <th>Correo Juez</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {proyectos
-                        .filter((proyecto) => proyecto.categoria === categoria && proyecto.titulo.includes(searchQueryProyectos))
-                        .map((proyecto) => (
-                          <tr key={proyecto.id}>
-                            <td>{proyecto.titulo}</td>
-                            <td>{proyecto.nombre}</td>
-                            <td>{proyecto.estado}</td>
-                            <td>{typeof correoJuez === 'string' ? correoJuez : ''}</td>
-                            <td>
-                              <button id='boton' onClick={() => handleEditarProyecto(proyecto.id)}>
-                                <span className="icono-lapiz">✏️</span>
-                              </button>
-                              <button id='boton' onClick={() => handleEliminarProyecto(proyecto.id)}>
-                              <span  className="icono-papelera">🗑️</span>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-              ))}
-            </div>
-
-            <section className="table__header">
-            <div className="input-group">
-            <input
-             id='search2'
-        type="search"
-        placeholder="Buscar proyectos..."
-        value={searchQueryProyectos}
-        onChange={(e) => setSearchQueryProyectos(e.target.value)}
-      />
-                <img src={searchimg} alt="" />
-              </div>
-              <div id='categoriacriteriotablar'><h2 >Rúbricas</h2></div>
-  
-  <div className="export__file">
-    <label
-      htmlFor="export-file-rubricas"
-      className="export__file-btn"
-      title="Export File"
-      onClick={toggleExportOptions2}
-    ></label>
-    <input type="checkbox" id="export-file-rubricas" />
-    {exportOptionsVisible2 && (
-      <div className="export__file-options">
-        <label
-          htmlFor="toJSON-rubricas"
-          onClick={() => handleExportRubricas('toJSON-rubricas')}
-        >
-          JSON <img src={jsonimg} alt="" />
-        </label>
-        <label
-          htmlFor="toCSV-rubricas"
-          onClick={() => handleExportRubricas('toCSV-rubricas')}
-        >
-          CSV <img src={csvimg} alt="" />
-        </label>
-        <label
-          htmlFor="toEXCEL-rubricas"
-          onClick={() => handleExportRubricas('toEXCEL-rubricas')}
-        >
-          EXCEL <img src={excelimg} alt="" />
-        </label>
-        <label
+    return (
+      <>
+        <Base />
           
-          onClick={() => eliminarRubricas()}
-        >
-           <span  className="icono-papelera">🗑️</span>
-        </label>
-      </div>
-    )}
-  </div>
-</section>
-
-            <div id="rubricasTable">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Numero</th>
-                    <th>Rubrica</th>
+        <main className="table">
+          {proyectos && rubricas && categorias && (
+            <>
+              <section className={`table__header`}>
+                <div className="input-group">
+                  <input
+                    id='search'
+                    type="search"
+                    placeholder="Buscar rúbricas..."
+                    value={searchQueryRubricas}
+                    onChange={(e) => setSearchQueryRubricas(e.target.value)}
+                  />
+                  <img src={searchimg} alt="" />
+                </div>
+                <div id='categoriacriteriotablap'><h2 >Proyectos</h2></div>
+                <div className="export__file">
+                  <label
+                    htmlFor="export-file2"
+                    className="export__file-btn"
+                    title="Export File"
+                    onClick={toggleExportOptions}
+                  ></label>
+                  <input type="checkbox" id="export-file" />
+                  {exportOptionsVisible && (
+                    <div className="export__file-options">
+                      <label htmlFor="toJSON-resultados" onClick={() => handleExportProyectos('toJSON')}>
+                        JSON <img src={jsonimg} alt="" />
+                      </label>
+                      <label htmlFor="toCSV-resultados" onClick={() => handleExportProyectos('toCSV')}>
+                        CSV <img src={csvimg} alt="" />
+                      </label>
+                      <label htmlFor="toEXCEL-resultados" onClick={() => handleExportProyectos('toEXCEL')}>
+                        EXCEL <img src={excelimg} alt="" />
+                      </label>
+                      <label  onClick={() => eliminarProyectos()}>
+                        <span  className="icono-papelera">🗑️</span>
+                      </label>
+                    </div>
+                  )}
+                </div>
+              </section>
+              <div id="proyectosTable">
+                {categorias.map((categoria) => (
+                  <div key={categoria}>
+                    <div id='divc'>  <h3 id='categoriacriteriocategoria'>{categoria}</h3></div>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Proyecto</th>
+                          <th>Participante o grupo</th>
+                          <th>Estado</th>
+                          <th>Correo del Juez</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {proyectos
+                          .filter((proyecto) => proyecto.categoria === categoria && proyecto.titulo.includes(searchQueryProyectos))
+                          .map((proyecto) => (
+                            <tr key={proyecto.id}>
+                              <td>{proyecto.titulo}</td>
+                              <td>{proyecto.nombre}</td>
+                              <td>{proyecto.estado}</td>
+                              <td>{typeof correoJuez === 'string' ? correoJuez : ''}</td>
+                              <td>
+                                <button id='boton' onClick={() => handleEditarProyecto(proyecto.id)}>
+                                  <span className="icono-lapiz">✏️</span>
+                                </button>
+                                <button id='boton' onClick={() => handleEliminarProyecto(proyecto.id)}>
+                                  <span  className="icono-papelera">🗑️</span>
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ))}
+              </div>
+    
+              <section className={`table__header ${proyectos && rubricas ? 'table__header-rubricas' : ''}`}>
+                <div className="input-group">
+                  <input
+                    id='search2'
+                    type="search"
+                    placeholder="Buscar proyectos..."
+                    value={searchQueryProyectos}
+                    onChange={(e) => setSearchQueryProyectos(e.target.value)}
+                  />
+                  <img src={searchimg} alt="" />
+                </div>
+                <div id='categoriacriteriotablar'><h2 >Rúbricas</h2></div>
+      
+                <div className="export__file">
+                  <label
+                    htmlFor="export-file-rubricas"
+                    className="export__file-btn"
+                    title="Export File"
+                    onClick={toggleExportOptions2}
+                  ></label>
+                  <input type="checkbox" id="export-file-rubricas" />
+                  {exportOptionsVisible2 && (
+                    <div className="export__file-options">
+                      <label
+                        htmlFor="toJSON-rubricas"
+                        onClick={() => handleExportRubricas('toJSON-rubricas')}
+                      >
+                        JSON <img src={jsonimg} alt="" />
+                      </label>
+                      <label
+                        htmlFor="toCSV-rubricas"
+                        onClick={() => handleExportRubricas('toCSV-rubricas')}
+                      >
+                        CSV <img src={csvimg} alt="" />
+                      </label>
+                      <label
+                        htmlFor="toEXCEL-rubricas"
+                        onClick={() => handleExportRubricas('toEXCEL-rubricas')}
+                      >
+                        EXCEL <img src={excelimg} alt="" />
+                      </label>
+                      <label
+                        onClick={() => eliminarRubricas()}
+                      >
+                        <span  className="icono-papelera">🗑️</span>
+                      </label>
+                    </div>
+                  )}
+                </div>
+              </section>
+    
+              <div id="rubricasTable">
+                <table>
+                  <thead>
+                    <tr>
+                    <th>Número</th> 
+                    <th>Rúbrica</th> 
                     <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rubricas
-                    .filter((rubrica) => rubrica.nombre.includes(searchQueryRubricas))
-                    .map((rubrica) => (
-                      <tr key={rubrica.id}>
-                        <td>{rubrica.id}</td>
-                        <td>{rubrica.nombre}</td>
-                        <td>
-                          <button id='boton' onClick={() => handleEditarRubrica(rubrica.id)}>
-                            <span className="icono-lapiz">✏️</span>
-                          </button>
-                          <button id='boton' onClick={() => handleEliminarRubrica(rubrica.id)}>
-                            <span  className="icono-papelera">🗑️</span>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </>
-        )}
-      </main>
-    </>
-  );
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rubricas
+                      .filter((rubrica) => rubrica.nombre.includes(searchQueryRubricas))
+                      .map((rubrica) => (
+                        <tr key={rubrica.id}>
+                          <td>{rubrica.id}</td>
+                          <td>{rubrica.nombre}</td>
+                          <td>
+                            <button id='boton' onClick={() => handleEditarRubrica(rubrica.id)}>
+                              <span className="icono-lapiz">✏️</span>
+                            </button>
+                            <button id='boton' onClick={() => handleEliminarRubrica(rubrica.id)}>
+                              <span  className="icono-papelera">🗑️</span>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </main>
+      </>
+    );
+    
 };

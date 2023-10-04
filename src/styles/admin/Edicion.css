@@ -41,7 +41,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  } 
+
+  .table__header-rubricas {
+    background-color: rgba(0, 128, 0, 0.8); 
+    padding: .8rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
+  
   
   .table__header .input-group {
     width: 35%;

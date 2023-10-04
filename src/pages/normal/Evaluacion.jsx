@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Base } from "../normal/Base";
 import { useNavigate } from "react-router-dom";
+import { BarLoader } from "react-spinners";
 import "../../styles/normal/Evaluacion.css";
 
 export const Evaluacion = () => {
@@ -9,7 +10,7 @@ export const Evaluacion = () => {
   const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
   const [enlaceSeleccionado2, setEnlaceSeleccionado2] = useState("");
   const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
-
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch("https://api-git-main-cortis9.vercel.app/proyectos")
@@ -21,45 +22,55 @@ export const Evaluacion = () => {
       });
   }, []);
 
-  useEffect(() => {
-    if (proyectos.length > 0 && proyectoSeleccionado !== "") {
-      const proyectoEncontrado = proyectos.find(
-        (proyecto) => proyecto.titulo === proyectoSeleccionado
-      );
-
-      if (proyectoEncontrado) {
-
-        const modifiedLink2 = proyectoEncontrado.link
-        .replace("/view?usp=sharing", "/preview");
-        setEnlaceSeleccionado2(modifiedLink2);
- 
-
-
-        fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoEncontrado.id}`)
-          .then((response) => response.json())
-          .then((data) => {
-            if (data && data.rubrica) {
-              setRubricaSeleccionada(data.rubrica);
-            }
-          });
-      } else {
-        setEnlaceSeleccionado2("");
-        setRubricaSeleccionada("");
-      }
-    }
-  }, [proyectos, proyectoSeleccionado]);
-
   const handleProyectoSeleccionado = (event) => {
     const proyecto = event.target.value;
     setProyectoSeleccionado(proyecto);
   };
 
-  const navigateToEvaluacionProyecto = () => {
+  useEffect(() => {
+    if (proyectos.length > 0 && proyectoSeleccionado !== "") {
+      setLoading(true);
 
+      const proyectoEncontrado = proyectos.find(
+        (proyecto) => proyecto.titulo === proyectoSeleccionado
+      );
+
+      if (proyectoEncontrado) {
+        const modifiedLink2 = proyectoEncontrado.link.replace(
+          "/view?usp=sharing",
+          "/preview"
+        );
+        setEnlaceSeleccionado2(modifiedLink2);
+
+        fetch(
+          `https://api-git-main-cortis9.vercel.app/proyectos/${proyectoEncontrado.id}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data && data.rubrica) {
+              setRubricaSeleccionada(data.rubrica);
+            }
+          })
+          .finally(() => {
+         
+          });
+      } else {
+        setEnlaceSeleccionado2("");
+        setRubricaSeleccionada("");
+        setLoading(false); 
+      }
+    }
+  }, [proyectos, proyectoSeleccionado]);
+
+  const handleIframeLoad = () => {
+    setLoading(false); 
+  };
+
+  const navigateToEvaluacionProyecto = () => {
     const proyectoEncontrado = proyectos.find(
       (proyecto) => proyecto.titulo === proyectoSeleccionado
     );
-  
+
     if (proyectoEncontrado) {
       const proyectoId = proyectoEncontrado.id;
       const nombreRubrica = encodeURIComponent(rubricaSeleccionada);
@@ -67,13 +78,12 @@ export const Evaluacion = () => {
       navigate(`/EvaluacionProyecto/${nombreRubrica}?${queryParams}`);
     }
   };
-  
 
   return (
     <>
       <Base />
       <form id="form2">
-      <h2 id="h2">Evaluación</h2>
+        <h2 id="h2">Evaluación</h2>
         <select
           id="proyecto"
           value={proyectoSeleccionado}
@@ -86,8 +96,15 @@ export const Evaluacion = () => {
             </option>
           ))}
         </select>
-        <iframe src={enlaceSeleccionado2} width="340" height="480" allow="autoplay" id="pdfpreviw"></iframe>
-     
+        {loading && <BarLoader color={"#36D7B7"} loading={loading} id="barra" width={300}/>}
+        <iframe
+          src={enlaceSeleccionado2}
+          width="340"
+          height="480"
+          allow="autoplay"
+          id="pdfpreviw"
+          onLoad={handleIframeLoad}
+        ></iframe>
         <button id="buttonsiguiente" onClick={navigateToEvaluacionProyecto}>
           Siguiente
         </button>
@@ -95,6 +112,3 @@ export const Evaluacion = () => {
     </>
   );
 };
-
-
-
