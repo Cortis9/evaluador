@@ -12,6 +12,8 @@ export const Evaluacion = () => {
   const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
   const [loading, setLoading] = useState(false);
 
+
+
   useEffect(() => {
     fetch("https://api-git-main-cortis9.vercel.app/proyectos")
       .then((response) => response.json())
@@ -49,6 +51,7 @@ export const Evaluacion = () => {
           .then((data) => {
             if (data && data.rubrica) {
               setRubricaSeleccionada(data.rubrica);
+
             }
           })
           .finally(() => {
@@ -84,18 +87,27 @@ export const Evaluacion = () => {
       <Base />
       <form id="form2">
         <h2 id="h2">Evaluación</h2>
+
+        <div><h5 id="seleccion">Seleccione y evalúe cada uno de los trabajos que se muestran en la lista desplegable.</h5></div>
+        
         <select
-          id="proyecto"
-          value={proyectoSeleccionado}
-          onChange={handleProyectoSeleccionado}
-        >
-          <option value="">Seleccione un proyecto</option>
-          {proyectos.map((proyecto) => (
-            <option key={proyecto.id} value={proyecto.titulo}>
-              {proyecto.titulo}
-            </option>
-          ))}
-        </select>
+  id="proyecto"
+  value={proyectoSeleccionado}
+  onChange={handleProyectoSeleccionado}
+>
+  <option value="">Seleccione un proyecto</option>
+  {proyectos.map((proyecto) => (
+    <option
+      key={proyecto.id}
+      value={proyecto.titulo}
+      style={{ color: proyecto.estado === "evaluado" ? "green" : "red" }}
+    >
+      {proyecto.titulo}
+    </option>
+  ))}
+</select>
+<div id="rubricase"><h5 id="h5">Rúbrica del proyecto: {rubricaSeleccionada}</h5></div>
+
         {loading && <BarLoader color={"#36D7B7"} loading={loading} id="barra" width={300}/>}
         <iframe
           src={enlaceSeleccionado2}

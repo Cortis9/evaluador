@@ -108,6 +108,14 @@ export const EvaluacionProyecto = () => {
           ],
         };
 
+        const criteriosSinPuntos = criteriosPuntosRelacionados.some((criterio) => {
+          return criterio.puntos.every((punto) => !punto.seleccionado);
+        });
+    
+        if (criteriosSinPuntos) {
+          window.alert('Por favor, selecciona al menos un punto para cada criterio antes de enviar.');
+        }else{
+
         const response = await fetch("https://api-git-main-cortis9.vercel.app/resultados", {
           method: "POST",
           headers: {
@@ -135,6 +143,7 @@ export const EvaluacionProyecto = () => {
         } else {
           console.error("Error al enviar los resultados");
         }
+      }
  
       }
   

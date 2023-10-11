@@ -14,6 +14,7 @@ export const Enviado = () => {
 
     <h1 id='h1'>Evaluación Enviada</h1>
     <div> <img src={leonel} width={500} id='leonel'/></div>
+    <h3 id='h3'>Vaya al menú y elija otro trabajo para evaluar.</h3>
    
 
 

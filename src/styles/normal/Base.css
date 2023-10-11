@@ -36,7 +36,7 @@ header ul {
 
 header ul li {
   list-style: none;
-  margin-left: 20px;
+  margin-left: 50px;
 }
 
 header ul li a {
@@ -105,6 +105,21 @@ header ul li a:hover {
   margin-top: 10px; 
 }
 
+#bienvenida1{
+
+  color: #ff5900;
+  margin-left: 450px;
 
 
+
+}
+
+#bienvenida2{
+
+  color: #000000;
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 300px;
+}
 

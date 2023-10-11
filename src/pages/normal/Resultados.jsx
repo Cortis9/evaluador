@@ -85,17 +85,22 @@ export const Resultados = () => {
       <form id="form2">
         <h2 id="h2">Resultados</h2>
         <select
-          id="proyecto"
-          value={proyectoSeleccionado}
-          onChange={handleProyectoSeleccionado}
-        >
-          <option value="">Seleccione un proyecto</option>
-          {proyectos.map((proyecto) => (
-            <option key={proyecto.id} value={proyecto.titulo}>
-              {proyecto.titulo}
-            </option>
-          ))}
-        </select>
+  id="proyecto"
+  value={proyectoSeleccionado}
+  onChange={handleProyectoSeleccionado}
+>
+  <option value="">Seleccione un proyecto</option>
+  {proyectos.map((proyecto) => (
+    <option
+      key={proyecto.id}
+      value={proyecto.titulo}
+      style={{ color: proyecto.estado === "evaluado" ? "green" : "red" }}
+    >
+      {proyecto.titulo}
+    </option>
+  ))}
+</select>
+
         <div className="iframe-container">
           {loading && (
             <BarLoader color={"#36D7B7"} loading={loading} id="barra" width={300} />
