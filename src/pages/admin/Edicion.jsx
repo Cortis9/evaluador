@@ -98,22 +98,34 @@ export const Edicion = () => {
   const fetchRubricas = async () => {
     try {
       const response = await fetch('https://api-git-main-cortis9.vercel.app/rubricas');
-      if (!response.ok) {
-        throw new Error(`Failed to fetch rubricas: ${response.status}`);
-      }
-  
       const rubricasData = await response.json();
-  
-      if (!Array.isArray(rubricasData)) {
-        throw new Error('Data received from the API is not an array.');
-      }
 
-  
+      const rubricasWithcriterios = await Promise.all(
+        rubricasData.map(async (rubrica) => {
+          const criteriosResponse = await fetch(`https://api-git-main-cortis9.vercel.app/criterios?rubricaId=${rubrica.id}`);
+          const criteriosData = await criteriosResponse.json();
+          return { ...rubrica, criterios: criteriosData };
+        })
+      );
+
+      const rubricasWithcriteriosAndPuntos = await Promise.all(
+        rubricasWithcriterios.map(async (rubrica) => {
+          const criteriosWithPuntos = await Promise.all(
+            rubrica.criterios.map(async (criterio) => {
+              const puntosResponse = await fetch(`https://api-git-main-cortis9.vercel.app/puntos?criterioId=${criterio.id}`);
+              const puntosData = await puntosResponse.json();
+              return { ...criterio, puntos: puntosData };
+            })
+          );
+          return { ...rubrica, criterios: criteriosWithPuntos };
+        })
+      );
+
+      setRubricas(rubricasWithcriteriosAndPuntos);
     } catch (error) {
       console.error('Error al obtener las rubricas: ', error);
     }
   };
-  
 
   const fetchCategorias = async () => {
     try {
@@ -304,7 +316,6 @@ export const Edicion = () => {
     } 
     }
   
-
     return (
       <>
         <Base />
