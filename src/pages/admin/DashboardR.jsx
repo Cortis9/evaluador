@@ -11,18 +11,19 @@ import * as XLSX from 'xlsx';
 export const DashboardR= () => {
   const [rubricas, setRubricas] = useState([]);
   const [exportOptionsVisible2, setExportOptionsVisible2] = useState(false);
-  const [searchQueryProyectos, setSearchQueryProyectos] = useState('');
   const [searchQueryRubricas, setSearchQueryRubricas] = useState('');
 
   const navigate = useNavigate();
 
-
+  const handleSearch = (e) => {
+    setSearchQueryRubricas(e.target.value);
+  };
 
   const handleEditarRubrica = (rubricaId) => {
     const rubrica = rubricas.find((rubrica) => rubrica.id === rubricaId);
     if (rubrica) {
-      setEditedData(rubrica);
-      navigate(`/edicion/rubrica/${rubrica.id}`);
+
+      navigate(`/DashboardR/rubrica/${rubrica.id}`);
     }
   };
 
@@ -201,14 +202,15 @@ export const DashboardR= () => {
           {rubricas && (
             <>
               <section className={`table__header ${rubricas ? 'table__header-rubricas' : ''}`}>
+   
                 <div className="input-group">
-                  <input
-                    id='search2'
-                    type="search"
-                    placeholder=""
-                    value={searchQueryProyectos}
-                    onChange={(e) => setSearchQueryProyectos(e.target.value)}
-                  />
+                <input
+                  id='search'
+                  type="search"
+                  placeholder=""
+                  value={searchQueryRubricas}
+                  onChange={handleSearch} 
+                />
                   <img src={searchimg} alt="" />
                 </div>
                 <div id='categoriacriteriotablar'><h2 >Rúbricas</h2></div>

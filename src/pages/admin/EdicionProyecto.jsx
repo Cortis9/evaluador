@@ -60,7 +60,7 @@ export const EdicionProyecto = () => {
   };
 
   const handleGoBack = () => {
-    navigate('/edicion');
+    navigate('/DashboardP');
   };
 
   return (

@@ -38,7 +38,7 @@ export const EdicionRubrica = () => {
   }, [rubricaId]);
 
   const handleGoBack = () => {
-    navigate('/edicion');
+    navigate('/DashboardR');
   };
 
   const fetchRubricaData = async () => {

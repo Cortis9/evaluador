@@ -11,23 +11,23 @@ import * as XLSX from 'xlsx';
 export const DashboardP = () => {
   const [proyectos, setProyectos] = useState([]);
   const [categorias, setCategorias] = useState([]);
-  const [editedData, setEditedData] = useState({});
   const [correoJuez, setCorreoJuez] = useState({});
   const [exportOptionsVisible, setExportOptionsVisible] = useState(false);
   const [searchQueryProyectos, setSearchQueryProyectos] = useState('');
-  const [searchQueryRubricas, setSearchQueryRubricas] = useState('');
 
   const navigate = useNavigate();
 
   const handleEditarProyecto = (proyectoId) => {
     const proyecto = proyectos.find((proyecto) => proyecto.id === proyectoId);
     if (proyecto) {
-      setEditedData(proyecto);
-      navigate(`/edicion/proyecto/${proyecto.id}`);
+
+      navigate(`/DashboardP/proyecto/${proyecto.id}`);
     }
   };
 
-
+  const handleSearchProyectos = (e) => {
+    setSearchQueryProyectos(e.target.value);
+  };
 
   const handleEliminarProyecto = async (proyectoId) => {
     
@@ -191,13 +191,13 @@ export const DashboardP = () => {
             <>
               <section className={`table__header`}>
                 <div className="input-group">
-                  <input
-                    id='search'
-                    type="search"
-                    placeholder=""
-                    value={searchQueryRubricas}
-                    onChange={(e) => setSearchQueryRubricas(e.target.value)}
-                  />
+                <input
+                  id='search'
+                  type="search"
+                  placeholder=""
+                  value={searchQueryProyectos}
+                  onChange={handleSearchProyectos} 
+                />
                   <img src={searchimg} alt="" />
                 </div>
                 <div id='categoriacriteriotablap'><h2 >Proyectos</h2></div>

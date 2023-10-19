@@ -277,8 +277,8 @@ export function MyRoutes() {
         <Route path="/Rubricas" element={<PrivateRouteRubricas />} /><Route />
         <Route path="/DashboardP" element={<PrivateRouteDashboardproyectos />} /><Route />
         <Route path="/DashboardR" element={<PrivateRouteDashboardrubricas />} /><Route />
-        <Route path="/edicion/proyecto/:proyectoId" element={<PrivateRouteEdicion2 />} /><Route />
-        <Route path="/edicion/rubrica/:rubricaId" element={<PrivateRouteEdicion3 />} /><Route />
+        <Route path="/DashboardP/proyecto/:proyectoId" element={<PrivateRouteEdicion2 />} /><Route />
+        <Route path="/DashboardR/rubrica/:rubricaId" element={<PrivateRouteEdicion3 />} /><Route />
         <Route path="/ResultadosAdmin" element={<PrivateRouteResuladosAdmin />} /><Route />
         <Route path="/ResultadosProyectoAdmin" element={<PrivateRouteResuladosProyectoAdmin />} /><Route />
         <Route />
