@@ -544,7 +544,7 @@ return (
                     onChange={(e) => handlecategoriacriterioNameChange(e, categoriacriterio.id)}
                   />
 
-                  <button onClick={() => handleDeletecategoriacriterio(categoriacriterio.id)}>Eliminar Categoría</button>
+                  <button id='botone' onClick={() => handleDeletecategoriacriterio(categoriacriterio.id)}>Eliminar Categoría</button>
 
                   {criterioData.length > 0 && criterioData.filter((criterio) => criterio.categoriacriterioId === categoriacriterio.id).length > 0 && (
                     criterioData
@@ -574,8 +574,8 @@ return (
                                 value={criterio.detalle || ''}
                                 onChange={(e) => handlecriterioDetalleChange(e, criterio.id)}
                               />
-                              <button onClick={() => handleDeletecriterio(criterio.id, categoriacriterio.id)}>Eliminar criterio</button>
-                              <button onClick={() => handleAddNewcriterio(categoriacriterio.id)}>Nuevo criterio</button>
+                              <button id='botone' onClick={() => handleDeletecriterio(criterio.id, categoriacriterio.id)}>Eliminar criterio</button>
+                              <button id='botonc' onClick={() => handleAddNewcriterio(categoriacriterio.id)}>Nuevo criterio</button>
                             </div>
 
                             {puntoData.length > 0 &&
@@ -607,8 +607,8 @@ return (
                                           onChange={(e) => handlePuntoValorChange(e, criterio.id, punto.id)}
                                         />
 
-                                        <button onClick={() => handleDeletePunto(punto.id, punto.criterioId)}>Eliminar Punto</button>
-                                        <button onClick={() => handleAddNewPunto(criterio.id)}>Nuevo Punto</button>
+                                        <button id='botone'onClick={() => handleDeletePunto(punto.id, punto.criterioId)}>Eliminar Punto</button>
+                                        <button id='botonc'onClick={() => handleAddNewPunto(criterio.id)}>Nuevo Punto</button>
                                       </div>
                                     );
                                   })

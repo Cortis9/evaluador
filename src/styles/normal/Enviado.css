@@ -29,3 +29,17 @@
     color:  #ff5900;
     margin-left: 150px;
 }
+
+@media (max-width: 768px) {
+    #evaluacion {
+      margin: 20px; 
+      padding: 20px; 
+    }
+  
+    #h1, #leonel, #btr, #h3 {
+      margin-left: 20px; 
+      margin-right: 20px; 
+      width: 300px;
+    }
+
+  }

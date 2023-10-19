@@ -46,7 +46,8 @@ export function Base() {
               <li><a href="/HomeAdmin">Home</a></li>
               <li><a href="/Registro">Registro</a></li>
               <li><a href="/Rubricas">Rúbricas</a></li>
-              <li><a href="/Edicion">Dashboard</a></li>
+              <li><a href="/DashboardP">Dashboard Proyectos</a></li>
+              <li><a href="/DashboardR">Dashboard Rúbricas</a></li>
               <li><a href="/ResultadosAdmin">Resultados</a></li>
               <li>
                 <button onClick={handleLogout} className="button" id="botonL">
@@ -60,7 +61,8 @@ export function Base() {
             <li><a href="/HomeAdmin">Home</a></li>
             <li><a href="/Registro">Registro</a></li>
             <li><a href="/Rubricas">Rúbricas</a></li>
-            <li><a href="/Edicion">Dashboard</a></li>
+            <li><a href="/DashboardP">DashboardP</a></li>
+            <li><a href="/DashboardR">DashboardR</a></li>
             <li><a href="/ResultadosAdmin">Resultados</a></li>
           </ul>
         )}

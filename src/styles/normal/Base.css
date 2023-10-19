@@ -120,6 +120,38 @@ header ul li a:hover {
   background: #fff;
   border-radius: 20px;
   padding: 20px;
-  margin-top: 300px;
+  margin-top: 270px;
 }
 
+#bienvenida3{
+
+  color:  #ff5900;
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-left: 300px;
+  margin-right: 300px;
+}
+
+
+
+
+@media (max-width: 768px) {
+  h1#bienvenida1 {
+    font-size: 20px;
+    text-align: center; 
+    margin-right: 450px; 
+  }
+
+  h4#bienvenida2 {
+    font-size: 10px;
+    max-width: 40%;
+    text-align: center; 
+    margin-left: 300px;
+  }
+
+  h4#bienvenida3 {
+    font-size: 10px;
+    text-align: center; 
+  }
+}

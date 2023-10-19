@@ -11,6 +11,7 @@ import * as XLSX from "xlsx";
 export const ResultadosAdmin = () => {
   const navigate = useNavigate();
   const [proyectos, setProyectos] = useState([]);
+  const [NombreProyecto, setNombreProyecto] = useState([]);
   const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
   const [enlaceSeleccionado, setEnlaceSeleccionado] = useState("");
   const [rubricaSeleccionada, setRubricaSeleccionada] = useState("");
@@ -100,6 +101,20 @@ export const ResultadosAdmin = () => {
     }
   };
 
+  const obtenerNombreProyecto = async (proyectoId) => {
+    try {
+      const response = await fetch(`https://api-git-main-cortis9.vercel.app/proyectos/${proyectoId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setNombreProyecto(data.titulo);
+      } else {
+        console.error("Error al obtener el nombre");
+      }
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error);
+    }
+  };
+
   const handleExportResultados = (exportType) => {
     if (exportType === "toJSON-resultados") {
       const json = toJSON(calificacionFinal);
@@ -118,10 +133,11 @@ export const ResultadosAdmin = () => {
   };
 
   const toCSV = (data) => {
-    const headers = "id,proyectoId,calificacionFinal,correojuez";
+    const headers = "proyectoId,Titulo,calificacionFinal,correojuez,rubrica,puntos extra,correo puntos extra, detalles puntos extra";
+    obtenerNombreProyecto(calificacionFinal.proyectoId)
     const rows = data.map(
       (calificacionFinal) =>
-        `${calificacionFinal.id},${calificacionFinal.proyectoId},${calificacionFinal.calificacionFinal},${calificacionFinal.correojuez}`
+        `${calificacionFinal.proyectoId},${NombreProyecto},${calificacionFinal.calificacionFinal},${calificacionFinal.correojuez},${calificacionFinal.nombrerubrica},${calificacionFinal.puntosextra},${calificacionFinal.correopuntosextra},${calificacionFinal.detallespuntosextra}`
     );
     return `${headers}\n${rows.join("\n")}`;
   };
@@ -232,21 +248,24 @@ export const ResultadosAdmin = () => {
           </button>
         </section>
         <h2 id="h2">Resultados</h2>
+        <div><img id="rojoverde" src="../../src/assets/rojo-verde.png" width={250}  /></div>
         <select
   id="proyecto"
   value={proyectoSeleccionado}
   onChange={handleProyectoSeleccionado}
 >
-  <option value="">Seleccione un proyecto</option>
-  {proyectos.map((proyecto) => (
-    <option
-      key={proyecto.id}
-      value={proyecto.titulo}
-      style={{ color: proyecto.estado === "evaluado" ? "green" : "red" }}
-    >
-      {proyecto.titulo}
-    </option>
-  ))}
+<option value="">Seleccione un proyecto</option>
+{proyectos.map((proyecto) => (
+  <option
+    key={proyecto.id}
+    value={proyecto.titulo}
+    style={{ color: proyecto.estado === "evaluado" ? "green" : "red" }}
+    title={proyecto.titulo.length > 20 ? proyecto.titulo : null} 
+  >
+    {proyecto.titulo.length > 20 ? proyecto.titulo.slice(0, 20) + "..." : proyecto.titulo}
+  </option>
+))}
+
 </select>
 
         <div className="iframe-container">

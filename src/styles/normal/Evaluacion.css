@@ -24,13 +24,6 @@ border-radius: 20px;
 }
 
 
-#img{
-margin-top: 30px;
-margin-right: 30px;
-height: 400px;
-width: 600px;
-margin-bottom: 0;
-}
 
 #proyecto{
   width: 350px;
@@ -72,4 +65,82 @@ margin-bottom: 0;
 
 #rubricase{
   color: #000;
+}
+
+@media (max-width: 768px) {
+
+
+  #form2{
+    margin-top: 80px;
+    width: 300px;
+    overflow:hidden;
+    background-color: #ffffff;
+    border-radius: 20px;
+    
+    }
+    
+    #h2{
+      margin-top: 50px;
+      margin-bottom: 30px;
+      color: #ff5900;
+      text-align-last: center;
+    }
+    
+    #buttonsiguiente{
+    
+      margin-left: 90px;
+      margin-bottom: 50px;
+      background-color: #000;
+      color: #ffffff;
+      margin-top: 20px;
+    }
+    
+
+    
+    #proyecto{
+      width: 250px;
+      margin-left: 30px;
+      margin-top: 20px;
+    }
+    
+    #botoneli{
+    
+      margin-left: 300px;
+      background-color: #000;
+      
+    }
+    
+    #pdf{
+    
+      margin-top: 15px;
+      margin-left: 15px;
+      width: 340px;
+      height: 480px;
+    }
+    
+    #barra{
+    
+      margin-top: 20PX;
+      margin-left: 50px;
+    }
+    
+    #seleccion{
+    
+      color: #000;
+      margin: 20px;
+    }
+    
+    #h5{
+    
+      color: #000;
+      margin-left: 35px;
+      margin-top: 30px;
+    }
+
+    #rojoverde{
+      width: 150px;
+      margin-left: 70px;
+    }
+
+
 }

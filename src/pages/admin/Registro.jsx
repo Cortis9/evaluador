@@ -132,7 +132,8 @@ export function Registro() {
      
 
          <div id="archivo">
-         <label >Subir Archivo</label>
+         <label >Subir Archivo CSV</label>
+         <label >Debe ser guardado con separador " | "</label>
       <label id="custom-file-upload" htmlFor="inputarchivo">
       </label>
     

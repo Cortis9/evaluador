@@ -9,3 +9,24 @@
 #rubricat{
     color: black;
 }
+
+#botonc{
+
+   color: white;
+   background-color: green;
+
+
+}
+
+#botone{
+
+    color: #fff;
+    background-color: red;
+}
+
+#bcategoriacriterio{
+
+    background-color: green;
+    color: #fff;
+    margin-bottom: 20px;
+}

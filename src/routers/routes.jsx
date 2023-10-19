@@ -12,7 +12,8 @@ import {HomeAdmin} from "../pages/admin/HomeAdmin"
 import {LoginAdmin} from "../pages/admin/LoginAdmin"
 import {Registro} from "../pages/admin/Registro"
 import {Rubricas} from "../pages/admin/Rubricas"
-import {Edicion} from "../pages/admin/Edicion"
+import {DashboardP} from "../pages/admin/DashboardP";
+import {DashboardR} from "../pages/admin/DashboardR";
 import {EdicionProyecto} from "../pages/admin/EdicionProyecto"
 import {EdicionRubrica} from "../pages/admin/EdicionRubrica"
 import { ResultadosAdmin } from "../pages/admin/ResultadosAdmin";
@@ -142,7 +143,7 @@ export function MyRoutes() {
     }
   };
 
-  const PrivateRouteEdicion = ({ children }) => {
+  const PrivateRouteDashboardproyectos = ({ children }) => {
     const storedUser = localStorage.getItem("user");
 
     if (!storedUser) {
@@ -151,13 +152,28 @@ export function MyRoutes() {
       const user = JSON.parse(storedUser);
 
       if (user.isAdmin) {
-        return <Edicion />;
+        return <DashboardP />;
       } else {
         return <Navigate to="/LoginAdmin" />;
       }
     }
   };
 
+  const PrivateRouteDashboardrubricas = ({ children }) => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) {
+      return <Navigate to="/LoginAdmin" />;
+    } else {
+      const user = JSON.parse(storedUser);
+
+      if (user.isAdmin) {
+        return <DashboardR />;
+      } else {
+        return <Navigate to="/LoginAdmin" />;
+      }
+    }
+  };
 
   const PrivateRouteEdicion2 = ({ children }) => {
 
@@ -259,7 +275,8 @@ export function MyRoutes() {
         <Route path="/HomeAdmin" element={<PrivateRoute />} /><Route />
         <Route path="/Registro" element={<PrivateRouteRegistro />} /><Route />
         <Route path="/Rubricas" element={<PrivateRouteRubricas />} /><Route />
-        <Route path="/Edicion" element={<PrivateRouteEdicion />} /><Route />
+        <Route path="/DashboardP" element={<PrivateRouteDashboardproyectos />} /><Route />
+        <Route path="/DashboardR" element={<PrivateRouteDashboardrubricas />} /><Route />
         <Route path="/edicion/proyecto/:proyectoId" element={<PrivateRouteEdicion2 />} /><Route />
         <Route path="/edicion/rubrica/:rubricaId" element={<PrivateRouteEdicion3 />} /><Route />
         <Route path="/ResultadosAdmin" element={<PrivateRouteResuladosAdmin />} /><Route />
