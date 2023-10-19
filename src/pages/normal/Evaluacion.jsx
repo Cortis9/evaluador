@@ -3,6 +3,7 @@ import { Base } from "../normal/Base";
 import { useNavigate } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 import "../../styles/normal/Evaluacion.css";
+import ImagenR from "../../assets/rojo-verde.png";
 
 export const Evaluacion = () => {
   const navigate = useNavigate();
@@ -138,7 +139,7 @@ export const Evaluacion = () => {
         <h2 id="h2">Evaluación</h2>
 
         <div><h5 id="seleccion">Seleccione y evalúe cada uno de los trabajos que se muestran en la lista desplegable.</h5></div>
-        <div><img id="rojoverde" src="../../src/assets/rojo-verde.png"  /></div>
+        <div><img id="rojoverde" src={ImagenR}  /></div>
         <select
   id="proyecto"
   value={proyectoSeleccionado}

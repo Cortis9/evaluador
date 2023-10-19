@@ -3,6 +3,7 @@ import { Base } from "../normal/Base";
 import { useNavigate } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 import "../../styles/normal/Evaluacion.css";
+import ImagenR from "../../assets/rojo-verde.png";
 
 export const Resultados = () => {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ export const Resultados = () => {
       <Base />
       <form id="form2">
         <h2 id="h2">Resultados</h2>
-        <div><img id="rojoverde" src="../../src/assets/rojo-verde.png" width={250}  /></div>
+        <div><img id="rojoverde" src={ImagenR} width={250}  /></div>
         <select
   id="proyecto"
   value={proyectoSeleccionado}
