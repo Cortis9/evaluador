@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Base } from './BaseAdmin';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/admin/Edicion.css';
+import '../../styles/admin/Dashboards.css';
 import csvimg from '../../assets/csv.png';
 import searchimg from '../../assets/search.png';
 import jsonimg from '../../assets/json.png';
@@ -194,7 +194,7 @@ export const DashboardP = () => {
                   <input
                     id='search'
                     type="search"
-                    placeholder="Buscar rúbricas..."
+                    placeholder=""
                     value={searchQueryRubricas}
                     onChange={(e) => setSearchQueryRubricas(e.target.value)}
                   />

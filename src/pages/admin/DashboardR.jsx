@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Base } from './BaseAdmin';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/admin/Edicion.css';
+import '../../styles/admin/Dashboards.css';
 import csvimg from '../../assets/csv.png';
 import searchimg from '../../assets/search.png';
 import jsonimg from '../../assets/json.png';
@@ -197,7 +197,7 @@ export const DashboardR= () => {
       <>
         <Base />
           
-        <main className="table">
+        <main className="table2">
           {rubricas && (
             <>
               <section className={`table__header ${rubricas ? 'table__header-rubricas' : ''}`}>
@@ -205,7 +205,7 @@ export const DashboardR= () => {
                   <input
                     id='search2'
                     type="search"
-                    placeholder="Buscar proyectos..."
+                    placeholder=""
                     value={searchQueryProyectos}
                     onChange={(e) => setSearchQueryProyectos(e.target.value)}
                   />
