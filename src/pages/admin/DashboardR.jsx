@@ -211,7 +211,7 @@ export const DashboardR= () => {
                   value={searchQueryRubricas}
                   onChange={handleSearch} 
                 />
-                  <img src={searchimg} alt="" />
+                 
                 </div>
                 <div id='categoriacriteriotablar'><h2 >Rúbricas</h2></div>
       

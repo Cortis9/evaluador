@@ -220,10 +220,10 @@
   }
 
   main.table2 {
-    width: 45%;
+    width: 65%;
     background-color: white;
     margin-top: 10px;
-    margin-left: 230px;
+    margin-left: 100px;
   }
 
   thead th {
@@ -386,6 +386,7 @@
     width: 200px;
 
   }
+  
   
   #search2 {
     width: 400px;
