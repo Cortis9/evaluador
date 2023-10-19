@@ -6,6 +6,7 @@ import { BarLoader } from "react-spinners";
 import csvimg from "../../assets/csv.png";
 import jsonimg from "../../assets/json.png";
 import excelimg from "../../assets/excel.png";
+import ImagenR from "../../assets/rojo-verde.png";
 import * as XLSX from "xlsx";
 
 export const ResultadosAdmin = () => {
@@ -248,7 +249,7 @@ export const ResultadosAdmin = () => {
           </button>
         </section>
         <h2 id="h2">Resultados</h2>
-        <div><img id="rojoverde" src="../../src/assets/rojo-verde.png" width={250}  /></div>
+        <div><img id="rojoverde" src= {ImagenR} width={250}  /></div>
         <select
   id="proyecto"
   value={proyectoSeleccionado}
